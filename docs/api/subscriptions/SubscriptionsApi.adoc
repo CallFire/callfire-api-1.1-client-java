@@ -1,0 +1,47 @@
+= Subscriptions API
+
+=== Query subscriptions
+'''
+Method queries all subscriptions from account, pagination is available. Example how to query first 5 subscriptions
+[source,java]
+    CfApi11Client client = new CfApi11Client("login", "password");
+    List<Subscription> subscriptions = client.subscriptionsApi().query(0, 5);
+
+=== Get subscription
+'''
+Example how to get a single Subscription instance for a given subscription id.
+[source,java]
+    CfApi11Client client = new CfApi11Client("login", "password");
+    Subscription subscription = client.subscriptionApi().get(12345678L);
+
+=== Create subscription
+'''
+Example how to create a subscription for campaign. Callfire will query your callback URL with http POST request when
+ specified campaign has FINISHED.
+[source,java]
+    CfApi11Client client = new CfApi11Client("login", "password");
+    Subscription subscription = new Subscription();
+    subscription.setEnabled(true);
+    subscription.setEndpoint("http://www.example.com/endpoint");
+    subscription.setNotificationFormat(NotificationFormat.JSON);
+    subscription.setBroadcastId(1400000L);
+    subscription.setTriggerEvent(TriggerEvent.CAMPAIGN_FINISHED);
+    subscription.setFilter(new SubscriptionFilter(1L, null, "1234567890", "1234567890"));
+    ResourceId id = client.subscriptionsApi().create(subscription);
+
+=== Update subscription
+'''
+Example how to update the information in a currently existing subscription. Most fields are updatable.
+[source,java]
+    CfApi11Client client = new CfApi11Client("login", "password");
+    Subscription subscription = client.subscriptionsApi().get(123456L);
+    subscription.setTriggerEvent(TriggerEvent.CAMPAIGN_STARTED);
+    subscription.setEndpoint("https://yoursite.com/callback");
+    client.subscriptionsApi().update(subscription);
+
+=== Delete subscription
+'''
+Example how to delete a subscription. Will be removed permanently.
+[source,java]
+    CfApi11Client client = new CfApi11Client("login", "password");
+    client.subscriptionsApi().delete(12345678L);

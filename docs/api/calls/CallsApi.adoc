@@ -1,0 +1,104 @@
+= Calls API
+
+=== Send IVR call
+'''
+Example shows how to send IVR call to 3 recipients with local time restrictions and retry configuration
+[source,java]
+    CfApi11Client client = new CfApi11Client("login", "password");
+    Date localBeginTime = setSeconds(setMinutes(setHours(new Date(), 4), 10), 10);
+    Date localEndTime = setSeconds(setMinutes(setHours(new Date(), 22), 20), 20);
+    SendCallRequest request = SendCallRequest.create()
+        .name("Send Call Java API Client")
+        .maxActive(2)
+        .scrubDuplicates(false)
+        .labels(asList("label1", "label2"))
+        .recipients(Arrays.asList(
+            new ToNumber("12132212384"),
+            new ToNumber("12132212384"),
+            new ToNumber("12132212384"))
+        )
+        .ivrConfig(IvrBroadcastConfig.create()
+            .fromNumber("12132212384")
+            .retryConfig(new RetryConfig(2, 1, asList(Result.BUSY, Result.NO_ANS),
+                asList(RetryPhoneType.FIRST_NUMBER, RetryPhoneType.HOME_PHONE)))
+            .timeZoneRestriction(new LocalTimeZoneRestriction(localBeginTime, localEndTime))
+            .dialplanXml("<dialplan name=\"Root\"><play type=\"tts\" voice=\"female1\">Hello Callfire!</play></dialplan>")
+        )
+        .build();
+    long id = client.callsApi().send(request);
+
+=== Send voice call
+'''
+Example shows how to send voice call to 3 recipients with local time restrictions, retry configuration, live sound,
+answering machine sound, transfer sound and dnc sound set.
+[source,java]
+    CfApi11Client client = new CfApi11Client("login", "password");
+        Date localBeginTime = setSeconds(setMinutes(setHours(new Date(), 4), 10), 10);
+        Date localEndTime = setSeconds(setMinutes(setHours(new Date(), 22), 20), 20);
+        SendCallRequest request = SendCallRequest.create()
+            .name("Send Call Java API Client")
+            .maxActive(2)
+            .scrubDuplicates(false)
+            .labels(asList("label1", "label2"))
+            .recipients(Arrays.asList(
+                new ToNumber("12132212384", ToNumber.attributes("custom_attr1", "custom_value1", "attr2", "val2")),
+                new ToNumber("12132212384", ToNumber.attributes("custom_attr2", "custom_value2", "attr3", "val3")),
+                new ToNumber("12132212384"))
+            )
+            .voiceConfig(VoiceBroadcastConfig.create()
+                .fromNumber("12132212384")
+                .retryConfig(new RetryConfig(2, 1, asList(Result.BUSY, Result.NO_ANS),
+                    asList(RetryPhoneType.FIRST_NUMBER, RetryPhoneType.HOME_PHONE)))
+                .timeZoneRestriction(new LocalTimeZoneRestriction(localBeginTime, localEndTime))
+                // live answer
+                .liveSound(1)
+                .liveSound("this is LA TTS", Voice.MALE1)
+                // answering machine
+                .amConfig(AmConfig.LIVE_WITH_AMD)
+                .amSound(2)
+                .amSound("this is AM TTS", Voice.FEMALE1)
+                // transfer
+                .transferSound(3)
+                .transferSound("this is transfer TTS")
+                .transferDigit("7")
+                .transferNumber("12132212384")
+                .maxActiveTransfers(2)
+                // dnc
+                .dncSound(4)
+                .dncSound("this is DNC TTS")
+                .dncDigit("9")
+            )
+            .build();
+        long id = client.callsApi().send(request);
+
+=== Query calls
+'''
+Find calls by provided criteria. The example below shows all searchable fields
+[source,java]
+    CfApi11Client client = new CfApi11Client("login", "password");
+    Date intervalBegin = setYears(setMonths(setDays(
+        setSeconds(setMinutes(setHours(new Date(), 10), 10), 10), 20), 4), 2016);
+    Date intervalEnd = setYears(setMonths(setDays(
+        setSeconds(setMinutes(setHours(new Date(), 20), 20), 20), 20), 11), 2016);
+    QueryCallsRequest request = QueryCallsRequest.create()
+        .broadcastId(1L)
+        .batchId(2L)
+        .inbound(true)
+        .intervalBegin(intervalBegin)
+        .intervalEnd(intervalEnd)
+        .fromNumber("12132212384")
+        .toNumber("12132212384")
+        .labelName("labelName")
+        .states(asList(ActionState.FINISHED))
+        .result(asList(CallResult.LA, CallResult.NO_ANS))
+        .maxResults(10)
+        .firstResult(1)
+        .build();
+    List<Call> calls = client.callsApi().query(request);
+
+=== Get call
+'''
+Example how to get a single Call instance for a given call id.
+[source,java]
+    CfApi11Client client = new CfApi11Client("login", "password");
+    Call call = client.callsApi().get(12345678L);

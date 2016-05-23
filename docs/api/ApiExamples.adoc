@@ -1,0 +1,5 @@
+= API Code Examples
+
+* link:calls/CallsApi.adoc[Send individual calls]
+* link:texts/TextsApi.adoc[Send individual texts]
+* link:webhooks/SubscriptionsApi.adoc[Subscriptions API]
