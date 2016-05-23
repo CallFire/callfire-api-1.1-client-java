@@ -1,0 +1,92 @@
+{
+  "ResourceList": {
+    "@totalResults": 3,
+    "Call": [
+      {
+        "@id": 882960114003,
+        "FromNumber": "12132609784",
+        "ToNumber": {
+          "value": "12132212384"
+        },
+        "State": "FINISHED",
+        "BroadcastId": 11570848003,
+        "ContactId": 646131501003,
+        "Inbound": false,
+        "Created": "2016-05-16T12:53:10Z",
+        "Modified": "2016-05-16T12:54:12Z",
+        "FinalResult": "LA",
+        "CallRecord": [
+          {
+            "@id": 487077388003,
+            "Result": "LA",
+            "FinishTime": "2016-05-16T12:54:12Z",
+            "BilledAmount": 1.0,
+            "SwitchId": "5f6aa72e-282b-4021-8ea9-bb41dbe76ad4",
+            "CallerName": "c105.cf6.kernelfire.com",
+            "OriginateTime": "2016-05-16T12:53:10Z",
+            "AnswerTime": "2016-05-16T12:53:14Z",
+            "Duration": 58
+          }
+        ],
+        "AgentCall": true
+      },
+      {
+        "@id": 882959552003,
+        "FromNumber": "12132212384",
+        "ToNumber": {
+          "value": "12132212384"
+        },
+        "State": "FINISHED",
+        "BatchId": 9628889003,
+        "BroadcastId": 11570848003,
+        "ContactId": 676333125003,
+        "Inbound": false,
+        "Created": "2016-05-16T12:51:56Z",
+        "Modified": "2016-05-16T12:54:07Z",
+        "FinalResult": "ABANDONED",
+        "CallRecord": [
+          {
+            "@id": 487077366003,
+            "Result": "ABANDONED",
+            "FinishTime": "2016-05-16T12:54:08Z",
+            "BilledAmount": 0.0,
+            "SwitchId": "23493843-0ba2-4024-8e6b-5aeff9428393",
+            "CallerName": "c105.cf6.kernelfire.com",
+            "OriginateTime": "2016-05-16T12:54:03Z",
+            "Duration": 0
+          }
+        ],
+        "AgentCall": false
+      },
+      {
+        "@id": 882959551003,
+        "FromNumber": "12132212384",
+        "ToNumber": {
+          "value": "12132212384"
+        },
+        "State": "FINISHED",
+        "BatchId": 9628889003,
+        "BroadcastId": 11570848003,
+        "ContactId": 676333124003,
+        "Inbound": false,
+        "Created": "2016-05-16T12:51:56Z",
+        "Modified": "2016-05-16T12:53:55Z",
+        "FinalResult": "LA",
+        "CallRecord": [
+          {
+            "@id": 487077311003,
+            "Result": "LA",
+            "FinishTime": "2016-05-16T12:53:55Z",
+            "BilledAmount": 0.0,
+            "SwitchId": "a4ee8e60-c57e-47f0-a0e0-9503c8da8579",
+            "CallerName": "c105.cf6.kernelfire.com",
+            "OriginateTime": "2016-05-16T12:53:40Z",
+            "AnswerTime": "2016-05-16T12:53:44Z",
+            "Duration": 11
+          }
+        ],
+        "AgentCall": false
+      }
+    ]
+  }
+}

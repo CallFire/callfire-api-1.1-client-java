@@ -1,0 +1,30 @@
+{
+  "Resource": {
+    "Text": {
+      "@id": 855827134003,
+      "FromNumber": "67076",
+      "ToNumber": {
+        "value": "14243876936"
+      },
+      "State": "FINISHED",
+      "BatchId": 9249517003,
+      "BroadcastId": 11204012003,
+      "ContactId": 657057781003,
+      "Inbound": false,
+      "Created": "2016-04-28T15:04:11Z",
+      "Modified": "2016-04-28T15:04:35Z",
+      "FinalResult": "SENT",
+      "TextRecord": [
+        {
+          "@id": 473448731003,
+          "Result": "SENT",
+          "FinishTime": "2016-04-28T15:04:35Z",
+          "BilledAmount": 1.0,
+          "SwitchId": "watson-855827134003",
+          "CallerName": "watson",
+          "Message": "test msg"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "ResourceException": {
+    "HttpStatus": 400,
+    "Message": "TriggerEvent is required"
+  }
+}

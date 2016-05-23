@@ -1,0 +1,34 @@
+{
+  "ResourceList": {
+    "@totalResults": 2,
+    "Subscription": [
+      {
+        "@id": 567040003,
+        "Enabled": false,
+        "NonStrictSsl": false,
+        "NotificationFormat": "EMAIL",
+        "TriggerEvent": "INBOUND_TEXT_FINISHED",
+        "SubscriptionFilter": {
+          "BroadcastId": 567040003,
+          "BatchId": 567040003,
+          "FromNumber": "1234567890",
+          "ToNumber": "67076:KEYWORD"
+        }
+      },
+      {
+        "@id": 567040003,
+        "Endpoint": "http://endpoint.com/receiver",
+        "Enabled": false,
+        "NonStrictSsl": false,
+        "NotificationFormat": "JSON",
+        "TriggerEvent": "INBOUND_TEXT_FINISHED",
+        "SubscriptionFilter": {
+          "BroadcastId": 567040003,
+          "BatchId": 567040003,
+          "FromNumber": "1234567890",
+          "ToNumber": "67076:KEYWORD"
+        }
+      }
+    ]
+  }
+}
