@@ -1,8 +1,32 @@
-group 'com.callfire'
-version '1.0.0'
+
+// Currently the "plugins" notation cannot be used for applying the plugin for sub projects, when used from the root build script.
+plugins {
+    id "com.jfrog.bintray" version "1.6"
+}
 
 dependencies {
     compile project(":callfire-api-1.1-client-core")
 
     compile 'commons-io:commons-io:2.5'
+}
+
+bintray {
+    user = System.properties[ 'BINTRAY_USER' ] ?: "user not set"
+    key = System.properties[ 'BINTRAY_KEY' ] ?: "key not set"
+
+    configurations = [ 'archives' ]
+    publish = true
+
+    pkg {
+        repo = 'maven'
+        // userOrg = 'Callfire'
+        name = project.name
+        desc = 'Callfire API 1.1 java client test'
+        websiteUrl = 'https://developers.callfire.com'
+        issueTrackerUrl = 'https://github.com/CallFire/callfire-api-1.1-client-java/issues'
+        vcsUrl = 'https://github.com/CallFire/callfire-api-1.1-client-java.git'
+        licenses = [ 'MIT' ]
+        labels = [ 'callfire', 'api', 'client' ]
+        publicDownloadNumbers = true
+    }
 }

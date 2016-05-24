@@ -4,12 +4,7 @@ buildscript {
     }
 }
 
-plugins {
-    id "com.jfrog.bintray" version "1.3.1"
-}
-
 subprojects { p ->
-
     apply plugin: 'idea'
     apply plugin: 'java'
     apply plugin: 'maven'
@@ -56,7 +51,7 @@ subprojects { p ->
     }
     jar.dependsOn generatePom
 
-// artifacts build config
+    // artifacts build config
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from {
@@ -119,27 +114,6 @@ subprojects { p ->
         module {
             downloadJavadoc = true
             downloadSources = true
-        }
-    }
-
-    bintray {
-        user = System.properties[ 'BINTRAY_USER' ] ?: "user not set"
-        key = System.properties[ 'BINTRAY_KEY' ] ?: "key not set"
-
-        configurations = [ 'archives' ]
-        publish = true
-
-        pkg {
-            repo = 'maven'
-            // userOrg = 'Callfire'
-            name = p.name
-            desc = 'Callfire API 1.1 java client'
-            websiteUrl = 'https://developers.callfire.com'
-            issueTrackerUrl = 'https://github.com/CallFire/callfire-api-1.1-client-java/issues'
-            vcsUrl = 'https://github.com/CallFire/callfire-api-1.1-client-java.git'
-            licenses = [ 'MIT' ]
-            labels = [ 'callfire', 'api', 'client' ]
-            publicDownloadNumbers = true
         }
     }
 }
