@@ -1,0 +1,23 @@
+group 'com.callfire'
+version '1.0.0'
+
+
+task clientFatJar(type: Jar, dependsOn: jar) {
+    classifier = 'all'
+    from {
+        [
+            sourceSets.main.output,
+            configurations.runtime.collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
+        ]
+    }
+}
+
+dependencies {
+    compile 'com.fasterxml.jackson.core:jackson-core:2.6.1'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.1'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
+
+    testCompile project(":callfire-api-1.1-client-test")
+}

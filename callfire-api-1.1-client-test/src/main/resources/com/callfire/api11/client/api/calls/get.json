@@ -1,0 +1,32 @@
+{
+  "Resource": {
+    "Call": {
+      "@id": 882960114003,
+      "FromNumber": "12132609784",
+      "ToNumber": {
+        "value": "12132212384"
+      },
+      "State": "FINISHED",
+      "BroadcastId": 11570848003,
+      "ContactId": 646131501003,
+      "Inbound": false,
+      "Created": "2016-05-16T12:53:10Z",
+      "Modified": "2016-05-16T12:54:12Z",
+      "FinalResult": "LA",
+      "CallRecord": [
+        {
+          "@id": 487077388003,
+          "Result": "LA",
+          "FinishTime": "2016-05-16T12:54:12Z",
+          "BilledAmount": 1.0,
+          "SwitchId": "5f6aa72e-282b-4021-8ea9-bb41dbe76ad4",
+          "CallerName": "c105.cf6.kernelfire.com",
+          "OriginateTime": "2016-05-16T12:53:10Z",
+          "AnswerTime": "2016-05-16T12:53:14Z",
+          "Duration": 58
+        }
+      ],
+      "AgentCall": false
+    }
+  }
+}
