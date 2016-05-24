@@ -139,10 +139,12 @@ Proxy address port is optional, 8080 is used by default.
 
 == Testing
 
-Please note that testing mode is limited to return only stub data and it doesn't work as sandbox account.
-     * Lots of validations perform on server-side thus invalid
-     * data (e.g. invalid To/From numbers, validation performs on server) will work with mock client
-     * but fails with production one.
+If you add callfire-api-1.1-client-test dependency to project you can create a mocked API client which doesn't query
+production services, but just returns mocked data models.
+
+Please note that testing mode is limited to return only stub data and it doesn't work like sandbox account.
+Lots of different validations perform on server-side thus invalid data (e.g. invalid To/From numbers,
+validation performs on server) will work with mock client but fails with production one.
 
 [source,java]
     // create mocked client

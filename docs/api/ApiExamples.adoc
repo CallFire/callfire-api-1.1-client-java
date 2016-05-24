@@ -2,4 +2,4 @@
 
 * link:calls/CallsApi.adoc[Send individual calls]
 * link:texts/TextsApi.adoc[Send individual texts]
-* link:webhooks/SubscriptionsApi.adoc[Subscriptions API]
+* link:subscriptions/SubscriptionsApi.adoc[Subscriptions API]
