@@ -8,7 +8,10 @@ repositories {
     jcenter()
 }
 dependencies {
-    compile 'com.callfire:callfire-api-1.1-client:X.Y.Z'
+    compile 'com.callfire:callfire-api-1.1-client-core:X.Y.Z'
+    // test dependency adds ability to create mocked CfApi11Client which doesn't send requests to production
+    // but just returns mock data. See 'Testing' section for more info.
+    // compile 'com.callfire:callfire-api-1.1-client-test:X.Y.Z'
 }
 
 for Maven build add following lines to your pom xml:
@@ -25,13 +28,22 @@ for Maven build add following lines to your pom xml:
 <dependencies>
     <dependency>
         <groupId>com.callfire</groupId>
-        <artifactId>callfire-api-1.1-client</artifactId>
+        <artifactId>callfire-api-1.1-client-core</artifactId>
         <version>X.Y.Z</version>
     </dependency>
+<!--
+    Test dependency adds ability to create mocked CfApi11Client which doesn't send requests to production
+    but just returns mock data. See 'Testing' section for more info.
+    <dependency>
+        <groupId>com.callfire</groupId>
+        <artifactId>callfire-api-1.1-client-test</artifactId>
+        <version>X.Y.Z</version>
+    </dependency>
+-->
 </dependencies>
 
 where X.Y.Z - current available version, you can find it on link:https://github.com/CallFire/callfire-api-1.1-client-java/releases[releases page]
-After these steps *callfire-api-client* should appear in your project dependencies along with other transitive ones.
+After these steps *callfire-api-1.1-client* should appear in your project dependencies along with other transitive ones.
 
 In case you want to build it yourself:
 [source]
@@ -39,13 +51,17 @@ In case you want to build it yourself:
     $ cd callfire-api-1.1-client-java
     $ gradlew build clientFatJar
 
-it will create 4 jars in *build/libs* directory:
+it will create 4 jars in *callfire-api-1.1-client-[module name]/build/libs* directory:
 [source]
-    callfire-api-1.1-client-X.Y.Z.jar - only client classes without dependencies
-    callfire-api-1.1-client-X.Y.Z-all.jar - client jar with all dependencies inside
-    callfire-api-1.1-client-X.Y.Z-javadoc.jar
-    callfire-api-1.1-client-X.Y.Z-sources.jar
-
+    core module:
+    callfire-api-1.1-client-core-X.Y.Z.jar - only client classes without dependencies
+    callfire-api-1.1-client-core-X.Y.Z-all.jar - client jar with all dependencies inside
+    callfire-api-1.1-client-core-X.Y.Z-javadoc.jar
+    callfire-api-1.1-client-core-X.Y.Z-sources.jar
+    test module:
+    callfire-api-1.1-client-test-X.Y.Z.jar
+    callfire-api-1.1-client-test-X.Y.Z-javadoc.jar
+    callfire-api-1.1-client-test-X.Y.Z-sources.jar
 
 == Overview
 To create client instance just provide API login and password. API credentials should be configured on
@@ -120,6 +136,42 @@ Users have possibility to make API calls go through proxy, here is an example ho
 *IMPORTANT.* You must add proxy address property and proxy credentials (if needed) before client instantiation!
 
 Proxy address port is optional, 8080 is used by default.
+
+== Testing
+
+Please note that testing mode is limited to return only stub data and it doesn't work as sandbox account.
+     * Lots of validations perform on server-side thus invalid
+     * data (e.g. invalid To/From numbers, validation performs on server) will work with mock client
+     * but fails with production one.
+
+[source,java]
+    // create mocked client
+    CfApi11Client client = MockClientFactory.newClient();
+    // then run queries as usual, e.g. query
+    List<Call> calls = client.callsApi().query(QueryCallsRequest.create().broadcastId(444111L).build());
+
+In case you want to customize what mocked http client returns here is an example how to do it:
+[source,java]
+    CfApi11Client client = MockClientFactory.newClient();
+    Map<String, Pair<Integer, String>> responses = CallfireTestUtils.getJsonResponseMapping(client);
+    responses.put(ModelType.listOf(Subscription.class).getType().toString(), new MutablePair<>(400, "/common/errorResponse.json"));
+    client.subscriptionsApi().query(0, 1);
+
+In this case response will be taken from errorResponse.json which and BadRequestException will occur. To customize response
+ you should:
+
+  1. create json file with response
+  2. add mapping for API operation, response code and path to your json file
+[source,java]
+   // a couple notes:
+   // 1st arg is the type API operation returns, e.g. ResourceList<Subscription> for query(), Resource<Subscription> for get(), see responses of API methods
+   // 2nd arg contains HTTP response code which will be returned and path to mock json file, note that base path for your file must be '/com/callfire/api11/client/api'
+   responses.put(ModelType.listOf(Subscription.class).getType().toString(), new MutablePair<>(400, "/common/errorResponse.json"));
+
+  3. then query API
+[source,java]
+   // response from your file will be returned
+   client.subscriptionsApi().query(0, 1);
 
 == Debug & logging
 In case you want to see requests/responses which client sends/receives from Callfire platform you should set *DEBUG*
