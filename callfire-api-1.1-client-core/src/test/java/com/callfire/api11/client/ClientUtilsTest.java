@@ -150,8 +150,8 @@ public class ClientUtilsTest {
         assertThat(queryParams, containsString("State=FINISHED"));
         assertThat(queryParams, containsString("Result=LA"));
         assertThat(queryParams, containsString("Result=NO_ANS"));
-        assertThat(queryParams, containsString("IntervalBegin=2016-11-10T10:10:10+02:00"));
-        assertThat(queryParams, containsString("IntervalEnd=2016-12-20T20:20:20+02:00"));
+        assertThat(queryParams, containsString("IntervalBegin=2016-11-10T10:10:10"));
+        assertThat(queryParams, containsString("IntervalEnd=2016-12-20T20:20:20"));
 
         System.out.println("query request: " + queryParams);
     }

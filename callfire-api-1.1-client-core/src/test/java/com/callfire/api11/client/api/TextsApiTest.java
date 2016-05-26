@@ -153,8 +153,8 @@ public class TextsApiTest extends AbstractApiTest {
         assertThat(arg.getURI().toString(), containsString("State=FINISHED"));
         assertThat(arg.getURI().toString(), containsString("Result=RECEIVED"));
         assertThat(arg.getURI().toString(), containsString("Result=SENT"));
-        assertThat(arg.getURI().toString(), containsString("IntervalBegin=" + encode("2016-11-10T10:10:10+02:00")));
-        assertThat(arg.getURI().toString(), containsString("IntervalEnd=" + encode("2016-12-20T20:20:20+02:00")));
+        assertThat(arg.getURI().toString(), containsString("IntervalBegin=" + encode("2016-11-10T10:10:10")));
+        assertThat(arg.getURI().toString(), containsString("IntervalEnd=" + encode("2016-12-20T20:20:20")));
         assertThat(arg.getURI().toString(), containsString("LabelName=labelName"));
     }
 }

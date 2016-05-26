@@ -256,8 +256,8 @@ public class CallsApiTest extends AbstractApiTest {
         assertThat(arg.getURI().toString(), containsString("State=FINISHED"));
         assertThat(arg.getURI().toString(), containsString("Result=LA"));
         assertThat(arg.getURI().toString(), containsString("Result=NO_ANS"));
-        assertThat(arg.getURI().toString(), containsString("IntervalBegin=" + encode("2016-11-10T10:10:10+02:00")));
-        assertThat(arg.getURI().toString(), containsString("IntervalEnd=" + encode("2016-12-20T20:20:20+02:00")));
+        assertThat(arg.getURI().toString(), containsString("IntervalBegin=" + encode("2016-11-10T10:10:10")));
+        assertThat(arg.getURI().toString(), containsString("IntervalEnd=" + encode("2016-12-20T20:20:20")));
         assertThat(arg.getURI().toString(), containsString("LabelName=labelName"));
     }
 }
