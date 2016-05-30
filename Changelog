@@ -1,5 +1,8 @@
 Callfire API 1.1 client Changelog
 =============================
 
+Version 1.1.0 - May 30 2016
+    - added mocked responses for send call/text operations with invalid numbers
+
 Version 1.0.0 - May 24 2016
     - initial release
