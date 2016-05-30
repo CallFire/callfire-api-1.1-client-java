@@ -1,0 +1,110 @@
+
+== Testing basic API integration with mock client
+
+You should add **callfire-api-1.1-client-test** dependency to project, then you can create a mocked API client which doesn't query
+production services, but just returns mocked data models.
+
+Please note that testing mode is limited to return only stub data and it doesn't work like sandbox account.
+Lots of different validations perform on server-side thus invalid data (e.g. invalid To/From numbers,
+validation performs on server) will work with mock client but fails with production one.
+
+[source,java]
+    // create mocked client
+    CfApi11Client client = MockClientFactory.newClient();
+    // then run queries as usual, e.g. query
+    List<Call> calls = client.callsApi().query(QueryCallsRequest.create().broadcastId(444111L).build());
+
+=== Number validation
+
+There some hardcoded values which you can use to test negative cases, e.g. when From or To number is invalid, next example
+shows how to send call/text to invalid number and see that number is invalid
+
+[source,java]
+    // create mocked client
+    CfApi11Client client = MockClientFactory.newClient();
+    SendCallRequest request = SendCallRequest.create()
+        .name("Send Call Java API Client")
+        // invalid to number
+        .recipients(Collections.singletonList(new ToNumber("1234")))
+        .voiceConfig(VoiceBroadcastConfig.create()
+            .fromNumber("12132212384")
+            .liveSound("this is LA TTS", Voice.MALE1)
+            .amSound("this is AM TTS", Voice.FEMALE1)
+        )
+        .build();
+    long id = client.callsApi().send(request);
+    // response id is always 1000 for sendCall operation to number 1234
+    assertEquals(1000, id);
+    // then if we query this call by broadcast id it will show state as INVALID
+    QueryCallsRequest queryRequest = QueryCallsRequest.create()
+        .broadcastId(id)
+        .build();
+    List<Call> calls = client.callsApi().query(queryRequest);
+    assertEquals(1, calls.size());
+    assertEquals(ActionState.INVALID, calls.get(0).getState());
+
+the same for texts
+
+[source,java]
+    // create mocked client
+    CfApi11Client client = MockClientFactory.newClient();
+    SendTextRequest request = SendTextRequest.create()
+        .name("Send Text Java API Client")
+        // invalid to number
+        .recipients(Collections.singletonList(new ToNumber("1234")))
+        .config(TextBroadcastConfig.create()
+            .fromNumber("12132212384")
+            .message("Api test message")
+        )
+        .build();
+    long id = client.textsApi().send(request);
+    // response id is always 2000 for sendText operation to number 1234
+    assertEquals(2000, id);
+    // then if we query this call by broadcast id it will show state as INVALID
+    QueryTextsRequest queryRequest = QueryTextsRequest.create()
+        .broadcastId(id)
+        .build();
+    List<Text> texts = client.textsApi().query(queryRequest);
+    assertEquals(1, texts.size());
+    assertEquals(ActionState.INVALID, texts.get(0).getState());
+
+In case we sent invalid from number for sendCall/sendText operation we'll get BadRequestException
+
+[source,java]
+    CfApi11Client client = MockClientFactory.newClient();
+    SendCallRequest request = SendCallRequest.create()
+        .name("Send Call Java API Client")
+        .recipients(Collections.singletonList(new ToNumber("12132212384")))
+        .voiceConfig(VoiceBroadcastConfig.create()
+            // invalid number
+            .fromNumber("1234")
+            .liveSound("this is LA TTS", Voice.MALE1)
+            .amSound("this is AM TTS", Voice.FEMALE1)
+        )
+        .build();
+    client.callsApi().send(request);
+
+=== Add custom responses
+
+In case you want to customize what mocked http client returns here is an example how to do it:
+[source,java]
+    CfApi11Client client = MockClientFactory.newClient();
+    Map<String, Pair<Integer, String>> responses = CallfireTestUtils.getJsonResponseMapping(client);
+    responses.put(ModelType.listOf(Subscription.class).getType().toString(), new MutablePair<>(400, "/common/errorResponse.json"));
+    client.subscriptionsApi().query(0, 1);
+
+In this case response will be taken from errorResponse.json which and BadRequestException will occur. To customize response
+ you should:
+
+  1. create json file with response
+  2. add mapping for API operation, response code and path to your json file
+[source,java]
+   // a couple notes:
+   // 1st arg is the type API operation returns, e.g. ResourceList<Subscription> for query(), Resource<Subscription> for get(), see responses of API methods
+   // 2nd arg contains HTTP response code which will be returned and path to mock json file, note that base path for your file must be '/com/callfire/api11/client/api'
+   responses.put(ModelType.listOf(Subscription.class).getType().toString(), new MutablePair<>(400, "/common/errorResponse.json"));
+
+  3. then query API
+[source,java]
+   // response from your file will be returned
+   client.subscriptionsApi().query(0, 1);

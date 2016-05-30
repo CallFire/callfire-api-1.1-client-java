@@ -19,6 +19,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import java.util.List;
 
+import static com.callfire.api11.client.test.CallfireTestUtils.extractHttpEntity;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -61,14 +61,6 @@ public class AbstractApiTest {
         return CallfireTestUtils.getJsonPayload(JSON_BASE_PATH + path);
     }
 
-    protected String extractHttpEntity(HttpUriRequest request) throws IOException {
-        if (request instanceof HttpEntityEnclosingRequest) {
-            HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) request;
-            return EntityUtils.toString(entityRequest.getEntity());
-        }
-        return null;
-    }
-
     protected ArgumentCaptor<HttpUriRequest> mockHttpResponse() throws Exception {
         return mockHttpResponse(null);
     }

@@ -1,0 +1,21 @@
+{
+  "ResourceList": {
+    "@totalResults": 1,
+    "Text": [
+      {
+        "@id": 909454167003,
+        "FromNumber": "67076",
+        "ToNumber": {
+          "value": "1234"
+        },
+        "State": "INVALID",
+        "BatchId": 9931001003,
+        "BroadcastId": 11868842003,
+        "ContactId": 695033808003,
+        "Inbound": false,
+        "Created": "2016-05-30T14:32:30Z",
+        "Modified": "2016-05-30T14:32:30Z"
+      }
+    ]
+  }
+}

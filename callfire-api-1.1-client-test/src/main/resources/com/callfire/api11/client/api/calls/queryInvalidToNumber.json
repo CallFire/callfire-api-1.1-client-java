@@ -1,0 +1,22 @@
+{
+  "ResourceList": {
+    "@totalResults": 1,
+    "Call": [
+      {
+        "@id": 1001,
+        "FromNumber": "12132212384",
+        "ToNumber": {
+          "value": "111111"
+        },
+        "State": "INVALID",
+        "BatchId": 9927585003,
+        "BroadcastId": 1000,
+        "ContactId": 695020901003,
+        "Inbound": false,
+        "Created": "2016-05-30T12:56:13Z",
+        "Modified": "2016-05-30T12:56:13Z",
+        "AgentCall": false
+      }
+    ]
+  }
+}

@@ -5,8 +5,12 @@ import org.apache.commons.codec.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +35,18 @@ public class CallfireTestUtils {
             }
             return result.toString();
         } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String extractHttpEntity(HttpUriRequest request) {
+        try {
+            if (request instanceof HttpEntityEnclosingRequest) {
+                HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) request;
+                return EntityUtils.toString(entityRequest.getEntity());
+            }
+            return null;
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

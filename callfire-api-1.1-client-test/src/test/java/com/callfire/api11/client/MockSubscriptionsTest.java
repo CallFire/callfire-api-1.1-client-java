@@ -15,7 +15,7 @@ import org.junit.rules.ExpectedException;
 import java.util.List;
 import java.util.Map;
 
-public class MockHttpClientTest {
+public class MockSubscriptionsTest {
     @Rule
     public ExpectedException ex = ExpectedException.none();
     private CfApi11Client client = MockClientFactory.newClient();
@@ -34,27 +34,6 @@ public class MockHttpClientTest {
         ex.expect(BadRequestException.class);
         ex.expectMessage("TriggerEvent is required");
         client.subscriptionsApi().query(0, 1);
-    }
-
-    @Test
-    public void queryCalls() throws Exception {
-        List<Call> calls = client.callsApi().query(QueryCallsRequest.create().build());
-
-        for (Call call : calls) {
-            System.out.println(call);
-        }
-    }
-
-    @Test
-    public void getCall() throws Exception {
-        Call call = client.callsApi().get(1L);
-        System.out.println(call);
-    }
-
-    @Test
-    public void sendText() throws Exception {
-        long id = client.textsApi().send(SendTextRequest.create().build());
-        System.out.println(id);
     }
 
     @Test

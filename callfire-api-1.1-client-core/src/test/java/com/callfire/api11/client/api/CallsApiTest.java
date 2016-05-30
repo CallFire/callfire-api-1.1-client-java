@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static com.callfire.api11.client.test.CallfireTestUtils.extractHttpEntity;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.time.DateUtils.setDays;
 import static org.apache.commons.lang3.time.DateUtils.setHours;
