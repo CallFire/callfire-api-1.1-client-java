@@ -6,12 +6,16 @@ import com.callfire.api11.client.api.common.model.Resource;
 import com.callfire.api11.client.api.common.model.ResourceList;
 import com.callfire.api11.client.api.common.model.ResourceReference;
 import com.callfire.api11.client.api.common.model.ToNumber;
+import com.callfire.api11.client.api.texts.model.AutoReply;
 import com.callfire.api11.client.api.texts.model.BigMessageStrategy;
 import com.callfire.api11.client.api.texts.model.Text;
 import com.callfire.api11.client.api.texts.model.TextBroadcastConfig;
 import com.callfire.api11.client.api.texts.model.TextResult;
+import com.callfire.api11.client.api.texts.model.request.QueryAutoRepliesRequest;
 import com.callfire.api11.client.api.texts.model.request.QueryTextsRequest;
 import com.callfire.api11.client.api.texts.model.request.SendTextRequest;
+import org.apache.commons.codec.net.URLCodec;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -157,5 +161,86 @@ public class TextsApiTest extends AbstractApiTest {
         assertThat(arg.getURI().toString(), containsString("IntervalBegin=" + encode("2016-11-10T10:10:10")));
         assertThat(arg.getURI().toString(), containsString("IntervalEnd=" + encode("2016-12-20T20:20:20")));
         assertThat(arg.getURI().toString(), containsString("LabelName=labelName"));
+    }
+
+    @Test
+    public void createAutoReply() throws Exception {
+        String location = "https://www.callfire.com/api/1.1/rest/text/auto-reply/596584003";
+        String expectedJson = getJsonPayload("/texts/createAutoReply.json");
+        ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
+
+        AutoReply autoReply = new AutoReply();
+        autoReply.setKeyword("KEYWORD");
+        autoReply.setNumber("12345678901");
+        autoReply.setMatch("test");
+        autoReply.setMessage("Hello auto-reply");
+
+        Long id = client.textsApi().createAutoReply(autoReply);
+        ResourceReference response = new ResourceReference(id, location);
+        JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
+
+        HttpUriRequest arg = captor.getValue();
+        assertEquals(HttpPost.METHOD_NAME, arg.getMethod());
+        String requestBody = extractHttpEntity(arg);
+        assertNotNull(requestBody);
+
+        assertThat(requestBody, containsString("Keyword=KEYWORD"));
+        assertThat(requestBody, containsString("Number=12345678901"));
+        assertThat(requestBody, containsString("Message=" + new URLCodec().encode("Hello auto-reply")));
+        assertThat(requestBody, containsString("Match=test"));
+    }
+
+    @Test
+    public void getAutoReply() throws Exception {
+        String expectedJson = getJsonPayload("/texts/getAutoReply.json");
+        ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
+
+        AutoReply autoReply = client.textsApi().getAutoReply(1234567L);
+        Resource<AutoReply> response = new Resource<>(autoReply, AutoReply.class);
+        JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
+
+        HttpUriRequest arg = captor.getValue();
+        assertEquals(HttpGet.METHOD_NAME, arg.getMethod());
+        String requestBody = extractHttpEntity(arg);
+        assertNull(requestBody);
+
+        assertThat(arg.getURI().toString(), containsString("/text/auto-reply/1234567.json"));
+    }
+
+    @Test
+    public void queryAutoReply() throws Exception {
+        String expectedJson = getJsonPayload("/texts/queryAutoReplies.json");
+        ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
+
+        QueryAutoRepliesRequest request = QueryAutoRepliesRequest.create()
+            .firstResult(2)
+            .number("12345678901")
+            .build();
+        List<AutoReply> autoReplies = client.textsApi().queryAutoReplies(request);
+        ResourceList<AutoReply> response = new ResourceList<>(autoReplies, AutoReply.class);
+        String serialize = jsonConverter.serialize(response);
+        System.out.println(serialize);
+        JSONAssert.assertEquals(expectedJson, serialize, true);
+
+        HttpUriRequest arg = captor.getValue();
+        assertEquals(HttpGet.METHOD_NAME, arg.getMethod());
+        String requestBody = extractHttpEntity(arg);
+        assertNull(requestBody);
+
+        assertThat(arg.getURI().toString(), containsString("Number=12345678901"));
+        assertThat(arg.getURI().toString(), containsString("FirstResult=2"));
+        assertThat(arg.getURI().toString(), containsString("MaxResults=1000"));
+    }
+
+    @Test
+    public void delete() throws Exception {
+        ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse();
+        client.textsApi().deleteAutoReply(1234567L);
+
+        HttpUriRequest arg = captor.getValue();
+        assertEquals(HttpDelete.METHOD_NAME, arg.getMethod());
+        String requestBody = extractHttpEntity(arg);
+        assertNull(requestBody);
+        assertThat(arg.getURI().toString(), containsString("/text/auto-reply/1234567.json"));
     }
 }

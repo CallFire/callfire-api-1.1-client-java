@@ -1,12 +1,16 @@
 package com.callfire.api11.client.integration;
 
+import com.callfire.api11.client.ResourceNotFoundException;
 import com.callfire.api11.client.api.common.model.ActionState;
 import com.callfire.api11.client.api.common.model.LocalTimeZoneRestriction;
 import com.callfire.api11.client.api.common.model.ToNumber;
+import com.callfire.api11.client.api.texts.TextsApi;
+import com.callfire.api11.client.api.texts.model.AutoReply;
 import com.callfire.api11.client.api.texts.model.BigMessageStrategy;
 import com.callfire.api11.client.api.texts.model.Text;
 import com.callfire.api11.client.api.texts.model.TextBroadcastConfig;
 import com.callfire.api11.client.api.texts.model.TextResult;
+import com.callfire.api11.client.api.texts.model.request.QueryAutoRepliesRequest;
 import com.callfire.api11.client.api.texts.model.request.QueryTextsRequest;
 import com.callfire.api11.client.api.texts.model.request.SendTextRequest;
 import org.junit.Ignore;
@@ -23,6 +27,9 @@ import static org.apache.commons.lang3.time.DateUtils.setMinutes;
 import static org.apache.commons.lang3.time.DateUtils.setMonths;
 import static org.apache.commons.lang3.time.DateUtils.setSeconds;
 import static org.apache.commons.lang3.time.DateUtils.setYears;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @Ignore
 public class TextsApiIntegrationTest extends AbstractIntegrationTest {
@@ -83,5 +90,39 @@ public class TextsApiIntegrationTest extends AbstractIntegrationTest {
     public void get() throws Exception {
         Text text = client.textsApi().get(731402020003L);
         System.out.println(text);
+    }
+
+    @Test
+    public void autoReplyCrudOperations() throws Exception {
+        TextsApi api = client.textsApi();
+
+        AutoReply autoReply = new AutoReply();
+        //        autoReply.setKeyword("KEYWORD");
+        autoReply.setNumber("14246528111");
+        autoReply.setMatch("test");
+        autoReply.setMessage("Hello auto-reply");
+        Long id = api.createAutoReply(autoReply);
+        assertNotNull(id);
+
+        autoReply.setId(id);
+
+        AutoReply stored = api.getAutoReply(id);
+        assertNull(stored.getKeyword());
+        assertEquals("14246528111", stored.getNumber());
+        assertEquals("test", stored.getMatch());
+        assertEquals("Hello auto-reply", stored.getMessage());
+
+        QueryAutoRepliesRequest request = QueryAutoRepliesRequest.create()
+            .maxResults(1)
+            .number("14246528111")
+            .build();
+        List<AutoReply> autoReplies = api.queryAutoReplies(request);
+        assertEquals(1, autoReplies.size());
+
+        api.deleteAutoReply(id);
+
+        ex.expect(ResourceNotFoundException.class);
+        ex.expectMessage("Not Found");
+        api.get(id);
     }
 }

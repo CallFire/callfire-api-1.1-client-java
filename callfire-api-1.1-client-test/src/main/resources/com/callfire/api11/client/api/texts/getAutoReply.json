@@ -1,0 +1,11 @@
+{
+  "Resource": {
+    "AutoReply": {
+      "@id": 14077142003,
+      "Number": "14246528111",
+      "Match": "test",
+      "Keyword": "KEYWORD",
+      "Message": "Hello, this is Callfire auto-reply"
+    }
+  }
+}

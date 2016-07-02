@@ -9,7 +9,9 @@ import com.callfire.api11.client.ResourceNotFoundException;
 import com.callfire.api11.client.RestApi11Client;
 import com.callfire.api11.client.UnauthorizedException;
 import com.callfire.api11.client.api.common.model.ResourceReference;
+import com.callfire.api11.client.api.texts.model.AutoReply;
 import com.callfire.api11.client.api.texts.model.Text;
+import com.callfire.api11.client.api.texts.model.request.QueryAutoRepliesRequest;
 import com.callfire.api11.client.api.texts.model.request.QueryTextsRequest;
 import com.callfire.api11.client.api.texts.model.request.SendTextRequest;
 
@@ -26,6 +28,8 @@ import static com.callfire.api11.client.ModelType.resourceOf;
 public class TextsApi {
     private static final String TEXTS_PATH = "/text.json";
     private static final String TEXTS_ITEM_PATH = "/text/{}.json";
+    private static final String TEXTS_AUTO_REPLY_PATH = "/text/auto-reply.json";
+    private static final String TEXTS_AUTO_REPLY_ITEM_PATH = "/text/auto-reply/{}.json";
 
     private RestApi11Client client;
 
@@ -94,5 +98,76 @@ public class TextsApi {
      */
     public Text get(long id) {
         return client.get(TEXTS_ITEM_PATH.replaceFirst(PLACEHOLDER, String.valueOf(id)), resourceOf(Text.class)).get();
+    }
+
+    /**
+     * Create and configure new auto-reply message for existing number
+     * <p>
+     * Auto-Replies are text message replies sent to a customer when a customer replies to a text message from a campaign.
+     * A keyword or number will need to have been purchased before an Auto-Reply can be created.
+     *
+     * @param autoReply auto reply to create
+     * @return auto-reply id
+     * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
+     * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
+     * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
+     * @throws ResourceNotFoundException    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.
+     * @throws InternalServerErrorException in case HTTP response code is 500 - Internal Server Error.
+     * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
+     * @throws CfApi11ClientException       in case error has occurred in client.
+     */
+    public long createAutoReply(AutoReply autoReply) {
+        return client.post(TEXTS_AUTO_REPLY_PATH, of(ResourceReference.class), autoReply).getId();
+    }
+
+    /**
+     * Query for auto-replies by number
+     *
+     * @param request request object with filtering options
+     * @return {@link List} of {@link AutoReply} objects
+     * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
+     * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
+     * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
+     * @throws ResourceNotFoundException    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.
+     * @throws InternalServerErrorException in case HTTP response code is 500 - Internal Server Error.
+     * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
+     * @throws CfApi11ClientException       in case error has occurred in client.
+     */
+    public List<AutoReply> queryAutoReplies(QueryAutoRepliesRequest request) {
+        return client.query(TEXTS_AUTO_REPLY_PATH, listOf(AutoReply.class), request).get();
+    }
+
+    /**
+     * Returns auto-reply by id
+     *
+     * @param id auto-reply id
+     * @return {@link List} of {@link AutoReply} objects
+     * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
+     * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
+     * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
+     * @throws ResourceNotFoundException    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.
+     * @throws InternalServerErrorException in case HTTP response code is 500 - Internal Server Error.
+     * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
+     * @throws CfApi11ClientException       in case error has occurred in client.
+     */
+    public AutoReply getAutoReply(long id) {
+        String path = TEXTS_AUTO_REPLY_ITEM_PATH.replaceFirst(PLACEHOLDER, String.valueOf(id));
+        return client.get(path, resourceOf(AutoReply.class)).get();
+    }
+
+    /**
+     * Delete auto-reply by id
+     *
+     * @param id auto-reply id
+     * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
+     * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
+     * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
+     * @throws ResourceNotFoundException    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.
+     * @throws InternalServerErrorException in case HTTP response code is 500 - Internal Server Error.
+     * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
+     * @throws CfApi11ClientException       in case error has occurred in client.
+     */
+    public void deleteAutoReply(long id) {
+        client.delete(TEXTS_AUTO_REPLY_ITEM_PATH.replaceFirst(PLACEHOLDER, String.valueOf(id)));
     }
 }

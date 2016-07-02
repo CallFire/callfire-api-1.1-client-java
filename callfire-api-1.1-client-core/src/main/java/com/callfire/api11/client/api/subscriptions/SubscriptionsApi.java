@@ -120,7 +120,7 @@ public class SubscriptionsApi {
     /**
      * Delete subscription to stop receiving CallFire notification events at the registered URI postback endpoint.
      *
-     * @param id subscription to create
+     * @param id subscription to delete
      * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
      * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
      * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.

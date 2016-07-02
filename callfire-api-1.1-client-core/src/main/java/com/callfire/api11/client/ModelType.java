@@ -6,6 +6,7 @@ import com.callfire.api11.client.api.common.model.ResourceException;
 import com.callfire.api11.client.api.common.model.ResourceList;
 import com.callfire.api11.client.api.common.model.ResourceReference;
 import com.callfire.api11.client.api.subscriptions.model.Subscription;
+import com.callfire.api11.client.api.texts.model.AutoReply;
 import com.callfire.api11.client.api.texts.model.Text;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -35,6 +36,7 @@ public final class ModelType {
 
         SIMPLE_TYPES.put(Call.class, new TypeReference<Resource<Call>>() {});
         SIMPLE_TYPES.put(Text.class, new TypeReference<Resource<Text>>() {});
+        SIMPLE_TYPES.put(AutoReply.class, new TypeReference<Resource<AutoReply>>() {});
         SIMPLE_TYPES.put(Subscription.class, new TypeReference<Resource<Subscription>>() {});
         // @formatter:on
     }
@@ -43,6 +45,7 @@ public final class ModelType {
         // @formatter:off
         LIST_TYPES.put(Call.class, new TypeReference<ResourceList<Call>>() {});
         LIST_TYPES.put(Text.class, new TypeReference<ResourceList<Text>>() {});
+        LIST_TYPES.put(AutoReply.class, new TypeReference<ResourceList<AutoReply>>() {});
         LIST_TYPES.put(Subscription.class, new TypeReference<ResourceList<Subscription>>() {});
         // @formatter:on
     }
