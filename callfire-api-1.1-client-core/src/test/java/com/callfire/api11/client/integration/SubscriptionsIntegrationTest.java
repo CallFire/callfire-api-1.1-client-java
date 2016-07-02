@@ -1,6 +1,7 @@
 package com.callfire.api11.client.integration;
 
 import com.callfire.api11.client.ResourceNotFoundException;
+import com.callfire.api11.client.api.common.model.request.QueryRequest;
 import com.callfire.api11.client.api.subscriptions.SubscriptionsApi;
 import com.callfire.api11.client.api.subscriptions.model.NotificationFormat;
 import com.callfire.api11.client.api.subscriptions.model.Subscription;
@@ -44,7 +45,10 @@ public class SubscriptionsIntegrationTest extends AbstractIntegrationTest {
         assertEquals("123", stored.getFilter().getFromNumber());
         assertEquals("123", stored.getFilter().getToNumber());
 
-        List<Subscription> subscriptions = api.query(0, 1);
+        QueryRequest request = QueryRequest.createNew()
+            .maxResults(1)
+            .build();
+        List<Subscription> subscriptions = api.query(request);
         assertEquals(1, subscriptions.size());
 
         api.delete(id);

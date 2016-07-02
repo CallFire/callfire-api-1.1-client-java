@@ -14,11 +14,11 @@ public class QueryRequest extends CfApi11Model {
     }
 
     /**
-     * Create request builder
+     * Create query request builder
      *
      * @return request build
      */
-    public static QueryRequestBuilder<QueryRequestBuilder, QueryRequest> createNew() {
+    public static QueryRequestBuilder createNew() {
         return new QueryRequestBuilder<>();
     }
 
@@ -54,6 +54,11 @@ public class QueryRequest extends CfApi11Model {
         public B maxResults(int maxResults) {
             request.maxResults = maxResults;
             return (B) this;
+        }
+
+        @Override
+        public R build() {
+            return super.build();
         }
     }
 }

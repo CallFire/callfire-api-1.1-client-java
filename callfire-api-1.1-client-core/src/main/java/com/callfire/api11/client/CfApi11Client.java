@@ -1,6 +1,7 @@
 package com.callfire.api11.client;
 
 import com.callfire.api11.client.api.calls.CallsApi;
+import com.callfire.api11.client.api.labels.LabelsApi;
 import com.callfire.api11.client.api.subscriptions.SubscriptionsApi;
 import com.callfire.api11.client.api.texts.TextsApi;
 import com.callfire.api11.client.auth.BasicAuth;
@@ -58,6 +59,7 @@ public class CfApi11Client {
     private CallsApi callsApi;
     private TextsApi textsApi;
     private SubscriptionsApi subscriptionsApi;
+    private LabelsApi labelsApi;
 
     /**
      * Initialize Callfire client
@@ -129,5 +131,17 @@ public class CfApi11Client {
             subscriptionsApi = new SubscriptionsApi(restApiClient);
         }
         return subscriptionsApi;
+    }
+
+    /**
+     * Get /label api endpoint
+     *
+     * @return endpoint object
+     */
+    public LabelsApi labelsApi() {
+        if (labelsApi == null) {
+            labelsApi = new LabelsApi(restApiClient);
+        }
+        return labelsApi;
     }
 }

@@ -3,6 +3,7 @@ package com.callfire.api11.client.api;
 import com.callfire.api11.client.api.common.model.Resource;
 import com.callfire.api11.client.api.common.model.ResourceList;
 import com.callfire.api11.client.api.common.model.ResourceReference;
+import com.callfire.api11.client.api.common.model.request.QueryRequest;
 import com.callfire.api11.client.api.subscriptions.model.NotificationFormat;
 import com.callfire.api11.client.api.subscriptions.model.Subscription;
 import com.callfire.api11.client.api.subscriptions.model.SubscriptionFilter;
@@ -117,7 +118,11 @@ public class SubscriptionsApiTest extends AbstractApiTest {
         String expectedJson = getJsonPayload("/subscriptions/query.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
-        List<Subscription> subscriptions = client.subscriptionsApi().query(2, 100);
+        QueryRequest request = QueryRequest.createNew()
+            .firstResult(2)
+            .maxResults(100)
+            .build();
+        List<Subscription> subscriptions = client.subscriptionsApi().query(request);
         ResourceList<Subscription> response = new ResourceList<>(subscriptions, Subscription.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);

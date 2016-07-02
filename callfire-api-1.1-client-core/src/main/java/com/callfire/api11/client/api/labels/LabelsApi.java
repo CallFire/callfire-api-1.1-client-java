@@ -1,4 +1,4 @@
-package com.callfire.api11.client.api.subscriptions;
+package com.callfire.api11.client.api.labels;
 
 import com.callfire.api11.client.AccessForbiddenException;
 import com.callfire.api11.client.BadRequestException;
@@ -8,61 +8,36 @@ import com.callfire.api11.client.InternalServerErrorException;
 import com.callfire.api11.client.ResourceNotFoundException;
 import com.callfire.api11.client.RestApi11Client;
 import com.callfire.api11.client.UnauthorizedException;
-import com.callfire.api11.client.api.common.model.ResourceReference;
+import com.callfire.api11.client.api.common.model.Label;
 import com.callfire.api11.client.api.common.model.request.QueryRequest;
-import com.callfire.api11.client.api.subscriptions.model.Subscription;
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 
 import static com.callfire.api11.client.ClientConstants.PLACEHOLDER;
+import static com.callfire.api11.client.ClientUtils.asParams;
 import static com.callfire.api11.client.ModelType.listOf;
 import static com.callfire.api11.client.ModelType.of;
-import static com.callfire.api11.client.ModelType.resourceOf;
 
 /**
- * Represents /subscription API endpoint
+ * Using labels API you can assign or remove label to/from broadcast or number
  */
-public class SubscriptionsApi {
-    private static final String SUBSCRIPTIONS_PATH = "/subscription.json";
-    private static final String SUBSCRIPTIONS_ITEM_PATH = "/subscription/{}.json";
+public class LabelsApi {
+    private static final String LABELS_PATH = "/label.json";
+    private static final String LABELS_BROADCAST_PATH = "/label/broadcast/{}.json";
+    private static final String LABELS_NUMBER_PATH = "/label/number/{}.json";
 
     private RestApi11Client client;
 
-    public SubscriptionsApi(RestApi11Client client) {
+    public LabelsApi(RestApi11Client client) {
         this.client = client;
     }
 
     /**
-     * Creates a new subscription for CallFire event notifications
-     * <p>
-     * Method registers a URI endpoint to start receiving CallFire notification events on. Returned is the id that
-     * can be used later to query, update, or delete the subscription. The subscriptionId is also returned as part
-     * of all notification events as 'subscriptionId'. A URI endpoint will need to be provided that can handle
-     * the HTTP notification events coming from CallFire.com.
-     *
-     * @param subscription subscription to create
-     * @return {@link Subscription} object
-     * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
-     * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
-     * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
-     * @throws ResourceNotFoundException    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.
-     * @throws InternalServerErrorException in case HTTP response code is 500 - Internal Server Error.
-     * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
-     * @throws CfApi11ClientException       in case error has occurred in client.
-     */
-    public Long create(Subscription subscription) {
-        Validate.notNull(subscription, "subscription cannot be null");
-        return client.post(SUBSCRIPTIONS_PATH, of(ResourceReference.class), subscription).getId();
-    }
-
-    /**
-     * Get a list of registered subscriptions
-     * Return a list of all subscriptions registered to an account. Subscriptions returned contain info like id,
-     * enabled, endpoint, filter, etc...
+     * Return list of all defined label names. The labels may be associated with broadcasts or numbers.
      *
      * @param request request object with filtering options
-     * @return {@link List} of {@link Subscription} objects
+     * @return {@link List} of {@link Label} objects
      * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
      * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
      * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
@@ -71,15 +46,15 @@ public class SubscriptionsApi {
      * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
      * @throws CfApi11ClientException       in case error has occurred in client.
      */
-    public List<Subscription> query(QueryRequest request) {
-        return client.query(SUBSCRIPTIONS_PATH, listOf(Subscription.class), request).get();
+    public List<Label> query(QueryRequest request) {
+        return client.query(LABELS_PATH, listOf(Label.class), request).get();
     }
 
     /**
-     * Get subscription by id
+     * Delete label identified by name. All broadcasts and numbers currently containing the label will have the label
+     * association removed.
      *
-     * @param id subscription id
-     * @return {@link Subscription} object
+     * @param labelName label to remove
      * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
      * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
      * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
@@ -88,17 +63,17 @@ public class SubscriptionsApi {
      * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
      * @throws CfApi11ClientException       in case error has occurred in client.
      */
-    public Subscription get(long id) {
-        String path = SUBSCRIPTIONS_ITEM_PATH.replaceFirst(PLACEHOLDER, String.valueOf(id));
-        return client.get(path, resourceOf(Subscription.class)).get();
+    public void delete(String labelName) {
+        Validate.notBlank(labelName, "labelName cannot be blank");
+        client.delete(LABELS_PATH, asParams("LabelName", labelName));
     }
 
     /**
-     * Update subscription
-     * Use this to enable or disable notification events, change the notification endpoint URI, or change
-     * the filtering so only receive notification for a subset of events.
+     * Label broadcast (Voice, Text, or IVR) by specifying broadcastId and label name. If label name doesn't currently
+     * exist on system it will be created and saved.
      *
-     * @param subscription subscription to update
+     * @param id        broadcast id
+     * @param labelName label to add
      * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
      * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
      * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
@@ -107,17 +82,17 @@ public class SubscriptionsApi {
      * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
      * @throws CfApi11ClientException       in case error has occurred in client.
      */
-    public void update(Subscription subscription) {
-        Validate.notNull(subscription, "subscription cannot be null");
-        Validate.notNull(subscription.getId(), "subscription.id cannot be null");
-        String path = SUBSCRIPTIONS_ITEM_PATH.replaceFirst(PLACEHOLDER, subscription.getId().toString());
-        client.put(path, of(Object.class), subscription);
+    public void labelBroadcast(long id, String labelName) {
+        Validate.notBlank(labelName, "labelName cannot be blank");
+        String path = LABELS_BROADCAST_PATH.replaceFirst(PLACEHOLDER, String.valueOf(id));
+        client.post(path, of(Object.class), null, asParams("LabelName", labelName, "Id", id));
     }
 
     /**
-     * Delete subscription to stop receiving CallFire notification events at the registered URI postback endpoint.
+     * Remove label from broadcast. This doesn't remove label from system, it just removes association between broadcast and label.
      *
-     * @param id subscription to delete
+     * @param id        broadcast id
+     * @param labelName label to remove
      * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
      * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
      * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
@@ -126,7 +101,50 @@ public class SubscriptionsApi {
      * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
      * @throws CfApi11ClientException       in case error has occurred in client.
      */
-    public void delete(long id) {
-        client.delete(SUBSCRIPTIONS_ITEM_PATH.replaceFirst(PLACEHOLDER, String.valueOf(id)));
+    public void unlabelBroadcast(long id, String labelName) {
+        Validate.notBlank(labelName, "labelName cannot be blank");
+        String path = LABELS_BROADCAST_PATH.replaceFirst(PLACEHOLDER, String.valueOf(id));
+        client.delete(path, asParams("LabelName", labelName, "Id", id));
+    }
+
+    /**
+     * Label number by specifying E.164 11 digit number identifier and label name. If label name doesn't currently
+     * exist on system it will be created and saved.
+     *
+     * @param number    number to add label
+     * @param labelName label to add
+     * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
+     * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
+     * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
+     * @throws ResourceNotFoundException    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.
+     * @throws InternalServerErrorException in case HTTP response code is 500 - Internal Server Error.
+     * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
+     * @throws CfApi11ClientException       in case error has occurred in client.
+     */
+    public void labelNumber(String number, String labelName) {
+        Validate.notBlank(number, "number cannot be blank");
+        Validate.notBlank(labelName, "labelName cannot be blank");
+        String path = LABELS_NUMBER_PATH.replaceFirst(PLACEHOLDER, number);
+        client.post(path, of(Object.class), null, asParams("LabelName", labelName, "Number", number));
+    }
+
+    /**
+     * Remove label from number. This doesn't remove label from system, it just removes association between number and label.
+     *
+     * @param number    label to remove
+     * @param labelName label to remove
+     * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
+     * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
+     * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
+     * @throws ResourceNotFoundException    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.
+     * @throws InternalServerErrorException in case HTTP response code is 500 - Internal Server Error.
+     * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
+     * @throws CfApi11ClientException       in case error has occurred in client.
+     */
+    public void unlabelNumber(String number, String labelName) {
+        Validate.notBlank(number, "number cannot be blank");
+        Validate.notBlank(labelName, "labelName cannot be blank");
+        String path = LABELS_NUMBER_PATH.replaceFirst(PLACEHOLDER, number);
+        client.delete(path, asParams("LabelName", labelName, "Number", number));
     }
 }

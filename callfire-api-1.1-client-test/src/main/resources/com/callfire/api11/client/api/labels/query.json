@@ -1,0 +1,16 @@
+{
+  "ResourceList": {
+    "@totalResults": 3,
+    "Label": [
+      {
+        "Name": "label1"
+      },
+      {
+        "Name": "label2"
+      },
+      {
+        "Name": "label3"
+      }
+    ]
+  }
+}

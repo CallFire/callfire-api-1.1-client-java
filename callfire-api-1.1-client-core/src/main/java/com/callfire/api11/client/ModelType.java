@@ -1,6 +1,7 @@
 package com.callfire.api11.client;
 
 import com.callfire.api11.client.api.calls.model.Call;
+import com.callfire.api11.client.api.common.model.Label;
 import com.callfire.api11.client.api.common.model.Resource;
 import com.callfire.api11.client.api.common.model.ResourceException;
 import com.callfire.api11.client.api.common.model.ResourceList;
@@ -47,6 +48,7 @@ public final class ModelType {
         LIST_TYPES.put(Text.class, new TypeReference<ResourceList<Text>>() {});
         LIST_TYPES.put(AutoReply.class, new TypeReference<ResourceList<AutoReply>>() {});
         LIST_TYPES.put(Subscription.class, new TypeReference<ResourceList<Subscription>>() {});
+        LIST_TYPES.put(Label.class, new TypeReference<ResourceList<Label>>() {});
         // @formatter:on
     }
 
