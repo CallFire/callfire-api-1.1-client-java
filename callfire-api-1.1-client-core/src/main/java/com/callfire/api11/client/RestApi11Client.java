@@ -2,6 +2,7 @@ package com.callfire.api11.client;
 
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.callfire.api11.client.api.common.model.ResourceException;
+import com.callfire.api11.client.api.common.model.request.FileAttachment;
 import com.callfire.api11.client.api.common.model.request.QueryRequest;
 import com.callfire.api11.client.auth.Authentication;
 import com.callfire.api11.client.auth.BasicAuth;
@@ -19,6 +20,8 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
@@ -42,6 +45,7 @@ import static com.callfire.api11.client.ModelType.of;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
+import static org.apache.http.entity.ContentType.APPLICATION_FORM_URLENCODED;
 import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 
 /**
@@ -247,8 +251,23 @@ public class RestApi11Client {
             if (payload != null) {
                 params.addAll(buildQueryParams(payload));
             }
+            if (payload instanceof FileAttachment) {
+                FileAttachment attachment = ((FileAttachment) payload);
+                if (attachment.getFile() != null) {
+                    MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
+                    entityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+                    entityBuilder.addBinaryBody(attachment.getFileParamName(), attachment.getFile());
+                    for (NameValuePair param : params) {
+                        entityBuilder.addTextBody(param.getName(), param.getValue(), APPLICATION_FORM_URLENCODED);
+                    }
+                    builder.setEntity(entityBuilder.build());
+                } else {
+                    builder.addParameters(params.toArray(new NameValuePair[params.size()]));
+                }
+            } else {
+                builder.addParameters(params.toArray(new NameValuePair[params.size()]));
+            }
             LOGGER.debug("POST request to {} params: {}", uri, params);
-            builder.addParameters(params.toArray(new NameValuePair[params.size()]));
 
             return doRequest(builder, type);
         } catch (IOException e) {

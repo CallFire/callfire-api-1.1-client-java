@@ -14,11 +14,11 @@ public class QueryRequest extends CfApi11Model {
     }
 
     /**
-     * Create query request builder
+     * Create base query request builder
      *
      * @return request build
      */
-    public static QueryRequestBuilder createNew() {
+    public static QueryRequestBuilder createSimpleQuery() {
         return new QueryRequestBuilder<>();
     }
 

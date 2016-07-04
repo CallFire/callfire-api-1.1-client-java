@@ -1,0 +1,32 @@
+{
+  "ResourceList": {
+    "@totalResults": 2,
+    "Contact": [
+      {
+        "@id": 742135795003,
+        "@firstName": "Alice",
+        "@lastName": "Moore",
+        "@homePhone": "12132212384",
+        "@workPhone": "12132212384",
+        "@mobilePhone": "12132212384",
+        "F": "12132212384",
+        "G": "12132212384",
+        "H": "12132212384",
+        "I": "12132212384"
+      },
+      {
+        "@id": 742136314003,
+        "@firstName": "Robert",
+        "@lastName": "Shmidt",
+        "@zipcode": "12345",
+        "@homePhone": "12132212384",
+        "@workPhone": "12132212384",
+        "@mobilePhone": "12132212384",
+        "F": "12132212384",
+        "G": "12132212384",
+        "H": "12132212384",
+        "I": "data3"
+      }
+    ]
+  }
+}

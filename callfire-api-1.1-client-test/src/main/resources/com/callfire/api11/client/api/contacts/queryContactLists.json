@@ -1,0 +1,21 @@
+{
+  "ResourceList": {
+    "@totalResults": 2,
+    "ContactList": [
+      {
+        "@id": 2121426003,
+        "Name": "Api contact list",
+        "Size": 1,
+        "Created": "2016-07-01T10:16:59Z",
+        "Status": "ACTIVE"
+      },
+      {
+        "@id": 2121438003,
+        "Name": "csv1",
+        "Size": 3,
+        "Created": "2016-07-01T10:39:06Z",
+        "Status": "ACTIVE"
+      }
+    ]
+  }
+}

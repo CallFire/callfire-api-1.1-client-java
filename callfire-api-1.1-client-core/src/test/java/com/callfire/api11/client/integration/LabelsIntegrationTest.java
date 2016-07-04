@@ -20,7 +20,7 @@ public class LabelsIntegrationTest extends AbstractIntegrationTest {
         api.labelNumber("14246528111", "number_label");
         api.labelBroadcast(12610243003L, "broadcast_label");
 
-        List<Label> labels = api.query(QueryRequest.createNew().build());
+        List<Label> labels = api.query(QueryRequest.createSimpleQuery().build());
         assertEquals(2, labels.size());
 
         api.unlabelNumber("14246528111", "number_label");
@@ -34,7 +34,7 @@ public class LabelsIntegrationTest extends AbstractIntegrationTest {
         ex.expectMessage("no label");
         api.unlabelBroadcast(12610243003L, "broadcast_label");
 
-        labels = api.query(QueryRequest.createNew().build());
+        labels = api.query(QueryRequest.createSimpleQuery().build());
         assertEquals(2, labels.size());
 
         api.delete("number_label");

@@ -27,7 +27,7 @@ public class LabelsApiTest extends AbstractApiTest {
         String expectedJson = getJsonPayload("/labels/query.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
-        QueryRequest request = QueryRequest.createNew()
+        QueryRequest request = QueryRequest.createSimpleQuery()
             .firstResult(2)
             .maxResults(100)
             .build();

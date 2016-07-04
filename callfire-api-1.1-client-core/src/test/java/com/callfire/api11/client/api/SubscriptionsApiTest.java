@@ -118,7 +118,7 @@ public class SubscriptionsApiTest extends AbstractApiTest {
         String expectedJson = getJsonPayload("/subscriptions/query.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
-        QueryRequest request = QueryRequest.createNew()
+        QueryRequest request = QueryRequest.createSimpleQuery()
             .firstResult(2)
             .maxResults(100)
             .build();

@@ -3,7 +3,7 @@ package com.callfire.api11.client.api;
 import com.callfire.api11.client.CfApi11Client;
 import com.callfire.api11.client.JsonConverter;
 import com.callfire.api11.client.test.CallfireTestUtils;
-import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.commons.codec.net.URLCodec;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
@@ -11,7 +11,6 @@ import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.message.BasicStatusLine;
-import org.apache.http.util.EntityUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -20,12 +19,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import static com.callfire.api11.client.test.MockHttpClient.JSON_BASE_PATH;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -39,6 +36,8 @@ public class AbstractApiTest {
 
     protected CfApi11Client client;
     protected JsonConverter jsonConverter;
+
+    protected URLCodec codec = new URLCodec();
 
     @Spy
     protected HttpClient mockHttpClient;

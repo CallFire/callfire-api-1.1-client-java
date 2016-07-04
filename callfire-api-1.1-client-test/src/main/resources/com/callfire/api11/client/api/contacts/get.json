@@ -1,0 +1,19 @@
+{
+  "Resource": {
+    "Contact": {
+      "@id": 742136314003,
+      "@firstName": "Robert",
+      "@lastName": "Shmidt",
+      "@zipcode": "12345",
+      "@homePhone": "12132212384",
+      "@workPhone": "12132212384",
+      "@mobilePhone": "12132212384",
+      "@externalId": "111555666",
+      "@externalSystem": "SALES_FORCE",
+      "F": "12132212384",
+      "G": "12132212384",
+      "H": "12132212384",
+      "I": "data3"
+    }
+  }
+}

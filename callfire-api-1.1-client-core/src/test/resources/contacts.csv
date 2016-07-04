@@ -1,0 +1,3 @@
+firstName,lastName,homePhone,workPhone,custom data1, custom data2
+Alice,Moore,12345678901,12345678900,test value1, test value2
+Bob,Schmidt,12345678999,12345678888,test value3, test value4

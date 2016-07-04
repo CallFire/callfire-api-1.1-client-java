@@ -6,6 +6,9 @@ import com.callfire.api11.client.api.common.model.Resource;
 import com.callfire.api11.client.api.common.model.ResourceException;
 import com.callfire.api11.client.api.common.model.ResourceList;
 import com.callfire.api11.client.api.common.model.ResourceReference;
+import com.callfire.api11.client.api.contacts.model.Contact;
+import com.callfire.api11.client.api.contacts.model.ContactHistory;
+import com.callfire.api11.client.api.contacts.model.ContactList;
 import com.callfire.api11.client.api.subscriptions.model.Subscription;
 import com.callfire.api11.client.api.texts.model.AutoReply;
 import com.callfire.api11.client.api.texts.model.Text;
@@ -35,6 +38,9 @@ public final class ModelType {
         SIMPLE_TYPES.put(ResourceReference.class, new TypeReference<ResourceReference>() {});
         SIMPLE_TYPES.put(ResourceException.class, new TypeReference<ResourceException>() {});
 
+        SIMPLE_TYPES.put(Contact.class, new TypeReference<Resource<Contact>>() {});
+        SIMPLE_TYPES.put(ContactList.class, new TypeReference<Resource<ContactList>>() {});
+        SIMPLE_TYPES.put(ContactHistory.class, new TypeReference<Resource<ContactHistory>>() {});
         SIMPLE_TYPES.put(Call.class, new TypeReference<Resource<Call>>() {});
         SIMPLE_TYPES.put(Text.class, new TypeReference<Resource<Text>>() {});
         SIMPLE_TYPES.put(AutoReply.class, new TypeReference<Resource<AutoReply>>() {});
@@ -44,6 +50,8 @@ public final class ModelType {
 
     private static void initListTypes() {
         // @formatter:off
+        LIST_TYPES.put(Contact.class, new TypeReference<ResourceList<Contact>>() {});
+        LIST_TYPES.put(ContactList.class, new TypeReference<ResourceList<ContactList>>() {});
         LIST_TYPES.put(Call.class, new TypeReference<ResourceList<Call>>() {});
         LIST_TYPES.put(Text.class, new TypeReference<ResourceList<Text>>() {});
         LIST_TYPES.put(AutoReply.class, new TypeReference<ResourceList<AutoReply>>() {});

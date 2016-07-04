@@ -4,6 +4,7 @@ import com.callfire.api11.client.api.common.QueryParamIgnore;
 import com.callfire.api11.client.api.common.QueryParamObject;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.callfire.api11.client.api.common.model.ToNumber;
+import com.callfire.api11.client.api.contacts.model.Contact;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.http.NameValuePair;
@@ -12,6 +13,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +44,15 @@ public final class ClientUtils {
             if (value instanceof Date) {
                 Date date = (Date) value;
                 queryParams.add(new BasicNameValuePair(name, String.valueOf(date.getTime())));
+            }
+            if (value instanceof Collection) {
+                for (Object item : (Collection) value) {
+                    if (item instanceof Contact) {
+                        readObject(item, queryParams);
+                    } else {
+                        queryParams.add(new BasicNameValuePair(name, Objects.toString(item)));
+                    }
+                }
             } else {
                 queryParams.add(new BasicNameValuePair(name, Objects.toString(value)));
             }
@@ -124,12 +135,17 @@ public final class ClientUtils {
         if (value != null) {
             String name = getParamName(field);
             if (value instanceof Iterable) {
+                // object index
+                int i = 0;
                 for (Object o : (Iterable) value) {
                     if (o instanceof ToNumber) {
                         params.add(new BasicNameValuePair(name, ((ToNumber) o).toQueryString()));
+                    } else if (o instanceof Contact) {
+                        params.addAll(((Contact) o).serializeToMap(i));
                     } else {
                         params.add(new BasicNameValuePair(name, o.toString()));
                     }
+                    i++;
                 }
                 return;
             }

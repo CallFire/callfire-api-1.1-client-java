@@ -45,7 +45,7 @@ public class SubscriptionsIntegrationTest extends AbstractIntegrationTest {
         assertEquals("123", stored.getFilter().getFromNumber());
         assertEquals("123", stored.getFilter().getToNumber());
 
-        QueryRequest request = QueryRequest.createNew()
+        QueryRequest request = QueryRequest.createSimpleQuery()
             .maxResults(1)
             .build();
         List<Subscription> subscriptions = api.query(request);
