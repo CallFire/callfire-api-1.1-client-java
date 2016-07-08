@@ -1,5 +1,7 @@
 package com.callfire.api11.client;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Client constants
  *
@@ -18,5 +20,6 @@ public interface ClientConstants {
     String PLACEHOLDER = "\\{\\}";
 
     String TIMESTAMP_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ssXXX";
-    String LOCALTIME_RESTRICTION_FORMAT_PATTERN = "HH:mm:ss";
+    String TIME_FORMAT_PATTERN = "HH:mm:ssX";
+    String DATE_FORMAT_PATTERN = "yyyy-MM-ddX";
 }

@@ -1,0 +1,27 @@
+{
+  "Resource": {
+    "Broadcast": {
+      "@id": 11741873003,
+      "Name": "Send Call Java API Client",
+      "Status": "FINISHED",
+      "LastModified": "2016-05-23T19:11:24Z",
+      "Type": "IVR",
+      "Label":["test2","test1"],
+      "IvrBroadcastConfig": {
+        "Created": "2016-05-23T19:09:58Z",
+        "FromNumber": "12132212384",
+        "LocalTimeZoneRestriction": {
+          "BeginTime": "04:10:10Z",
+          "EndTime": "22:20:20Z"
+        },
+        "RetryConfig": {
+          "MaxAttempts": 2,
+          "MinutesBetweenAttempts": 1,
+          "RetryResults": "NO_ANS BUSY",
+          "RetryPhoneTypes": "FIRST_NUMBER HOME_PHONE"
+        },
+        "DialplanXml": "<dialplan name=\"Root\"><play type=\"tts\" voice=\"female1\">Hello Callfire!</play></dialplan>"
+      }
+    }
+  }
+}

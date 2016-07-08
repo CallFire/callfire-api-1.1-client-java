@@ -1,5 +1,9 @@
 package com.callfire.api11.client;
 
+import com.callfire.api11.client.api.broadcasts.model.Broadcast;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastSchedule;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastStats;
+import com.callfire.api11.client.api.broadcasts.model.ContactBatch;
 import com.callfire.api11.client.api.calls.model.Call;
 import com.callfire.api11.client.api.common.model.Label;
 import com.callfire.api11.client.api.common.model.Resource;
@@ -38,6 +42,10 @@ public final class ModelType {
         SIMPLE_TYPES.put(ResourceReference.class, new TypeReference<ResourceReference>() {});
         SIMPLE_TYPES.put(ResourceException.class, new TypeReference<ResourceException>() {});
 
+        SIMPLE_TYPES.put(Broadcast.class, new TypeReference<Resource<Broadcast>>() {});
+        SIMPLE_TYPES.put(ContactBatch.class, new TypeReference<Resource<ContactBatch>>() {});
+        SIMPLE_TYPES.put(BroadcastStats.class, new TypeReference<Resource<BroadcastStats>>() {});
+        SIMPLE_TYPES.put(BroadcastSchedule.class, new TypeReference<Resource<BroadcastSchedule>>() {});
         SIMPLE_TYPES.put(Contact.class, new TypeReference<Resource<Contact>>() {});
         SIMPLE_TYPES.put(ContactList.class, new TypeReference<Resource<ContactList>>() {});
         SIMPLE_TYPES.put(ContactHistory.class, new TypeReference<Resource<ContactHistory>>() {});
@@ -50,6 +58,9 @@ public final class ModelType {
 
     private static void initListTypes() {
         // @formatter:off
+        LIST_TYPES.put(Broadcast.class, new TypeReference<ResourceList<Broadcast>>() {});
+        LIST_TYPES.put(ContactBatch.class, new TypeReference<ResourceList<ContactBatch>>() {});
+        LIST_TYPES.put(BroadcastSchedule.class, new TypeReference<ResourceList<BroadcastSchedule>>() {});
         LIST_TYPES.put(Contact.class, new TypeReference<ResourceList<Contact>>() {});
         LIST_TYPES.put(ContactList.class, new TypeReference<ResourceList<ContactList>>() {});
         LIST_TYPES.put(Call.class, new TypeReference<ResourceList<Call>>() {});

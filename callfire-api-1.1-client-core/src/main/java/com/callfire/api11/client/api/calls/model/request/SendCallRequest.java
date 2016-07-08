@@ -1,12 +1,12 @@
 package com.callfire.api11.client.api.calls.model.request;
 
+import com.callfire.api11.client.api.broadcasts.model.BroadcastType;
 import com.callfire.api11.client.api.calls.model.CallBroadcastConfig;
 import com.callfire.api11.client.api.calls.model.IvrBroadcastConfig;
 import com.callfire.api11.client.api.calls.model.IvrBroadcastConfig.IvrBroadcastConfigBuilder;
 import com.callfire.api11.client.api.calls.model.VoiceBroadcastConfig;
 import com.callfire.api11.client.api.calls.model.VoiceBroadcastConfig.VoiceBroadcastConfigBuilder;
 import com.callfire.api11.client.api.common.QueryParamObject;
-import com.callfire.api11.client.api.common.model.BroadcastType;
 import com.callfire.api11.client.api.common.model.request.SendRequest;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

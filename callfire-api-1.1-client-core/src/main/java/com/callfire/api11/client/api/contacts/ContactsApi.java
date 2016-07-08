@@ -15,7 +15,7 @@ import com.callfire.api11.client.api.contacts.model.ContactHistory;
 import com.callfire.api11.client.api.contacts.model.ContactList;
 import com.callfire.api11.client.api.contacts.model.request.AddContactsRequest;
 import com.callfire.api11.client.api.contacts.model.request.CreateContactListRequest;
-import com.callfire.api11.client.api.contacts.model.request.GetHistoryRequest;
+import com.callfire.api11.client.api.common.model.request.QueryByIdRequest;
 import com.callfire.api11.client.api.contacts.model.request.QueryContactsRequest;
 import com.callfire.api11.client.api.contacts.model.request.RemoveContactsRequest;
 import com.callfire.api11.client.api.subscriptions.model.Subscription;
@@ -99,7 +99,7 @@ public class ContactsApi {
      * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
      * @throws CfApi11ClientException       in case error has occurred in client.
      */
-    public ContactHistory getHistory(GetHistoryRequest request) {
+    public ContactHistory getHistory(QueryByIdRequest request) {
         String path = CONTACTS_HISTORY_ITEM_PATH.replaceFirst(PLACEHOLDER, request.getId().toString());
         return client.query(path, resourceOf(ContactHistory.class), request).get();
     }

@@ -1,6 +1,6 @@
 package com.callfire.api11.client.api.texts.model;
 
-import com.callfire.api11.client.api.common.model.BroadcastConfig;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastConfig;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class TextBroadcastConfig extends BroadcastConfig {

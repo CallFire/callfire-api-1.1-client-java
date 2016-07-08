@@ -1,6 +1,11 @@
-package com.callfire.api11.client.api.common.model;
+package com.callfire.api11.client.api.broadcasts.model;
 
+import com.callfire.api11.client.api.common.QueryParamName;
 import com.callfire.api11.client.api.common.QueryParamObject;
+import com.callfire.api11.client.api.common.model.AbstractBuilder;
+import com.callfire.api11.client.api.common.model.CfApi11Model;
+import com.callfire.api11.client.api.common.model.LocalTimeZoneRestriction;
+import com.callfire.api11.client.api.common.model.RetryConfig;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -10,7 +15,7 @@ import java.util.Date;
  * Common broadcast config
  */
 public abstract class BroadcastConfig extends CfApi11Model {
-    @JsonProperty("From")
+    @QueryParamName("From")
     protected String fromNumber;
     @QueryParamObject
     protected RetryConfig retryConfig;

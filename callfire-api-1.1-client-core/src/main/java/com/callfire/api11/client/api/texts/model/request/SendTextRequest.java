@@ -1,7 +1,7 @@
 package com.callfire.api11.client.api.texts.model.request;
 
 import com.callfire.api11.client.api.common.QueryParamObject;
-import com.callfire.api11.client.api.common.model.BroadcastType;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastType;
 import com.callfire.api11.client.api.common.model.request.SendRequest;
 import com.callfire.api11.client.api.texts.model.TextBroadcastConfig;
 import com.callfire.api11.client.api.texts.model.TextBroadcastConfig.TextBroadcastConfigBuilder;

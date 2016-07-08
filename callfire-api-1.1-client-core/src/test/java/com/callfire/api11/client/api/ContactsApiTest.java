@@ -3,6 +3,7 @@ package com.callfire.api11.client.api;
 import com.callfire.api11.client.api.common.model.Resource;
 import com.callfire.api11.client.api.common.model.ResourceList;
 import com.callfire.api11.client.api.common.model.ResourceReference;
+import com.callfire.api11.client.api.common.model.request.QueryByIdRequest;
 import com.callfire.api11.client.api.common.model.request.QueryRequest;
 import com.callfire.api11.client.api.contacts.model.Contact;
 import com.callfire.api11.client.api.contacts.model.ContactHistory;
@@ -10,7 +11,6 @@ import com.callfire.api11.client.api.contacts.model.ContactList;
 import com.callfire.api11.client.api.contacts.model.NumbersField;
 import com.callfire.api11.client.api.contacts.model.request.AddContactsRequest;
 import com.callfire.api11.client.api.contacts.model.request.CreateContactListRequest;
-import com.callfire.api11.client.api.contacts.model.request.GetHistoryRequest;
 import com.callfire.api11.client.api.contacts.model.request.QueryContactsRequest;
 import com.callfire.api11.client.api.contacts.model.request.RemoveContactsRequest;
 import org.apache.http.client.methods.HttpDelete;
@@ -90,7 +90,7 @@ public class ContactsApiTest extends AbstractApiTest {
         String expectedJson = getJsonPayload("/contacts/getHistory.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
-        GetHistoryRequest request = GetHistoryRequest.create()
+        QueryByIdRequest request = QueryByIdRequest.create()
             .id(5L)
             .build();
         ContactHistory contactHistory = client.contactsApi().getHistory(request);
@@ -158,25 +158,25 @@ public class ContactsApiTest extends AbstractApiTest {
 
         String requestBody = extractHttpEntity(arg);
         assertNotNull(requestBody);
-        assertThat(requestBody, containsString(codec.encode("Contact[0][id]") + "=1"));
-        assertThat(requestBody, containsString(codec.encode("Contact[0][firstName]") + "=Alice"));
-        assertThat(requestBody, containsString(codec.encode("Contact[0][lastName]") + "=Moore"));
-        assertThat(requestBody, containsString(codec.encode("Contact[0][zipcode]") + "=12345"));
-        assertThat(requestBody, containsString(codec.encode("Contact[0][homePhone]") + "=111"));
-        assertThat(requestBody, containsString(codec.encode("Contact[0][workPhone]") + "=112"));
-        assertThat(requestBody, containsString(codec.encode("Contact[0][mobilePhone]") + "=113"));
-        assertThat(requestBody, containsString(codec.encode("Contact[0][A]") + "=data1"));
-        assertThat(requestBody, containsString(codec.encode("Contact[0][B]") + "=data2"));
+        assertThat(requestBody, containsString(encode("Contact[0][id]") + "=1"));
+        assertThat(requestBody, containsString(encode("Contact[0][firstName]") + "=Alice"));
+        assertThat(requestBody, containsString(encode("Contact[0][lastName]") + "=Moore"));
+        assertThat(requestBody, containsString(encode("Contact[0][zipcode]") + "=12345"));
+        assertThat(requestBody, containsString(encode("Contact[0][homePhone]") + "=111"));
+        assertThat(requestBody, containsString(encode("Contact[0][workPhone]") + "=112"));
+        assertThat(requestBody, containsString(encode("Contact[0][mobilePhone]") + "=113"));
+        assertThat(requestBody, containsString(encode("Contact[0][A]") + "=data1"));
+        assertThat(requestBody, containsString(encode("Contact[0][B]") + "=data2"));
         //
-        assertThat(requestBody, containsString(codec.encode("Contact[1][id]") + "=2"));
-        assertThat(requestBody, containsString(codec.encode("Contact[1][firstName]") + "=Bob"));
-        assertThat(requestBody, containsString(codec.encode("Contact[1][lastName]") + "=Smith"));
-        assertThat(requestBody, containsString(codec.encode("Contact[1][zipcode]") + "=22233"));
-        assertThat(requestBody, containsString(codec.encode("Contact[1][homePhone]") + "=222"));
-        assertThat(requestBody, containsString(codec.encode("Contact[1][workPhone]") + "=333"));
-        assertThat(requestBody, containsString(codec.encode("Contact[1][mobilePhone]") + "=444"));
-        assertThat(requestBody, containsString(codec.encode("Contact[1][C]") + "=" + codec.encode("data 3")));
-        assertThat(requestBody, containsString(codec.encode("Contact[1][D]") + "=" + codec.encode("data 4")));
+        assertThat(requestBody, containsString(encode("Contact[1][id]") + "=2"));
+        assertThat(requestBody, containsString(encode("Contact[1][firstName]") + "=Bob"));
+        assertThat(requestBody, containsString(encode("Contact[1][lastName]") + "=Smith"));
+        assertThat(requestBody, containsString(encode("Contact[1][zipcode]") + "=22233"));
+        assertThat(requestBody, containsString(encode("Contact[1][homePhone]") + "=222"));
+        assertThat(requestBody, containsString(encode("Contact[1][workPhone]") + "=333"));
+        assertThat(requestBody, containsString(encode("Contact[1][mobilePhone]") + "=444"));
+        assertThat(requestBody, containsString(encode("Contact[1][C]") + "=" + encode("data 3")));
+        assertThat(requestBody, containsString(encode("Contact[1][D]") + "=" + encode("data 4")));
     }
 
     @Test

@@ -1,0 +1,23 @@
+{
+  "ResourceList": {
+    "@totalResults": 2,
+    "BroadcastSchedule": [
+      {
+        "@id": 1528630003,
+        "StartTimeOfDay": "17:20:00Z",
+        "StopTimeOfDay": "22:55:00Z",
+        "TimeZone": "America/New_York",
+        "BeginDate": "2016-07-05Z",
+        "DaysOfWeek": "SUNDAY MONDAY TUESDAY WEDNESDAY THURSDAY FRIDAY SATURDAY"
+      },
+      {
+        "@id": 1528647003,
+        "StartTimeOfDay": "18:20:00Z",
+        "StopTimeOfDay": "23:55:00Z",
+        "TimeZone": "America/Los_Angeles",
+        "BeginDate": "2016-07-05Z",
+        "DaysOfWeek": "SUNDAY MONDAY TUESDAY WEDNESDAY THURSDAY FRIDAY SATURDAY"
+      }
+    ]
+  }
+}

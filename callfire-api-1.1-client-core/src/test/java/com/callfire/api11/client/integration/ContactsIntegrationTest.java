@@ -8,7 +8,7 @@ import com.callfire.api11.client.api.contacts.model.ContactListStatus;
 import com.callfire.api11.client.api.contacts.model.NumbersField;
 import com.callfire.api11.client.api.contacts.model.request.AddContactsRequest;
 import com.callfire.api11.client.api.contacts.model.request.CreateContactListRequest;
-import com.callfire.api11.client.api.contacts.model.request.GetHistoryRequest;
+import com.callfire.api11.client.api.common.model.request.QueryByIdRequest;
 import com.callfire.api11.client.api.contacts.model.request.QueryContactsRequest;
 import com.callfire.api11.client.api.contacts.model.request.RemoveContactsRequest;
 import org.hamcrest.Matchers;
@@ -35,7 +35,7 @@ public class ContactsIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void getHistory() throws Exception {
-        ContactHistory history = client.contactsApi().getHistory(GetHistoryRequest.create().id(742136314003L).build());
+        ContactHistory history = client.contactsApi().getHistory(QueryByIdRequest.create().id(742136314003L).build());
         System.out.println(history);
 
         assertEquals(2, history.getCalls().size());

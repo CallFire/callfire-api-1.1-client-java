@@ -91,7 +91,6 @@ public class CallsApiTest extends AbstractApiTest {
         assertThat(requestBody, containsString("To=" + encode("12132212384?attr2=val2&attr1=val1")));
         assertThat(requestBody, containsString("To=" + encode("12132212384?attr6=val6&attr5=val5")));
         assertThat(requestBody, containsString("To=" + encode("12132212384?attr9=val9&attr8=val8")));
-        assertThat(requestBody, containsString("From=12132212384"));
         assertThat(requestBody, containsString("MaxAttempts=2"));
         assertThat(requestBody, containsString("MinutesBetweenAttempts=1"));
         assertThat(requestBody, containsString("RetryResults=BUSY"));

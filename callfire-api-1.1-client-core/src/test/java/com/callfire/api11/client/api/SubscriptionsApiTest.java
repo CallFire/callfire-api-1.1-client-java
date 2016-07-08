@@ -54,7 +54,7 @@ public class SubscriptionsApiTest extends AbstractApiTest {
 
         assertThat(requestBody, containsString("Enabled=true"));
         assertThat(requestBody, containsString("NonStrictSsl=true"));
-        assertThat(requestBody, containsString("Endpoint=" + new URLCodec().encode("http://endpoint")));
+        assertThat(requestBody, containsString("Endpoint=" + encode("http://endpoint")));
         assertThat(requestBody, containsString("NotificationFormat=JSON"));
         assertThat(requestBody, containsString("TriggerEvent=CAMPAIGN_STARTED"));
         assertThat(requestBody, containsString("BroadcastId=1"));
@@ -87,7 +87,7 @@ public class SubscriptionsApiTest extends AbstractApiTest {
         assertNotNull(requestBody);
         assertThat(requestBody, containsString("Enabled=true"));
         assertThat(requestBody, containsString("NonStrictSsl=true"));
-        assertThat(requestBody, containsString("Endpoint=" + new URLCodec().encode("http://endpoint")));
+        assertThat(requestBody, containsString("Endpoint=" + encode("http://endpoint")));
         assertThat(requestBody, containsString("NotificationFormat=JSON"));
         assertThat(requestBody, containsString("TriggerEvent=CAMPAIGN_STARTED"));
         assertThat(requestBody, containsString("BroadcastId=1"));

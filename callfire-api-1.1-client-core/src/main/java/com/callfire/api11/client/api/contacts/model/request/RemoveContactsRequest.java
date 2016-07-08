@@ -1,9 +1,9 @@
 package com.callfire.api11.client.api.contacts.model.request;
 
 import com.callfire.api11.client.api.common.QueryParamIgnore;
+import com.callfire.api11.client.api.common.QueryParamName;
 import com.callfire.api11.client.api.common.model.AbstractBuilder;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class RemoveContactsRequest extends CfApi11Model {
     @QueryParamIgnore
     private Long contactListId;
-    @JsonProperty("ContactId")
+    @QueryParamName("ContactId")
     private List<Long> contactIds = new ArrayList<>();
     private List<String> numbers = new ArrayList<>();
 

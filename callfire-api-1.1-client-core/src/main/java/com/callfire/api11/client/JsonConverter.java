@@ -3,14 +3,19 @@ package com.callfire.api11.client;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * JSON serializer/deserializer
@@ -22,10 +27,11 @@ public class JsonConverter {
 
     public JsonConverter() {
         mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
-        mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
         mapper.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        // FIXME uncomment before release
+        //        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.PASCAL_CASE_TO_CAMEL_CASE);
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
@@ -82,5 +88,16 @@ public class JsonConverter {
      */
     public void setMapper(ObjectMapper mapper) {
         this.mapper = mapper;
+    }
+
+    /**
+     * Converts single string to array of enum values, e.g. "VAL1, VAL2, ..."
+     */
+    public static class ArrayToStringSerializer<T extends List<T>> extends JsonSerializer<List<T>> {
+        @Override
+        public void serialize(List<T> value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            String asString = StringUtils.join(value, " ");
+            gen.writeString(asString);
+        }
     }
 }

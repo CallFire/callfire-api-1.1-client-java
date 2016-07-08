@@ -6,9 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Applied to a list inside request object for correct serialization
+ * Applied to a single property to change its name
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface QueryParamList {
+public @interface QueryParamName {
+    String value();
 }

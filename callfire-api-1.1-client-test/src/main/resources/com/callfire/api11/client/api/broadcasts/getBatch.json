@@ -1,0 +1,13 @@
+{
+  "Resource": {
+    "ContactBatch": {
+      "@id": 9927568003,
+      "Name": "API Contact Batch",
+      "Status": "ACTIVE",
+      "BroadcastId": 11865457003,
+      "Created": "2016-05-30T12:52:43Z",
+      "Size": 5,
+      "Remaining": 3
+    }
+  }
+}

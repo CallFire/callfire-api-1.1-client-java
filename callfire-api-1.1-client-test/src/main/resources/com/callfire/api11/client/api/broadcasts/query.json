@@ -1,0 +1,63 @@
+{
+  "ResourceList": {
+    "@totalResults": 3,
+    "Broadcast": [
+      {
+        "@id": 5759746003,
+        "Name": "api-test-broadcast",
+        "Status": "STOPPED",
+        "LastModified": "2015-06-23T14:19:59Z",
+        "Type": "VOICE",
+        "VoiceBroadcastConfig": {
+          "Created": "2015-06-23T14:19:59Z",
+          "FromNumber": "18558214046",
+          "LocalTimeZoneRestriction": {
+            "BeginTime": "08:00:00Z",
+            "EndTime": "21:00:00Z"
+          },
+          "RetryConfig": {
+            "MaxAttempts": 1,
+            "MinutesBetweenAttempts": 60,
+            "RetryResults": "",
+            "RetryPhoneTypes": "FIRST_NUMBER"
+          },
+          "AnsweringMachineConfig": "LIVE_WITH_AMD",
+          "LiveSoundId": 1385807003,
+          "MachineSoundId": 1258703003
+        }
+      },
+      {
+        "@id": 6280378003,
+        "Name": "API Send",
+        "Status": "STOPPED",
+        "LastModified": "2015-07-14T15:00:20Z",
+        "Type": "VOICE",
+        "VoiceBroadcastConfig": {
+          "Created": "2015-07-14T15:00:20Z",
+          "FromNumber": "18558214046",
+          "RetryConfig": {
+            "MaxAttempts": 1,
+            "MinutesBetweenAttempts": 60,
+            "RetryResults": "",
+            "RetryPhoneTypes": "FIRST_NUMBER"
+          },
+          "AnsweringMachineConfig": "AM_AND_LIVE",
+          "LiveSoundId": 1258702003,
+          "MachineSoundId": 1258702003
+        }
+      },
+      {
+        "@id": 6117119003,
+        "Name": "Text Broadcast, 7/3/15 3:26 PM",
+        "Status": "FINISHED",
+        "LastModified": "2015-07-03T12:29:01Z",
+        "Type": "TEXT",
+        "TextBroadcastConfig": {
+          "Created": "2015-07-03T12:26:02Z",
+          "FromNumber": "67076",
+          "Message": "Hello Callfire"
+        }
+      }
+    ]
+  }
+}

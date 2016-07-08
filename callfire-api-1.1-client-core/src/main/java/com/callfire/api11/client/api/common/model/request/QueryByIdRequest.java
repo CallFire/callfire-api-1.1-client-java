@@ -1,20 +1,17 @@
-package com.callfire.api11.client.api.contacts.model.request;
+package com.callfire.api11.client.api.common.model.request;
 
 import com.callfire.api11.client.api.common.QueryParamIgnore;
-import com.callfire.api11.client.api.common.model.request.QueryRequest;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Request for querying all calls and texts associated with a contact.
+ * Request for querying any resources by id
  */
-public class GetHistoryRequest extends QueryRequest {
-    @JsonProperty("ContactId")
+public class QueryByIdRequest extends QueryRequest {
     @QueryParamIgnore
     private Long id;
 
-    private GetHistoryRequest() {
+    private QueryByIdRequest() {
     }
 
     /**
@@ -44,10 +41,10 @@ public class GetHistoryRequest extends QueryRequest {
     }
 
     @SuppressWarnings("unchecked")
-    public static class Builder extends QueryRequestBuilder<Builder, GetHistoryRequest> {
+    public static class Builder extends QueryRequestBuilder<Builder, QueryByIdRequest> {
 
         public Builder() {
-            super(new GetHistoryRequest());
+            super(new QueryByIdRequest());
         }
 
         /**

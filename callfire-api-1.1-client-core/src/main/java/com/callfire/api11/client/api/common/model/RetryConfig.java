@@ -1,5 +1,9 @@
 package com.callfire.api11.client.api.common.model;
 
+import com.callfire.api11.client.ClientUtils;
+import com.callfire.api11.client.JsonConverter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
@@ -7,7 +11,9 @@ import java.util.List;
 public class RetryConfig {
     private Integer maxAttempts;
     private Integer minutesBetweenAttempts;
+    @JsonSerialize(using = JsonConverter.ArrayToStringSerializer.class)
     private List<Result> retryResults;
+    @JsonSerialize(using = JsonConverter.ArrayToStringSerializer.class)
     private List<RetryPhoneType> retryPhoneTypes;
 
     public RetryConfig() {
@@ -61,5 +67,15 @@ public class RetryConfig {
             .append("retryResults", retryResults)
             .append("retryPhoneTypes", retryPhoneTypes)
             .toString();
+    }
+
+    @JsonSetter("RetryResults")
+    private void deserializeRetryResults(String input) {
+        retryResults = ClientUtils.deserializeEnumString(input, Result.class);
+    }
+
+    @JsonSetter("RetryPhoneTypes")
+    private void deserializeRetryPhoneTypes(String input) {
+        retryPhoneTypes = ClientUtils.deserializeEnumString(input, RetryPhoneType.class);
     }
 }

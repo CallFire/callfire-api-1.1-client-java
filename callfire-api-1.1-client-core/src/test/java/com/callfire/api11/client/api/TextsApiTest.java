@@ -186,7 +186,7 @@ public class TextsApiTest extends AbstractApiTest {
 
         assertThat(requestBody, containsString("Keyword=KEYWORD"));
         assertThat(requestBody, containsString("Number=12345678901"));
-        assertThat(requestBody, containsString("Message=" + new URLCodec().encode("Hello auto-reply")));
+        assertThat(requestBody, containsString("Message=" + encode("Hello auto-reply")));
         assertThat(requestBody, containsString("Match=test"));
     }
 

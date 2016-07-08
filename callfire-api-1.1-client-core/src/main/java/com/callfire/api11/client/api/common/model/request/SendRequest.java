@@ -1,11 +1,10 @@
 package com.callfire.api11.client.api.common.model.request;
 
-import com.callfire.api11.client.api.common.QueryParamList;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastType;
+import com.callfire.api11.client.api.common.QueryParamName;
 import com.callfire.api11.client.api.common.model.AbstractBuilder;
-import com.callfire.api11.client.api.common.model.BroadcastType;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.callfire.api11.client.api.common.model.ToNumber;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
@@ -18,8 +17,7 @@ public abstract class SendRequest extends CfApi11Model {
     protected BroadcastType type;
     protected String broadcastName;
     protected Boolean scrubBroadcastDuplicates;
-    @JsonProperty("To")
-    @QueryParamList
+    @QueryParamName("To")
     protected List<ToNumber> toNumber;
     protected List<String> label;
 

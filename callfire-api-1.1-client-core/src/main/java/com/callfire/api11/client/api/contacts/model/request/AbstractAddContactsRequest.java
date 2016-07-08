@@ -1,6 +1,7 @@
 package com.callfire.api11.client.api.contacts.model.request;
 
 import com.callfire.api11.client.api.common.QueryParamIgnore;
+import com.callfire.api11.client.api.common.QueryParamName;
 import com.callfire.api11.client.api.common.model.AbstractBuilder;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.callfire.api11.client.api.common.model.request.FileAttachment;
@@ -17,13 +18,13 @@ import java.util.List;
  * Common request to add contacts to list
  */
 public abstract class AbstractAddContactsRequest extends CfApi11Model implements FileAttachment {
-    @JsonProperty("Validate")
+    @QueryParamName("Validate")
     protected Boolean validateContacts;
-    @JsonProperty("ContactId")
+    @QueryParamName("ContactId")
     protected List<Long> contactIds = new ArrayList<>();
     protected List<Contact> contacts = new ArrayList<>();
     protected List<String> numbers = new ArrayList<>();
-    @JsonProperty("Numbers[fieldName]")
+    @QueryParamName("Numbers[fieldName]")
     protected NumbersField numbersField;
     @QueryParamIgnore
     protected File csvFile;
