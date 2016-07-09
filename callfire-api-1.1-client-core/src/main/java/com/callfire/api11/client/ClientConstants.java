@@ -20,6 +20,8 @@ public interface ClientConstants {
     String PLACEHOLDER = "\\{\\}";
 
     String TIMESTAMP_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ssXXX";
-    String TIME_FORMAT_PATTERN = "HH:mm:ssX";
-    String DATE_FORMAT_PATTERN = "yyyy-MM-ddX";
+    String ZONED_TIME_FORMAT_PATTERN = "HH:mm:ssX";
+    String ZONED_DATE_FORMAT_PATTERN = "yyyy-MM-ddX";
+    String TIME_FORMAT_PATTERN = "HH:mm:ss";
+    String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 }

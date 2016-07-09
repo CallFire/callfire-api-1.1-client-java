@@ -1,11 +1,8 @@
 package com.callfire.api11.client.api.calls.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
-
-import static com.callfire.api11.client.ClientConstants.TIMESTAMP_FORMAT_PATTERN;
 
 public class Note {
     private String text;

@@ -311,8 +311,8 @@ public class BroadcastsApiTest extends AbstractApiTest {
             .maxResults(100)
             .id(1000L)
             .build();
-        List<ContactBatch> broadcasts = client.broadcastsApi().queryBatches(request);
-        ResourceList<ContactBatch> response = new ResourceList<>(broadcasts, ContactBatch.class);
+        List<ContactBatch> batches = client.broadcastsApi().queryBatches(request);
+        ResourceList<ContactBatch> response = new ResourceList<>(batches, ContactBatch.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);
         JSONAssert.assertEquals(expectedJson, serialize, true);
@@ -404,8 +404,8 @@ public class BroadcastsApiTest extends AbstractApiTest {
             .maxResults(100)
             .id(1000L)
             .build();
-        List<BroadcastSchedule> broadcasts = client.broadcastsApi().querySchedules(request);
-        ResourceList<BroadcastSchedule> response = new ResourceList<>(broadcasts, BroadcastSchedule.class);
+        List<BroadcastSchedule> schedules = client.broadcastsApi().querySchedules(request);
+        ResourceList<BroadcastSchedule> response = new ResourceList<>(schedules, BroadcastSchedule.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);
         JSONAssert.assertEquals(expectedJson, serialize, true);

@@ -1,13 +1,10 @@
 package com.callfire.api11.client.api.calls.model;
 
 import com.callfire.api11.client.api.common.model.ActionRecord;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 import java.util.List;
-
-import static com.callfire.api11.client.ClientConstants.TIMESTAMP_FORMAT_PATTERN;
 
 public class CallRecord extends ActionRecord {
     private CallResult result;

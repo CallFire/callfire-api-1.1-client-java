@@ -2,6 +2,7 @@ package com.callfire.api11.client.api.broadcasts.model;
 
 import com.callfire.api11.client.ClientUtils;
 import com.callfire.api11.client.JsonConverter.ArrayToStringSerializer;
+import com.callfire.api11.client.api.common.QueryParamFormat;
 import com.callfire.api11.client.api.common.QueryParamIgnore;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -15,6 +16,8 @@ import java.util.List;
 
 import static com.callfire.api11.client.ClientConstants.DATE_FORMAT_PATTERN;
 import static com.callfire.api11.client.ClientConstants.TIME_FORMAT_PATTERN;
+import static com.callfire.api11.client.ClientConstants.ZONED_DATE_FORMAT_PATTERN;
+import static com.callfire.api11.client.ClientConstants.ZONED_TIME_FORMAT_PATTERN;
 
 /**
  * Represents schedule which can be assigned to broadcast
@@ -24,13 +27,17 @@ public class BroadcastSchedule extends CfApi11Model {
     @JsonProperty("@id")
     private Long id;
     private String timeZone;
-    @JsonFormat(pattern = TIME_FORMAT_PATTERN)
+    @JsonFormat(pattern = ZONED_TIME_FORMAT_PATTERN)
+    @QueryParamFormat(pattern = TIME_FORMAT_PATTERN)
     private Date startTimeOfDay;
-    @JsonFormat(pattern = TIME_FORMAT_PATTERN)
+    @JsonFormat(pattern = ZONED_TIME_FORMAT_PATTERN)
+    @QueryParamFormat(pattern = TIME_FORMAT_PATTERN)
     private Date stopTimeOfDay;
-    @JsonFormat(pattern = DATE_FORMAT_PATTERN)
+    @JsonFormat(pattern = ZONED_DATE_FORMAT_PATTERN)
+    @QueryParamFormat(pattern = DATE_FORMAT_PATTERN)
     private Date beginDate;
-    @JsonFormat(pattern = DATE_FORMAT_PATTERN)
+    @QueryParamFormat(pattern = DATE_FORMAT_PATTERN)
+    @JsonFormat(pattern = ZONED_DATE_FORMAT_PATTERN)
     private Date endDate;
     @JsonSerialize(using = ArrayToStringSerializer.class)
     private List<DayOfWeek> daysOfWeek;

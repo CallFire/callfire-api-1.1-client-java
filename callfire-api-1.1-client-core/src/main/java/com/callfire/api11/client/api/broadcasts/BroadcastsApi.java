@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import static com.callfire.api11.client.ClientConstants.PLACEHOLDER;
 import static com.callfire.api11.client.ClientConstants.TIMESTAMP_FORMAT_PATTERN;
@@ -177,9 +176,11 @@ public class BroadcastsApi {
     public BroadcastStats getStats(long id, Date intervalBegin, Date intervalEnd) {
         String path = BROADCASTS_ITEM_STATS_PATH.replaceFirst(PLACEHOLDER, String.valueOf(id));
         List<NameValuePair> params = new ArrayList<>(2);
-        SimpleDateFormat formatter = new SimpleDateFormat(TIMESTAMP_FORMAT_PATTERN);
-        addQueryParamIfSet("IntervalBegin", formatter.format(intervalBegin), params);
-        addQueryParamIfSet("IntervalEnd", formatter.format(intervalEnd), params);
+        if (intervalBegin != null && intervalEnd != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat(TIMESTAMP_FORMAT_PATTERN);
+            addQueryParamIfSet("IntervalBegin", formatter.format(intervalBegin), params);
+            addQueryParamIfSet("IntervalEnd", formatter.format(intervalEnd), params);
+        }
         return client.get(path, resourceOf(BroadcastStats.class), params).get();
     }
 

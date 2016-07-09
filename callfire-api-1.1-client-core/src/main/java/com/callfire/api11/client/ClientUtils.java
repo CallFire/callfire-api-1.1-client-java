@@ -1,12 +1,12 @@
 package com.callfire.api11.client;
 
+import com.callfire.api11.client.api.common.QueryParamFormat;
 import com.callfire.api11.client.api.common.QueryParamIgnore;
 import com.callfire.api11.client.api.common.QueryParamName;
 import com.callfire.api11.client.api.common.QueryParamObject;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.callfire.api11.client.api.common.model.ToNumber;
 import com.callfire.api11.client.api.contacts.model.Contact;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -129,8 +129,8 @@ public final class ClientUtils {
                 return;
             }
             if (value instanceof Date) {
-                if (field.isAnnotationPresent(JsonFormat.class)) {
-                    JsonFormat ann = field.getAnnotation(JsonFormat.class);
+                if (field.isAnnotationPresent(QueryParamFormat.class)) {
+                    QueryParamFormat ann = field.getAnnotation(QueryParamFormat.class);
                     value = new SimpleDateFormat(ann.pattern()).format(value);
                 } else {
                     value = new SimpleDateFormat(TIMESTAMP_FORMAT_PATTERN).format(value);

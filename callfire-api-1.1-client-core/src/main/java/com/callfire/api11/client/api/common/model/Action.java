@@ -1,14 +1,10 @@
 package com.callfire.api11.client.api.common.model;
 
-import com.callfire.api11.client.ClientConstants;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 import java.util.List;
-
-import static com.callfire.api11.client.ClientConstants.TIMESTAMP_FORMAT_PATTERN;
 
 public class Action extends CfApi11Model {
     @JsonProperty("@id")
