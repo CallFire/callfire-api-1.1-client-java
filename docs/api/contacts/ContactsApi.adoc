@@ -1,0 +1,383 @@
+= Contacts API
+
+=== Query contacts
+Method queries existing contacts in account, pagination is available. Example how to query all numbers in contact
+list with id 1000 which have "555" in home phone field
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.contacts.model.Contact;
+import com.callfire.api11.client.api.contacts.model.request.QueryContactsRequest;
+
+import java.util.List;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        QueryContactsRequest request = QueryContactsRequest.create()
+            .contactListId(1000L)
+            .field("homePhone")
+            .string("555")
+            .build();
+        List<Contact> contacts = client.contactsApi().query(request);
+    }
+}
+----
+
+=== Get contact
+Return individual contact by id
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.contacts.model.Contact;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        // use query() method to fetch contact with id
+        long contactId = 1000L;
+        Contact contact = client.contactsApi().get(contactId);
+    }
+}
+----
+
+=== Update contacts
+Update contact fields in Callfire system, you can specify a single instance or a list of contacts.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.contacts.model.Contact;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        Contact contact1 = new Contact();
+        // make sure contact has id
+        contact1.setId(1L);
+        contact1.setFirstName("Alice");
+        contact1.setLastName("Moore");
+        contact1.setZipcode("12355");
+        contact1.setHomePhone("12345678901");
+        contact1.setWorkPhone("12345678902");
+        contact1.setMobilePhone("12345678903");
+        Map<String, String> attrs = new HashMap<>();
+        attrs.put("A", "custom data1");
+        attrs.put("B", "custom data2");
+        contact1.setAttributes(attrs);
+
+        Contact contact2 = new Contact();
+        // make sure contact has id
+        contact2.setId(2L);
+        contact2.setFirstName("Bob");
+        contact2.setLastName("Smith");
+        contact2.setZipcode("12344");
+        contact2.setHomePhone("12345678801");
+        contact2.setWorkPhone("12345678801");
+        contact2.setMobilePhone("12345678801");
+        attrs = new HashMap<>();
+        attrs.put("C", "custom data 3");
+        attrs.put("D", "custom data 4");
+        contact2.setAttributes(attrs);
+
+        client.contactsApi().update(Arrays.asList(contact1, contact2));
+    }
+}
+----
+
+=== Delete contacts
+Delete contacts identified by contactIds from system. If id points to non-existent contact the id will
+ be ignored and processing will continue.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        // you can delete a list of contacts or single instance
+        List<Long> contactIds = Arrays.asList(10L, 11L, 12L);
+        client.contactsApi().delete(contactIds);
+    }
+}
+----
+
+=== Get contact history
+Get all calls and texts associated with a contact.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.common.model.request.QueryByIdRequest;
+import com.callfire.api11.client.api.contacts.model.ContactHistory;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        QueryByIdRequest request = QueryByIdRequest.create()
+            // contact list id
+            .id(1000L)
+            // pagination if needed
+            // .firstResult(0)
+            // .maxResults(10)
+            .build();
+        ContactHistory history = client.contactsApi().getHistory(request);
+    }
+}
+----
+
+=== Create contact list
+You can add contact list to account using 1 of 4 inputs: list of contacts, numbers string, list of contactIds, or csv file
+ containing contacts or numbers. If more then one ContactSource specified then only load from 1 source
+ with precedence as listed above.
+On import contact lists go through seven system safeguards that check the accuracy of the list.
+ For example, our system checks if a number is formatted correctly, is invalid, is duplicated in another
+ contact list, or is on your Do Not Contact list. API calls have their default validation error resolutions
+ set differently then the defaults set on the CallFire web site under Settings | List Validation. The API validation defaults are:
+[source]
+LIST_COLUMNS_UNMAPPED           Resolution USE_DEFAULT_COLUMNS
+LIST_HAS_DUPLICATE_NUMBERS      Resolution SCRUB
+LIST_HAS_DNC_CONTACTS           Resolution SCRUB
+LIST_HAS_CONTACT_CONFLICTS      Resolution MERGE
+LIST_HAS_INVALID_NUMBERS        Resolution SCRUB
+
+1) create contact list from csv file
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.contacts.model.request.CreateContactListRequest;
+
+import java.io.File;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        CreateContactListRequest request = CreateContactListRequest.create()
+            .name("contact list from csv")
+            .validateContacts(true)
+            // set csv file as a source
+            .csvFile(new File("src/test/resources/contacts.csv"))
+            .build();
+        Long id = client.contactsApi().createContactList(request);
+    }
+}
+----
+
+2) create contact list from contact objects
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.contacts.model.Contact;
+import com.callfire.api11.client.api.contacts.model.request.CreateContactListRequest;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Contact contact1 = new Contact();
+        contact1.setFirstName("Alice");
+        contact1.setLastName("Moore");
+        contact1.setZipcode("12355");
+        contact1.setHomePhone("12345678901");
+        contact1.setWorkPhone("12345678902");
+        contact1.setMobilePhone("12345678903");
+        Map<String, String> attrs = new HashMap<>();
+        attrs.put("A", "custom data1");
+        attrs.put("B", "custom data2");
+        contact1.setAttributes(attrs);
+
+        Contact contact2 = new Contact();
+        contact2.setFirstName("Bob");
+        contact2.setLastName("Smith");
+        contact2.setZipcode("12344");
+        contact2.setHomePhone("12345678801");
+        contact2.setWorkPhone("12345678801");
+        contact2.setMobilePhone("12345678801");
+        attrs = new HashMap<>();
+        attrs.put("C", "custom data 3");
+        attrs.put("D", "custom data 4");
+        contact2.setAttributes(attrs);
+
+        CreateContactListRequest request = CreateContactListRequest.create()
+            .name("contact list from contact object")
+            .validateContacts(true)
+            // set contacts as a source
+            .contacts(Arrays.asList(contact1, contact2))
+            .build();
+        Long id = client.contactsApi().createContactList(request);
+    }
+}
+----
+
+3) create contact list from array of numbers
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.contacts.model.NumbersField;
+import com.callfire.api11.client.api.contacts.model.request.CreateContactListRequest;
+
+import java.util.Arrays;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        CreateContactListRequest request = CreateContactListRequest.create()
+            .name("contact list from numbers")
+            .validateContacts(false)
+            // plain numbers
+            .numbers(Arrays.asList("1411222255", "1411222266", "1411222277"))
+            // set numbers as mobile phone column, default is home phone
+            .numbersField(NumbersField.MOBILE_PHONE)
+            .build();
+        Long id = client.contactsApi().createContactList(request);
+    }
+}
+----
+
+4) create contact list from contact ids
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.contacts.model.request.CreateContactListRequest;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        List<Long> ids = Arrays.asList(10L, 11L, 12L, 13L);
+        CreateContactListRequest request = CreateContactListRequest.create()
+            .contactIds(ids)
+            .build();
+        client.contactsApi().createContactList(request);
+    }
+}
+----
+
+=== Query contact lists
+Query for existing contact lists. Currently does no filtering and returns paginated all contact lists.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.common.model.request.QueryRequest;
+import com.callfire.api11.client.api.contacts.model.ContactList;
+
+import java.util.List;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        QueryRequest request = QueryRequest.createSimpleQuery()
+            // use pagination if needed
+            // .firstResult(0)
+            // .maxResults(10)
+            .build();
+        List<ContactList> contactLists = client.contactsApi().queryContactLists(request);
+    }
+}
+----
+
+=== Get contact list
+Return individual contact list by id
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.contacts.model.Contact;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        // use createContactList queryContactLists() operations to get contact list id
+        long contactListId = 1000L;
+        ContactList contactList = client.contactsApi().getContactList(contactListId);
+    }
+}
+----
+
+=== Add contacts to contact list
+This operation is very similar to createContactList() but it doesn't create a new just but adds contacts to existing one
+There 4 possible contact sources, see createContactList operation for more code examples.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.contacts.model.NumbersField;
+import com.callfire.api11.client.api.contacts.model.request.AddContactsRequest;
+
+import java.util.Arrays;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("f7514b2c6df6", "3dda92b218eda2e6");
+
+        // use createContactList queryContactLists() operations to get contact list id
+        long contactListId = 2121438003L;
+        AddContactsRequest request = AddContactsRequest.create()
+            .contactListId(contactListId)
+            .validateContacts(false)
+            // plain numbers
+            .numbers(Arrays.asList("14112222555", "14112222666", "14112222777"))
+            // set numbers as mobile phone column, default is home phone
+            .numbersField(NumbersField.MOBILE_PHONE)
+            .build();
+        client.contactsApi().addContacts(request);
+    }
+}
+
+----
+
+=== Remove contacts from contact list
+Removes contacts from a list without deleting the contacts.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.contacts.model.request.RemoveContactsRequest;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        // use createContactList queryContactLists() operations to get contact list id
+        long contactListId = 1000L;
+        // contact ids, use query() method to find particular contacts
+        List<Long> ids = Arrays.asList(10L, 11L, 12L, 13L);
+        RemoveContactsRequest request = RemoveContactsRequest.create()
+            .contactListId(contactListId)
+            .contactIds(ids)
+            // or use array of numbers
+            // .numbers(Arrays.asList("12345678888", "1234567777", "12345676666", "12345675555"))
+            .build();
+        client.contactsApi().removeContacts(request);
+    }
+}
+----
+
+=== Delete contact list by id
+Delete contact list identified by id.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        // use createContactList queryContactLists() operations to get contact list id
+        long contactListId = 1000L;
+        client.contactsApi().deleteContactList(contactListId);
+    }
+}
+----
