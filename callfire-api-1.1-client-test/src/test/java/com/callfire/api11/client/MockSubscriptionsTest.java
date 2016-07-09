@@ -2,6 +2,7 @@ package com.callfire.api11.client;
 
 import com.callfire.api11.client.api.calls.model.Call;
 import com.callfire.api11.client.api.calls.model.request.QueryCallsRequest;
+import com.callfire.api11.client.api.common.model.request.QueryRequest;
 import com.callfire.api11.client.api.subscriptions.model.Subscription;
 import com.callfire.api11.client.api.texts.model.request.SendTextRequest;
 import com.callfire.api11.client.test.CallfireTestUtils;
@@ -33,12 +34,13 @@ public class MockSubscriptionsTest {
 
         ex.expect(BadRequestException.class);
         ex.expectMessage("TriggerEvent is required");
-        client.subscriptionsApi().query(0, 1);
+        client.subscriptionsApi().query(QueryRequest.createSimpleQuery().maxResults(1).build());
     }
 
     @Test
     public void querySubscriptions() throws Exception {
-        List<Subscription> subscriptions = client.subscriptionsApi().query(0, 1);
+        List<Subscription> subscriptions = client.subscriptionsApi().query(
+            QueryRequest.createSimpleQuery().maxResults(1).build());
         System.out.println(subscriptions);
     }
 }
