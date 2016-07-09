@@ -1,0 +1,99 @@
+= Labels API
+
+=== Query labels
+Method queries all labels from account, pagination is available. Example how to query first 5 labels
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.common.model.Label;
+import com.callfire.api11.client.api.common.model.request.QueryRequest;
+
+import java.util.List;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        QueryRequest request = QueryRequest.createSimpleQuery()
+            .firstResult(0)
+            .maxResults(5)
+            .build();
+        List<Label> labels = client.labelsApi().query(request);
+    }
+}
+----
+
+=== Delete label
+Delete label identified by name. All broadcasts and numbers currently containing the label will have the label association removed.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        client.labelsApi().delete("test_label");
+    }
+}
+----
+
+=== Add label to broadcast
+Label broadcast (Voice, Text, or IVR) by specifying broadcastId and label name. If label name doesn't currently
+ exist on system it will be created and saved.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        // use create/query broadcast operations to get broadcastId
+        Long broadcastId = 1000L;
+        client.labelsApi().labelBroadcast(broadcastId, "label");
+    }
+}
+----
+
+=== Remove label from broadcast
+Remove label from broadcast. This doesn't remove label from system, it just removes association between broadcast and label.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        // use create/query broadcast operations to get broadcastId
+        Long broadcastId = 1000L;
+        client.labelsApi().unlabelBroadcast(broadcastId, "label");
+    }
+}
+----
+
+=== Add label to number
+Label number by specifying E.164 11 digit number identifier and label name. If label name doesn't currently
+ exist on system it will be created and saved.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        client.labelsApi().labelNumber("1234567890", "label");
+    }
+}
+----
+
+=== Remove label from number
+Remove label from number. This doesn't remove label from system, it just removes association between number and label.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        client.labelsApi().unlabelNumber("12345678901", "label");
+    }
+}
+----

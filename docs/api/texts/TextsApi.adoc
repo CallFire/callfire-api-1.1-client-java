@@ -1,58 +1,198 @@
 = Texts API
 
 === Send SMS
-'''
 Example shows how to send SMS to 2 recipients with local time restrictions
 [source,java]
-    CfApi11Client client = new CfApi11Client("login", "password");
-    Date localBeginTime = setSeconds(setMinutes(setHours(new Date(), 10), 10), 10);
-    Date localEndTime = setSeconds(setMinutes(setHours(new Date(), 11), 20), 20);
-    SendTextRequest request = SendTextRequest.create()
-        .name("Send Text Java API Client")
-        .defaultBroadcast(true)
-        .scrubDuplicates(true)
-        .labels(asList("label1", "label2"))
-        .recipients(Arrays.asList(
-            new ToNumber("12132212384"),
-            new ToNumber("16505339974"))
-        )
-        .config(TextBroadcastConfig.create()
-            .fromNumber("67076")
-            .message("Api test message")
-            .strategy(BigMessageStrategy.SEND_MULTIPLE)
-            .timeZoneRestriction(new LocalTimeZoneRestriction(localBeginTime, localEndTime))
-        )
-        .build();
-    long id = client.textsApi().send(request);
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.common.model.LocalTimeZoneRestriction;
+import com.callfire.api11.client.api.common.model.ToNumber;
+import com.callfire.api11.client.api.texts.model.BigMessageStrategy;
+import com.callfire.api11.client.api.texts.model.TextBroadcastConfig;
+import com.callfire.api11.client.api.texts.model.request.SendTextRequest;
+
+import java.util.Arrays;
+import java.util.Calendar;
+
+import static java.util.Arrays.asList;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        Calendar localBeginTime = Calendar.getInstance();
+        Calendar localEndTime = Calendar.getInstance();
+        // only time part is needed
+        localBeginTime.set(1970, Calendar.JANUARY, 1, 10, 10, 10);
+        localEndTime.set(1970, Calendar.JANUARY, 1, 15, 15, 15);
+
+        SendTextRequest request = SendTextRequest.create()
+            .name("Send Text Java API Client")
+            .defaultBroadcast(true)
+            .scrubDuplicates(true)
+            .labels(asList("label1", "label2"))
+            .recipients(Arrays.asList(
+                new ToNumber("12132212384"),
+                new ToNumber("16505339974"))
+            )
+            .config(TextBroadcastConfig.create()
+                .fromNumber("67076")
+                .message("Api test message")
+                .strategy(BigMessageStrategy.SEND_MULTIPLE)
+                .timeZoneRestriction(new LocalTimeZoneRestriction(localBeginTime.getTime(), localEndTime.getTime()))
+            )
+            .build();
+        long id = client.textsApi().send(request);
+    }
+}
+----
 
 === Query texts
-'''
 Find texts by provided criteria. The example below shows all searchable fields
 [source,java]
-    CfApi11Client client = new CfApi11Client("login", "password");
-    Date intervalBegin = setYears(setMonths(setDays(
-        setSeconds(setMinutes(setHours(new Date(), 0), 0), 0), 27), 0), 2016);
-    Date intervalEnd = setYears(setMonths(setDays(
-        setSeconds(setMinutes(setHours(new Date(), 20), 20), 20), 20), 11), 2016);
-    QueryTextsRequest request = QueryTextsRequest.create()
-        .broadcastId(1L)
-        .batchId(2L)
-        .inbound(true)
-        .intervalBegin(intervalBegin)
-        .intervalEnd(intervalEnd)
-        .fromNumber("67076")
-        .toNumber("14243876936")
-        .labelName("labelName")
-        .states(asList(ActionState.FINISHED))
-        .result(asList(TextResult.RECEIVED, TextResult.SENT))
-        .maxResults(10)
-        .firstResult(1)
-        .build();
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.common.model.ActionState;
+import com.callfire.api11.client.api.texts.model.Text;
+import com.callfire.api11.client.api.texts.model.TextResult;
+import com.callfire.api11.client.api.texts.model.request.QueryTextsRequest;
+
+import java.util.Calendar;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        Calendar intervalBegin = Calendar.getInstance();
+        Calendar intervalEnd = Calendar.getInstance();
+        intervalBegin.set(2015, Calendar.JANUARY, 10, 10, 10, 10);
+        intervalEnd.set(2016, Calendar.DECEMBER, 15, 15, 15, 15);
+
+        QueryTextsRequest request = QueryTextsRequest.create()
+            // filter by broadcast id
+            .broadcastId(1L)
+            // filter by batch id
+            .batchId(2L)
+            // filter only inbound actions
+            .inbound(true)
+            // filter by time range
+            .intervalBegin(intervalBegin.getTime())
+            .intervalEnd(intervalEnd.getTime())
+            // filter by from number
+            .fromNumber("67076")
+            // filter by to number
+            .toNumber("14243876936")
+            // filter by label
+            .labelName("labelName")
+            // filter by state
+            .states(asList(ActionState.FINISHED))
+            // filter by action result
+            .result(asList(TextResult.RECEIVED, TextResult.SENT))
+            // pagination
+            .maxResults(10)
+            .firstResult(1)
+            .build();
         List<Text> texts = client.textsApi().query(request);
+    }
+}
+----
 
 === Get text
-'''
 Example how to get a single Text instance for a given text id.
 [source,java]
-    CfApi11Client client = new CfApi11Client("login", "password");
-    Text text = client.textsApi().get(12345678L);
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.texts.model.Text;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        // send() or query() operations return text id
+        long textId = 1000L;
+        Text text = client.textsApi().get(textId);
+    }
+}
+----
+
+== Text auto replies API
+
+=== Create auto-reply
+Example how to create and configure new auto-reply message for existing number or keyword
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.texts.model.AutoReply;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        AutoReply autoReply = new AutoReply();
+        // assign auto-reply to keyword or number
+        // autoReply.setKeyword("KEYWORD");
+        autoReply.setNumber("14246528111");
+        // set match text to reply only to particular messages, leave empty to reply to all messages
+        // autoReply.setMatch("test");
+        autoReply.setMessage("This is auto-reply");
+        Long id = client.textsApi().createAutoReply(autoReply);
+    }
+}
+----
+
+=== Query auto-replies
+'''
+Method queries all auto-replies from account or filtered by phone number, pagination is available.
+ Example how to query all auto-replies assigned to phone number.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.texts.model.AutoReply;
+import com.callfire.api11.client.api.texts.model.request.QueryAutoRepliesRequest;
+
+import java.util.List;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        QueryAutoRepliesRequest request = QueryAutoRepliesRequest.create()
+            // set pagination if needed
+            // .firstResult(0)
+            // .maxResults(5)
+            .number("14246528111")
+            .build();
+        List<AutoReply> autoReplies = client.textsApi().queryAutoReplies(request);
+    }
+----
+
+=== Get auto-reply
+Example how to get a single auto-reply instance by its id.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.texts.model.AutoReply;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        // you can get auto-reply id from query() or create() operations
+        Long autoReplyId = 1000L;
+        AutoReply autoReply = client.textsApi().getAutoReply(autoReplyId);
+    }
+}
+----
+
+=== Delete auto-reply
+Example how to delete a particular auto-reply, it will be removed permanently.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        // you can get auto-reply id from query() or create() operations
+        Long autoReplyId = 1000L;
+        client.textsApi().deleteAutoReply(autoReplyId);
+    }
+}
+----

@@ -1,5 +1,8 @@
 = API Code Examples
 
+* link:broadcasts/BroadcastsApi.adoc[Broadcasts API]
 * link:calls/CallsApi.adoc[Send individual calls]
 * link:texts/TextsApi.adoc[Send individual texts]
+* link:contacts/ContactsApi.adoc[Contacts API]
+* link:labels/LabelsApi.adoc[Labels API]
 * link:subscriptions/SubscriptionsApi.adoc[Subscriptions API]
