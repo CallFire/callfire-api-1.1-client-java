@@ -106,6 +106,74 @@ public class VoiceBroadcastConfig extends CallBroadcastConfig {
         return maxActiveTransfers;
     }
 
+    public void setAnsweringMachineConfig(AmConfig answeringMachineConfig) {
+        this.answeringMachineConfig = answeringMachineConfig;
+    }
+
+    public void setLiveSoundText(String liveSoundText) {
+        this.liveSoundText = liveSoundText;
+    }
+
+    public void setLiveSoundId(Long liveSoundId) {
+        this.liveSoundId = liveSoundId;
+    }
+
+    public void setLiveSoundTextVoice(Voice liveSoundTextVoice) {
+        this.liveSoundTextVoice = liveSoundTextVoice;
+    }
+
+    public void setMachineSoundText(String machineSoundText) {
+        this.machineSoundText = machineSoundText;
+    }
+
+    public void setMachineSoundId(Long machineSoundId) {
+        this.machineSoundId = machineSoundId;
+    }
+
+    public void setMachineSoundTextVoice(Voice machineSoundTextVoice) {
+        this.machineSoundTextVoice = machineSoundTextVoice;
+    }
+
+    public void setTransferSoundText(String transferSoundText) {
+        this.transferSoundText = transferSoundText;
+    }
+
+    public void setTransferSoundId(Long transferSoundId) {
+        this.transferSoundId = transferSoundId;
+    }
+
+    public void setTransferSoundTextVoice(Voice transferSoundTextVoice) {
+        this.transferSoundTextVoice = transferSoundTextVoice;
+    }
+
+    public void setTransferDigit(String transferDigit) {
+        this.transferDigit = transferDigit;
+    }
+
+    public void setTransferNumber(String transferNumber) {
+        this.transferNumber = transferNumber;
+    }
+
+    public void setDncSoundText(String dncSoundText) {
+        this.dncSoundText = dncSoundText;
+    }
+
+    public void setDncSoundId(Long dncSoundId) {
+        this.dncSoundId = dncSoundId;
+    }
+
+    public void setDncSoundTextVoice(Voice dncSoundTextVoice) {
+        this.dncSoundTextVoice = dncSoundTextVoice;
+    }
+
+    public void setDncDigit(String dncDigit) {
+        this.dncDigit = dncDigit;
+    }
+
+    public void setMaxActiveTransfers(Integer maxActiveTransfers) {
+        this.maxActiveTransfers = maxActiveTransfers;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)

@@ -6,7 +6,6 @@ import com.callfire.api11.client.api.common.model.AbstractBuilder;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.callfire.api11.client.api.common.model.LocalTimeZoneRestriction;
 import com.callfire.api11.client.api.common.model.RetryConfig;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
@@ -42,6 +41,18 @@ public abstract class BroadcastConfig extends CfApi11Model {
 
     public LocalTimeZoneRestriction getLocalTimeZoneRestriction() {
         return localTimeZoneRestriction;
+    }
+
+    public void setFromNumber(String fromNumber) {
+        this.fromNumber = fromNumber;
+    }
+
+    public void setRetryConfig(RetryConfig retryConfig) {
+        this.retryConfig = retryConfig;
+    }
+
+    public void setLocalTimeZoneRestriction(LocalTimeZoneRestriction localTimeZoneRestriction) {
+        this.localTimeZoneRestriction = localTimeZoneRestriction;
     }
 
     @Override

@@ -24,6 +24,14 @@ public class TextBroadcastConfig extends BroadcastConfig {
         return bigMessageStrategy;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setBigMessageStrategy(BigMessageStrategy bigMessageStrategy) {
+        this.bigMessageStrategy = bigMessageStrategy;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)

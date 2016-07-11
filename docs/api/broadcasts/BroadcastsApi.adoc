@@ -1,0 +1,456 @@
+= Broadcasts API
+
+=== Create broadcast
+This operation creates a Broadcast campaign and returns a broadcastId. There are 3 types of Broadcast: TEXT, IVR,
+ or VOICE. Select the appropriate config to match the broadcast type, TextBroadcastConfig,
+ IvrBroadcastConfig or VoiceBroadcastConfig.
+
+1) Create text broadcast example
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.Broadcast;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastType;
+import com.callfire.api11.client.api.common.model.LocalTimeZoneRestriction;
+import com.callfire.api11.client.api.texts.model.BigMessageStrategy;
+import com.callfire.api11.client.api.texts.model.TextBroadcastConfig;
+import org.apache.commons.lang3.time.DateUtils;
+
+import static com.callfire.api11.client.ClientConstants.TIME_FORMAT_PATTERN;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) throws Exception {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Broadcast broadcast = new Broadcast();
+        broadcast.setName("Broadcast 1");
+        broadcast.setType(BroadcastType.TEXT);
+        broadcast.setTextBroadcastConfig(TextBroadcastConfig.create()
+            .fromNumber("67076")
+            .message("Api test message")
+            .strategy(BigMessageStrategy.TRIM)
+            .timeZoneRestriction(new LocalTimeZoneRestriction(
+                DateUtils.parseDate("10:10:10", TIME_FORMAT_PATTERN),
+                DateUtils.parseDate("15:15:15", TIME_FORMAT_PATTERN)))
+            .build());
+
+        Long id = client.broadcastsApi().create(broadcast);
+    }
+}
+----
+
+2) Create voice broadcast
+[source,java]
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.Broadcast;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastType;
+import com.callfire.api11.client.api.calls.model.AmConfig;
+import com.callfire.api11.client.api.calls.model.Voice;
+import com.callfire.api11.client.api.calls.model.VoiceBroadcastConfig;
+import com.callfire.api11.client.api.common.model.LocalTimeZoneRestriction;
+import com.callfire.api11.client.api.common.model.Result;
+import com.callfire.api11.client.api.common.model.RetryConfig;
+import com.callfire.api11.client.api.common.model.RetryPhoneType;
+import org.apache.commons.lang3.time.DateUtils;
+
+import static com.callfire.api11.client.ClientConstants.TIME_FORMAT_PATTERN;
+import static java.util.Arrays.asList;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) throws Exception {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Broadcast broadcast = new Broadcast();
+        broadcast.setName("Broadcast 1");
+        broadcast.setType(BroadcastType.VOICE);
+        broadcast.setVoiceBroadcastConfig(VoiceBroadcastConfig.create()
+            .fromNumber("12132212384")
+            .retryConfig(new RetryConfig(2, 1, asList(Result.BUSY, Result.NO_ANS),
+                asList(RetryPhoneType.WORK_PHONE, RetryPhoneType.HOME_PHONE)))
+            .timeZoneRestriction(new LocalTimeZoneRestriction(
+                DateUtils.parseDate("10:10:10", TIME_FORMAT_PATTERN),
+                DateUtils.parseDate("15:15:15", TIME_FORMAT_PATTERN)))
+            // live answer
+            .liveSound("this is LA TTS", Voice.MALE1)
+            // answering machine
+            .amConfig(AmConfig.AM_ONLY)
+            .amSound("this is AM TTS", Voice.FEMALE1)
+            // transfer
+            .transferSound("this is transfer TTS")
+            .transferDigit("7")
+            .transferNumber("1234567890")
+            .maxActiveTransfers(2)
+            // dnc
+            .dncSound("this is DNC TTS")
+            .dncDigit("9")
+            .build());
+
+        Long id = client.broadcastsApi().create(broadcast);
+
+        System.out.println(id);
+    }
+}
+----
+
+3) Create IVR broadcast
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.Broadcast;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastType;
+import com.callfire.api11.client.api.calls.model.IvrBroadcastConfig;
+import com.callfire.api11.client.api.common.model.LocalTimeZoneRestriction;
+import com.callfire.api11.client.api.common.model.Result;
+import com.callfire.api11.client.api.common.model.RetryConfig;
+import com.callfire.api11.client.api.common.model.RetryPhoneType;
+import org.apache.commons.lang3.time.DateUtils;
+
+import static com.callfire.api11.client.ClientConstants.TIME_FORMAT_PATTERN;
+import static java.util.Arrays.asList;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) throws Exception {
+        CfApi11Client client = new CfApi11Client("login", "password");
+        String dialplanXml = "<dialplan name=\"Root\"><play type=\"tts\" voice=\"female1\">Hello Callfire!</play></dialplan>";
+
+        Broadcast broadcast = new Broadcast();
+        broadcast.setName("Broadcast 1");
+        broadcast.setType(BroadcastType.IVR);
+        broadcast.setIvrBroadcastConfig(IvrBroadcastConfig.create()
+            .fromNumber("12132212384")
+            .retryConfig(new RetryConfig(2, 1, asList(Result.BUSY, Result.NO_ANS),
+                asList(RetryPhoneType.MOBILE_PHONE, RetryPhoneType.HOME_PHONE)))
+            .timeZoneRestriction(new LocalTimeZoneRestriction(
+                DateUtils.parseDate("10:10:10", TIME_FORMAT_PATTERN),
+                DateUtils.parseDate("15:15:15", TIME_FORMAT_PATTERN)))
+            .dialplanXml(dialplanXml)
+            .build());
+
+        Long id = client.broadcastsApi().create(broadcast);
+
+        System.out.println(id);
+    }
+}
+----
+
+
+=== Update broadcast
+Update existing broadcast and its configuration such as time zone restrictions or retry logic.
+Examples below shows how to update broadcast name, label and configuration
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.Broadcast;
+import com.callfire.api11.client.api.texts.model.BigMessageStrategy;
+
+import java.util.Collections;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        Broadcast broadcast = client.broadcastsApi().get(broadcastId);
+        broadcast.setName("new updated name");
+        broadcast.setLabels(Collections.singletonList("broadcast_label"));
+        broadcast.getTextBroadcastConfig().setMessage("Hello world!");
+        broadcast.getTextBroadcastConfig().setBigMessageStrategy(BigMessageStrategy.TRIM);
+
+        client.broadcastsApi().update(broadcast);
+    }
+}
+----
+
+
+=== Query broadcasts
+Find all broadcasts in account, available filtering by broadcast type, running state, label name
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.Broadcast;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastType;
+import com.callfire.api11.client.api.broadcasts.model.request.QueryBroadcastsRequest;
+
+import java.util.List;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        QueryBroadcastsRequest request = QueryBroadcastsRequest.create()
+            // pagination available if needed
+            // .firstResult(0)
+            // .maxResults(100)
+            .type(BroadcastType.TEXT)
+            .running(false)
+            .labelName("broadcast_label")
+            .build();
+        List<Broadcast> broadcasts = client.broadcastsApi().query(request);
+    }
+}
+----
+
+
+=== Get broadcast
+Get particular broadcast by id
+Use ID returned from CreateBroadcast or from QueryBroadcast to retrieve information on individual Broadcast.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.Broadcast;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        Broadcast broadcast = client.broadcastsApi().get(broadcastId);
+    }
+}
+----
+
+
+=== Get broadcast stats
+Get broadcast stats by broadcastId or by interval range. Stats include information like billed amount,
+ billed duration, actions count, attempt count, etc.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastStats;
+
+import java.util.Date;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        // populate interval date objects to filter stats by interval
+        Date intervalBegin = new Date();
+        Date intervalEnd = new Date();
+        BroadcastStats status = client.broadcastsApi().getStats(broadcastId, intervalBegin, intervalEnd);
+    }
+}
+----
+
+
+=== Control broadcast
+Apply command START, STOP, or ARCHIVE to Broadcast. Also can change the max active count of Broadcast.
+Example below shows how to start broadcast with 200 simultaneous actions
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastCommand;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        client.broadcastsApi().control(broadcastId, BroadcastCommand.START, 200);
+    }
+}
+----
+
+
+=== Create contact batch
+Contact Batch is a list of contacts to associate with a broadcast. Use this operation to attach a list of contacts
+ to an existing Campaign. A list of ToNumbers or an existing Contact List ID is required to create and attach
+ the Contact List. Returned is the unique contactListId that can be used in ControlContactBatch to enable or disable this batch.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.request.CreateBatchRequest;
+import com.callfire.api11.client.api.common.model.ToNumber;
+
+import java.util.Arrays;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11741873003L;
+        CreateBatchRequest request = CreateBatchRequest.create()
+            .name("Contact batch")
+            .broadcastId(broadcastId)
+            // if true - scrubs duplicated numbers
+            .scrubDuplicates(true)
+            // if true - starts broadcast immediately
+            .start(true)
+            // you can provide contact list id or plain numbers as a source
+            // .contactListId(1234L)
+            .numbers(Arrays.asList(
+                new ToNumber("12132212384"),
+                new ToNumber("12132212385"),
+                new ToNumber("12132212386")))
+            .build();
+
+        Long id = client.broadcastsApi().createBatch(request);
+    }
+}
+----
+
+
+=== Query contact batches
+Return list of Contact Batches associated with this Broadcast.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.ContactBatch;
+import com.callfire.api11.client.api.common.model.request.QueryByIdRequest;
+
+import java.util.List;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11741873003L;
+        QueryByIdRequest request = QueryByIdRequest.create()
+            // pagination is available
+            // .firstResult(0)
+            // .maxResults(100)
+            .id(broadcastId)
+            .build();
+        List<ContactBatch> batches = client.broadcastsApi().queryBatches(request);
+    }
+}
+----
+
+
+=== Get batch
+Retrieve info on individual Contact Batch using contactId returned from createBatch() or queryBatches operations
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.ContactBatch;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long batchId = 11755573003L;
+        ContactBatch batch = client.broadcastsApi().getBatch(batchId);
+    }
+}
+----
+
+
+=== Control broadcast batch
+This operation provides the ability to enable or disable on a Broadcast the list of contacts associated with a ContactBatch.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long batchId = 11755573003L;
+        // false means disable contact batch on broadcast
+        client.broadcastsApi().controlBatch(batchId, false);
+    }
+}
+----
+
+
+=== Create broadcast schedule
+Broadcast can be set to run at scheduled times a prescribed by BroadcastSchedule. The following example shows how to
+ schedules a broadcast to run.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastSchedule;
+import com.callfire.api11.client.api.broadcasts.model.DayOfWeek;
+
+import java.util.Calendar;
+
+import static java.util.Arrays.asList;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11741873003L;
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        Calendar beginTime = Calendar.getInstance();
+        Calendar endTime = Calendar.getInstance();
+        // only date part is used
+        startDate.set(2000, Calendar.JANUARY, 10, 0, 0, 0);
+        endDate.set(2020, Calendar.DECEMBER, 15, 0, 0, 0);
+        // only time part is used
+        beginTime.set(1970, Calendar.JANUARY, 1, 10, 10, 10);
+        endTime.set(1970, Calendar.JANUARY, 1, 20, 20, 20);
+
+        BroadcastSchedule schedule = new BroadcastSchedule();
+        schedule.setTimeZone("America/New_York");
+        schedule.setDaysOfWeek(asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY));
+        schedule.setBeginDate(startDate.getTime());
+        schedule.setEndDate(endDate.getTime());
+        schedule.setStartTimeOfDay(beginTime.getTime());
+        schedule.setStopTimeOfDay(endTime.getTime());
+
+        Long id = client.broadcastsApi().createSchedule(broadcastId, schedule);
+    }
+}
+----
+
+=== Query schedules
+List all Broadcast Schedules attached to a Broadcast.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastSchedule;
+import com.callfire.api11.client.api.common.model.request.QueryByIdRequest;
+
+import java.util.List;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        // use query() or create() methods to get broadcast id
+        long broadcastId = 1000L;
+        QueryByIdRequest request = QueryByIdRequest.create().id(broadcastId).build();
+        List<BroadcastSchedule> schedules = client.broadcastsApi().querySchedules(request);
+    }
+}
+----
+
+
+=== Get schedule
+Get particular broadcast schedule by id
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastSchedule;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        // use createSchedule() or querySchedules() to get schedule id
+        long scheduleId = 1000L;
+        BroadcastSchedule schedule = client.broadcastsApi().getSchedule(scheduleId);
+    }
+}
+----
+
+
+=== Delete schedule
+Delete BroadcastSchedule associated with a Broadcast.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        // use createSchedule() or querySchedules() to get schedule id
+        long scheduleId = 1000L;
+        client.broadcastsApi().deleteSchedule(scheduleId);
+    }
+}
+----

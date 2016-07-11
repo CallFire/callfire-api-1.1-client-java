@@ -18,6 +18,10 @@ public class IvrBroadcastConfig extends CallBroadcastConfig {
         return dialplanXml;
     }
 
+    public void setDialplanXml(String dialplanXml) {
+        this.dialplanXml = dialplanXml;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)

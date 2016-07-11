@@ -11,11 +11,16 @@ import com.callfire.api11.client.api.broadcasts.model.ContactBatch;
 import com.callfire.api11.client.api.broadcasts.model.DayOfWeek;
 import com.callfire.api11.client.api.broadcasts.model.request.CreateBatchRequest;
 import com.callfire.api11.client.api.broadcasts.model.request.QueryBroadcastsRequest;
+import com.callfire.api11.client.api.calls.model.IvrBroadcastConfig;
 import com.callfire.api11.client.api.common.model.LocalTimeZoneRestriction;
+import com.callfire.api11.client.api.common.model.Result;
+import com.callfire.api11.client.api.common.model.RetryConfig;
+import com.callfire.api11.client.api.common.model.RetryPhoneType;
 import com.callfire.api11.client.api.common.model.ToNumber;
 import com.callfire.api11.client.api.common.model.request.QueryByIdRequest;
 import com.callfire.api11.client.api.texts.model.BigMessageStrategy;
 import com.callfire.api11.client.api.texts.model.TextBroadcastConfig;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -53,7 +58,23 @@ public class BroadcastsIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void createIvrBroadcast() throws Exception {
+        Broadcast broadcast = new Broadcast();
+        broadcast.setName("Broadcast 1");
+        broadcast.setType(BroadcastType.IVR);
+        //        broadcast.setLabels(asList("label1", "label2"));
+        broadcast.setIvrBroadcastConfig(IvrBroadcastConfig.create()
+            .fromNumber("12132212384")
+            .retryConfig(new RetryConfig(2, 1, asList(Result.BUSY, Result.NO_ANS),
+                asList(RetryPhoneType.MOBILE_PHONE, RetryPhoneType.HOME_PHONE)))
+            .timeZoneRestriction(new LocalTimeZoneRestriction(
+                DateUtils.parseDate("10:10:10", TIME_FORMAT_PATTERN),
+                DateUtils.parseDate("15:15:15", TIME_FORMAT_PATTERN)))
+            .dialplanXml(dialplanXml)
+            .build());
 
+        Long id = client.broadcastsApi().create(broadcast);
+
+        System.out.println(id);
     }
 
     @Test
