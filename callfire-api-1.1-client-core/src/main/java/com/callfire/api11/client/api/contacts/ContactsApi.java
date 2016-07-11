@@ -9,13 +9,13 @@ import com.callfire.api11.client.ResourceNotFoundException;
 import com.callfire.api11.client.RestApi11Client;
 import com.callfire.api11.client.UnauthorizedException;
 import com.callfire.api11.client.api.common.model.ResourceReference;
+import com.callfire.api11.client.api.common.model.request.QueryByIdRequest;
 import com.callfire.api11.client.api.common.model.request.QueryRequest;
 import com.callfire.api11.client.api.contacts.model.Contact;
 import com.callfire.api11.client.api.contacts.model.ContactHistory;
 import com.callfire.api11.client.api.contacts.model.ContactList;
 import com.callfire.api11.client.api.contacts.model.request.AddContactsRequest;
 import com.callfire.api11.client.api.contacts.model.request.CreateContactListRequest;
-import com.callfire.api11.client.api.common.model.request.QueryByIdRequest;
 import com.callfire.api11.client.api.contacts.model.request.QueryContactsRequest;
 import com.callfire.api11.client.api.contacts.model.request.RemoveContactsRequest;
 import com.callfire.api11.client.api.subscriptions.model.Subscription;
@@ -226,6 +226,7 @@ public class ContactsApi {
      * individual contactListIds.
      *
      * @param id contact list id to fetch
+     * @return Contact list
      * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
      * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
      * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.

@@ -1,6 +1,13 @@
 Callfire API 1.1 client Changelog
 =============================
 
+Version 1.2.0 - July 11 2016
+    - added Broadcasts API
+    - added Contacts API
+    - added Text auto-replies API
+    - added Labels API
+    - many minor improvements and bugfixes
+
 Version 1.1.0 - May 30 2016
     - added mocked responses for send call/text operations with invalid numbers
 
