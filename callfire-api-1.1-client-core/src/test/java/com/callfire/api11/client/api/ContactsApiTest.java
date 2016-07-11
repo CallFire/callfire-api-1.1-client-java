@@ -224,9 +224,7 @@ public class ContactsApiTest extends AbstractApiTest {
         assertThat(requestBody, containsString("name=\"ContactId\"\r\n\r\n1"));
         assertThat(requestBody, containsString("name=\"ContactId\"\r\n\r\n2"));
         assertThat(requestBody, containsString("name=\"ContactId\"\r\n\r\n3"));
-        assertThat(requestBody, containsString("name=\"Numbers\"\r\n\r\n111"));
-        assertThat(requestBody, containsString("name=\"Numbers\"\r\n\r\n222"));
-        assertThat(requestBody, containsString("name=\"Numbers\"\r\n\r\n333"));
+        assertThat(requestBody, containsString("name=\"Numbers\"\r\n\r\n111 222 333"));
         assertThat(requestBody, containsString("name=\"Numbers[fieldName]\"\r\n\r\nmobilePhone"));
         assertThat(requestBody, containsString("name=\"Contact[0][firstName]\"\r\n\r\nAlice"));
         assertThat(requestBody, containsString("name=\"Contact[0][lastName]\"\r\n\r\nMoore"));
@@ -280,9 +278,7 @@ public class ContactsApiTest extends AbstractApiTest {
         assertThat(requestBody, containsString("name=\"ContactId\"\r\n\r\n1"));
         assertThat(requestBody, containsString("name=\"ContactId\"\r\n\r\n2"));
         assertThat(requestBody, containsString("name=\"ContactId\"\r\n\r\n3"));
-        assertThat(requestBody, containsString("name=\"Numbers\"\r\n\r\n111"));
-        assertThat(requestBody, containsString("name=\"Numbers\"\r\n\r\n222"));
-        assertThat(requestBody, containsString("name=\"Numbers\"\r\n\r\n333"));
+        assertThat(requestBody, containsString("name=\"Numbers\"\r\n\r\n111 222 333"));
         assertThat(requestBody, containsString("name=\"Numbers[fieldName]\"\r\n\r\nmobilePhone"));
         assertThat(requestBody, containsString("name=\"Contact[0][firstName]\"\r\n\r\nAlice"));
         assertThat(requestBody, containsString("name=\"Contact[0][lastName]\"\r\n\r\nMoore"));

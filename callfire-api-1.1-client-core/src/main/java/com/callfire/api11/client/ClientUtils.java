@@ -4,6 +4,7 @@ import com.callfire.api11.client.api.common.QueryParamFormat;
 import com.callfire.api11.client.api.common.QueryParamIgnore;
 import com.callfire.api11.client.api.common.QueryParamName;
 import com.callfire.api11.client.api.common.QueryParamObject;
+import com.callfire.api11.client.api.common.SerializeAsSingleString;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.callfire.api11.client.api.common.model.ToNumber;
 import com.callfire.api11.client.api.contacts.model.Contact;
@@ -114,9 +115,20 @@ public final class ClientUtils {
         if (value != null) {
             String name = getParamName(field);
             if (value instanceof Iterable) {
+                Iterable iterable = (Iterable) value;
+                if (field.isAnnotationPresent(SerializeAsSingleString.class)) {
+                    StringBuilder sb = new StringBuilder();
+                    for (Object o : iterable) {
+                        sb.append(o).append(" ");
+                    }
+                    params.add(new BasicNameValuePair(name, sb.toString().trim()));
+
+                    return;
+                }
+
                 // object index
                 int i = 0;
-                for (Object o : (Iterable) value) {
+                for (Object o : iterable) {
                     if (o instanceof ToNumber) {
                         params.add(new BasicNameValuePair(name, ((ToNumber) o).toQueryString()));
                     } else if (o instanceof Contact) {

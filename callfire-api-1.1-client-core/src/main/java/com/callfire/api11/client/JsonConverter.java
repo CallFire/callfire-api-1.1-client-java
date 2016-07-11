@@ -28,8 +28,7 @@ public class JsonConverter {
     public JsonConverter() {
         mapper = new ObjectMapper();
         mapper.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
-        // FIXME uncomment before release
-        //        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
         mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

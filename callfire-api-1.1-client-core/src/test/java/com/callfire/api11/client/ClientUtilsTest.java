@@ -10,12 +10,15 @@ import com.callfire.api11.client.api.common.model.Result;
 import com.callfire.api11.client.api.common.model.RetryConfig;
 import com.callfire.api11.client.api.common.model.RetryPhoneType;
 import com.callfire.api11.client.api.common.model.ToNumber;
+import com.callfire.api11.client.api.contacts.model.NumbersField;
+import com.callfire.api11.client.api.contacts.model.request.CreateContactListRequest;
 import com.callfire.api11.client.api.subscriptions.model.NotificationFormat;
 import com.callfire.api11.client.api.subscriptions.model.Subscription;
 import com.callfire.api11.client.api.subscriptions.model.SubscriptionFilter;
 import com.callfire.api11.client.api.subscriptions.model.TriggerEvent;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -152,6 +155,24 @@ public class ClientUtilsTest {
         assertThat(queryParams, containsString("Result=NO_ANS"));
         assertThat(queryParams, containsString("IntervalBegin=2016-11-10T10:10:10"));
         assertThat(queryParams, containsString("IntervalEnd=2016-12-20T20:20:20"));
+
+        System.out.println("query request: " + queryParams);
+    }
+
+    @Test
+    public void serializeAsSingleString() throws Exception {
+        CreateContactListRequest request = CreateContactListRequest.create()
+            .name("new api")
+            .validateContacts(false)
+            .numbers(Arrays.asList("14112222555", "14112222666", "14112222777"))
+            .numbersField(NumbersField.MOBILE_PHONE)
+            .build();
+        String queryParams = ClientUtils.buildQueryParams(request).toString();
+
+        assertThat(queryParams, containsString("Name=new api"));
+        assertThat(queryParams, containsString("Validate=false"));
+        assertThat(queryParams, containsString("Numbers[fieldName]=" + NumbersField.MOBILE_PHONE.getFieldName()));
+        assertThat(queryParams, containsString("Numbers=14112222555 14112222666 14112222777"));
 
         System.out.println("query request: " + queryParams);
     }

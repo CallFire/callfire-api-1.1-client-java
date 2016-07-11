@@ -2,6 +2,7 @@ package com.callfire.api11.client.api.contacts.model.request;
 
 import com.callfire.api11.client.api.common.QueryParamIgnore;
 import com.callfire.api11.client.api.common.QueryParamName;
+import com.callfire.api11.client.api.common.SerializeAsSingleString;
 import com.callfire.api11.client.api.common.model.AbstractBuilder;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.callfire.api11.client.api.common.model.request.FileAttachment;
@@ -23,6 +24,7 @@ public abstract class AbstractAddContactsRequest extends CfApi11Model implements
     @QueryParamName("ContactId")
     protected List<Long> contactIds = new ArrayList<>();
     protected List<Contact> contacts = new ArrayList<>();
+    @SerializeAsSingleString
     protected List<String> numbers = new ArrayList<>();
     @QueryParamName("Numbers[fieldName]")
     protected NumbersField numbersField;
