@@ -73,6 +73,6 @@ public class CallfireTestUtils {
         if (httpClient instanceof MockHttpClient) {
             return ((MockHttpClient) httpClient).getJsonResponses();
         }
-        return new HashMap<>();
+        return new HashMap<String, Pair<Integer, String>>();
     }
 }

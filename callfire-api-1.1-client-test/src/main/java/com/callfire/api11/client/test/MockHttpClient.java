@@ -56,7 +56,7 @@ public class MockHttpClient implements HttpClient {
     public static final BasicStatusLine OK_200 = new BasicStatusLine(PV, 200, "OK");
     public static final BasicStatusLine BAD_REQUEST_400 = new BasicStatusLine(PV, 400, "Bad Request");
     public static final BasicStatusLine NOT_FOUND_404 = new BasicStatusLine(PV, 404, "Not Found");
-    private Map<String, Pair<Integer, String>> jsonResponses = new HashMap<>();
+    private Map<String, Pair<Integer, String>> jsonResponses = new HashMap<String, Pair<Integer, String>>();
 
     public MockHttpClient() {
         initJsonResponses();
@@ -82,7 +82,7 @@ public class MockHttpClient implements HttpClient {
             jsonPayload = getJsonPayload(JSON_BASE_PATH + pair.getValue());
         } else {
             // return empty response if there is no mapping for key
-            pair = new MutablePair<>(200, "");
+            pair = new MutablePair<Integer, String>(200, "");
         }
 
         BasicHttpResponse response = new BasicHttpResponse(asStatusLine(pair.getKey()));
@@ -142,23 +142,23 @@ public class MockHttpClient implements HttpClient {
 
     private void initJsonResponses() {
         // @formatter:off
-        jsonResponses.put(of(ResourceReference.class).getType().toString(), new MutablePair<>(204, "/calls/send.json"));
-        jsonResponses.put(SEND_CALL_INVALID_FROM_NUMBER.name(), new MutablePair<>(400, "/calls/sendInvalidFromNumber.json"));
-        jsonResponses.put(SEND_CALL_INVALID_TO_NUMBER.name(), new MutablePair<>(204, "/calls/sendInvalidToNumber.json"));
-        jsonResponses.put(QUERY_CALL_INVALID_TO_NUMBER.name(), new MutablePair<>(200, "/calls/queryInvalidToNumber.json"));
-        jsonResponses.put(listOf(Call.class).getType().toString(), new MutablePair<>(200, "/calls/query.json"));
-        jsonResponses.put(resourceOf(Call.class).getType().toString(), new MutablePair<>(200, "/calls/get.json"));
+        jsonResponses.put(of(ResourceReference.class).getType().toString(), new MutablePair<Integer, String>(204, "/calls/send.json"));
+        jsonResponses.put(SEND_CALL_INVALID_FROM_NUMBER.name(), new MutablePair<Integer, String>(400, "/calls/sendInvalidFromNumber.json"));
+        jsonResponses.put(SEND_CALL_INVALID_TO_NUMBER.name(), new MutablePair<Integer, String>(204, "/calls/sendInvalidToNumber.json"));
+        jsonResponses.put(QUERY_CALL_INVALID_TO_NUMBER.name(), new MutablePair<Integer, String>(200, "/calls/queryInvalidToNumber.json"));
+        jsonResponses.put(listOf(Call.class).getType().toString(), new MutablePair<Integer, String>(200, "/calls/query.json"));
+        jsonResponses.put(resourceOf(Call.class).getType().toString(), new MutablePair<Integer, String>(200, "/calls/get.json"));
 
-        jsonResponses.put(of(ResourceReference.class).getType().toString(), new MutablePair<>(204, "/texts/send.json"));
-        jsonResponses.put(SEND_TEXT_INVALID_FROM_NUMBER.name(), new MutablePair<>(400, "/texts/sendInvalidFromNumber.json"));
-        jsonResponses.put(SEND_TEXT_INVALID_TO_NUMBER.name(), new MutablePair<>(204, "/texts/sendInvalidToNumber.json"));
-        jsonResponses.put(QUERY_TEXT_INVALID_TO_NUMBER.name(), new MutablePair<>(200, "/texts/queryInvalidToNumber.json"));
-        jsonResponses.put(listOf(Text.class).getType().toString(), new MutablePair<>(200, "/texts/query.json"));
-        jsonResponses.put(resourceOf(Text.class).getType().toString(), new MutablePair<>(200, "/texts/get.json"));
+        jsonResponses.put(of(ResourceReference.class).getType().toString(), new MutablePair<Integer, String>(204, "/texts/send.json"));
+        jsonResponses.put(SEND_TEXT_INVALID_FROM_NUMBER.name(), new MutablePair<Integer, String>(400, "/texts/sendInvalidFromNumber.json"));
+        jsonResponses.put(SEND_TEXT_INVALID_TO_NUMBER.name(), new MutablePair<Integer, String>(204, "/texts/sendInvalidToNumber.json"));
+        jsonResponses.put(QUERY_TEXT_INVALID_TO_NUMBER.name(), new MutablePair<Integer, String>(200, "/texts/queryInvalidToNumber.json"));
+        jsonResponses.put(listOf(Text.class).getType().toString(), new MutablePair<Integer, String>(200, "/texts/query.json"));
+        jsonResponses.put(resourceOf(Text.class).getType().toString(), new MutablePair<Integer, String>(200, "/texts/get.json"));
 
-        jsonResponses.put(resourceOf(Subscription.class).getType().toString(), new MutablePair<>(200, "/subscriptions/get.json"));
-        jsonResponses.put(listOf(Subscription.class).getType().toString(), new MutablePair<>(200, "/subscriptions/query.json"));
-        jsonResponses.put(of(ResourceReference.class).getType().toString(), new MutablePair<>(204, "/subscriptions/create.json"));
+        jsonResponses.put(resourceOf(Subscription.class).getType().toString(), new MutablePair<Integer, String>(200, "/subscriptions/get.json"));
+        jsonResponses.put(listOf(Subscription.class).getType().toString(), new MutablePair<Integer, String>(200, "/subscriptions/query.json"));
+        jsonResponses.put(of(ResourceReference.class).getType().toString(), new MutablePair<Integer, String>(204, "/subscriptions/create.json"));
         // @formatter:on
     }
 

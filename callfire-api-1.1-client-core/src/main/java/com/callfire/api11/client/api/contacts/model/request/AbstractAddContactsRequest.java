@@ -22,10 +22,10 @@ public abstract class AbstractAddContactsRequest extends CfApi11Model implements
     @QueryParamName("Validate")
     protected Boolean validateContacts;
     @QueryParamName("ContactId")
-    protected List<Long> contactIds = new ArrayList<>();
-    protected List<Contact> contacts = new ArrayList<>();
+    protected List<Long> contactIds = new ArrayList<Long>();
+    protected List<Contact> contacts = new ArrayList<Contact>();
     @SerializeAsSingleString
-    protected List<String> numbers = new ArrayList<>();
+    protected List<String> numbers = new ArrayList<String>();
     @QueryParamName("Numbers[fieldName]")
     protected NumbersField numbersField;
     @QueryParamIgnore

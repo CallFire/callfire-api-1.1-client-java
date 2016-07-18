@@ -101,7 +101,7 @@ public class TextsApiTest extends AbstractApiTest {
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         Text text = client.textsApi().get(1234567L);
-        Resource<Text> response = new Resource<>(text, Text.class);
+        Resource<Text> response = new Resource<Text>(text, Text.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);
         JSONAssert.assertEquals(expectedJson, serialize, true);
@@ -140,7 +140,7 @@ public class TextsApiTest extends AbstractApiTest {
             .build();
 
         List<Text> texts = client.textsApi().query(request);
-        ResourceList<Text> response = new ResourceList<>(texts, Text.class);
+        ResourceList<Text> response = new ResourceList<Text>(texts, Text.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();
@@ -196,7 +196,7 @@ public class TextsApiTest extends AbstractApiTest {
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         AutoReply autoReply = client.textsApi().getAutoReply(1234567L);
-        Resource<AutoReply> response = new Resource<>(autoReply, AutoReply.class);
+        Resource<AutoReply> response = new Resource<AutoReply>(autoReply, AutoReply.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();
@@ -217,7 +217,7 @@ public class TextsApiTest extends AbstractApiTest {
             .number("12345678901")
             .build();
         List<AutoReply> autoReplies = client.textsApi().queryAutoReplies(request);
-        ResourceList<AutoReply> response = new ResourceList<>(autoReplies, AutoReply.class);
+        ResourceList<AutoReply> response = new ResourceList<AutoReply>(autoReplies, AutoReply.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);
         JSONAssert.assertEquals(expectedJson, serialize, true);

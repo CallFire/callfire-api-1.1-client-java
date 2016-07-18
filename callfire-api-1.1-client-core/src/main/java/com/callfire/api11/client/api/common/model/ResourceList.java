@@ -21,7 +21,7 @@ public class ResourceList<T> {
     @JsonProperty("@totalResults")
     private Integer totalResults;
     @JsonIgnore
-    private List<T> items = new ArrayList<>();
+    private List<T> items = new ArrayList<T>();
 
     public ResourceList() {
     }
@@ -44,7 +44,7 @@ public class ResourceList<T> {
 
     @JsonAnyGetter
     private Map<String, List<T>> getItems() {
-        Map<String, List<T>> mapping = new HashMap<>();
+        Map<String, List<T>> mapping = new HashMap<String, List<T>>();
         mapping.put(name, items);
         return mapping;
     }

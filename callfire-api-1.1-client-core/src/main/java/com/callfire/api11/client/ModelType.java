@@ -25,8 +25,8 @@ import java.util.Map;
  * Class contains TypeReferences for all model objects
  */
 public final class ModelType {
-    private static final Map<Class, TypeReference> SIMPLE_TYPES = new HashMap<>();
-    private static final Map<Class, TypeReference> LIST_TYPES = new HashMap<>();
+    private static final Map<Class, TypeReference> SIMPLE_TYPES = new HashMap<Class, TypeReference>();
+    private static final Map<Class, TypeReference> LIST_TYPES = new HashMap<Class, TypeReference>();
 
     static {
         initSimpleTypes();

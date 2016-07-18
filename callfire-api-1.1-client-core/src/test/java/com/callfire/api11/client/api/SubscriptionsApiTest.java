@@ -102,7 +102,7 @@ public class SubscriptionsApiTest extends AbstractApiTest {
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         Subscription subscription = client.subscriptionsApi().get(1234567L);
-        Resource<Subscription> response = new Resource<>(subscription, Subscription.class);
+        Resource<Subscription> response = new Resource<Subscription>(subscription, Subscription.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();
@@ -123,7 +123,7 @@ public class SubscriptionsApiTest extends AbstractApiTest {
             .maxResults(100)
             .build();
         List<Subscription> subscriptions = client.subscriptionsApi().query(request);
-        ResourceList<Subscription> response = new ResourceList<>(subscriptions, Subscription.class);
+        ResourceList<Subscription> response = new ResourceList<Subscription>(subscriptions, Subscription.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);
         JSONAssert.assertEquals(expectedJson, serialize, true);

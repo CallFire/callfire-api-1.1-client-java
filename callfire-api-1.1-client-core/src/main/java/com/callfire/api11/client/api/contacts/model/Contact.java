@@ -40,7 +40,7 @@ public class Contact extends CfApi11Model {
     @JsonProperty("@externalSystem")
     private String externalSystem;
     @JsonIgnore
-    private Map<String, String> attributes = new HashMap<>();
+    private Map<String, String> attributes = new HashMap<String, String>();
 
     public Long getId() {
         return id;
@@ -143,7 +143,7 @@ public class Contact extends CfApi11Model {
     }
 
     public List<NameValuePair> serializeToMap(int index) {
-        List<NameValuePair> params = new ArrayList<>(PROPERTIES_COUNT + attributes.size());
+        List<NameValuePair> params = new ArrayList<NameValuePair>(PROPERTIES_COUNT + attributes.size());
         String prefix = String.format("Contact[%d]", index);
         if (id != null) {
             params.add(new BasicNameValuePair(prefix + "[id]", id.toString()));

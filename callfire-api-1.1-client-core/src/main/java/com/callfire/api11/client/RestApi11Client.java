@@ -60,7 +60,7 @@ public class RestApi11Client {
     private HttpClient httpClient;
     private JsonConverter jsonConverter;
     private Authentication authentication;
-    private SortedSet<RequestFilter> filters = new TreeSet<>();
+    private SortedSet<RequestFilter> filters = new TreeSet<RequestFilter>();
 
     /**
      * REST API client constructor. Currently available authentication methods: {@link BasicAuth}
@@ -245,7 +245,7 @@ public class RestApi11Client {
     public <T> T post(String path, TypeReference<T> type, CfApi11Model payload, List<NameValuePair> queryParams) {
         try {
             String uri = getApiBasePath() + path;
-            List<NameValuePair> params = new ArrayList<>(queryParams);
+            List<NameValuePair> params = new ArrayList<NameValuePair>(queryParams);
             RequestBuilder builder = RequestBuilder.post(uri)
                 .setHeader(HttpHeaders.ACCEPT, APPLICATION_JSON.getMimeType());
             if (payload != null) {
@@ -315,7 +315,7 @@ public class RestApi11Client {
     public <T> T put(String path, TypeReference<T> type, CfApi11Model payload, List<NameValuePair> queryParams) {
         try {
             String uri = getApiBasePath() + path;
-            List<NameValuePair> params = new ArrayList<>(queryParams);
+            List<NameValuePair> params = new ArrayList<NameValuePair>(queryParams);
             RequestBuilder builder = RequestBuilder.put(uri)
                 .setHeader(HttpHeaders.ACCEPT, APPLICATION_JSON.getMimeType());
             if (payload != null) {

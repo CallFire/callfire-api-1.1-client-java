@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class ToNumber {
     private String value;
-    private Map<String, String> attributes = new HashMap<>();
+    private Map<String, String> attributes = new HashMap<String, String>();
 
     public ToNumber() {
     }
@@ -29,7 +29,7 @@ public class ToNumber {
     }
 
     public static Map<String, String> attributes(String... values) {
-        Map<String, String> attributes = new HashMap<>();
+        Map<String, String> attributes = new HashMap<String, String>();
         Validate.isTrue(values.length % 2 == 0, "The number of keys should correspond to a number of values");
         for (int i = 0; i < values.length; i += 2) {
             attributes.put(values[i], values[i + 1]);
@@ -42,7 +42,7 @@ public class ToNumber {
     }
 
     public static List<ToNumber> asList(String... phoneNumbers) {
-        List<ToNumber> numbers = new ArrayList<>(phoneNumbers.length);
+        List<ToNumber> numbers = new ArrayList<ToNumber>(phoneNumbers.length);
         for (String phoneNumber : phoneNumbers) {
             numbers.add(new ToNumber(phoneNumber));
         }

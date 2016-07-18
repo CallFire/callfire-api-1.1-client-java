@@ -39,7 +39,7 @@ public class Resource<T> {
 
     @JsonAnyGetter
     private Map<String, T> getResource() {
-        Map<String, T> mapping = new HashMap<>();
+        Map<String, T> mapping = new HashMap<String, T>();
         mapping.put(name, resource);
         return mapping;
     }

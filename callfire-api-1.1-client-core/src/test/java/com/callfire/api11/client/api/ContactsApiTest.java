@@ -51,7 +51,7 @@ public class ContactsApiTest extends AbstractApiTest {
             .string("data")
             .build();
         List<Contact> contacts = client.contactsApi().query(request);
-        ResourceList<Contact> response = new ResourceList<>(contacts, Contact.class);
+        ResourceList<Contact> response = new ResourceList<Contact>(contacts, Contact.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);
         JSONAssert.assertEquals(expectedJson, serialize, true);
@@ -74,7 +74,7 @@ public class ContactsApiTest extends AbstractApiTest {
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         Contact contact = client.contactsApi().get(1234567L);
-        Resource<Contact> response = new Resource<>(contact, Contact.class);
+        Resource<Contact> response = new Resource<Contact>(contact, Contact.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();
@@ -94,7 +94,7 @@ public class ContactsApiTest extends AbstractApiTest {
             .id(5L)
             .build();
         ContactHistory contactHistory = client.contactsApi().getHistory(request);
-        Resource<ContactHistory> response = new Resource<>(contactHistory, ContactHistory.class);
+        Resource<ContactHistory> response = new Resource<ContactHistory>(contactHistory, ContactHistory.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();
@@ -132,7 +132,7 @@ public class ContactsApiTest extends AbstractApiTest {
         contact1.setHomePhone("111");
         contact1.setWorkPhone("112");
         contact1.setMobilePhone("113");
-        Map<String, String> attrs = new HashMap<>();
+        Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("A", "data1");
         attrs.put("B", "data2");
         contact1.setAttributes(attrs);
@@ -144,7 +144,7 @@ public class ContactsApiTest extends AbstractApiTest {
         contact2.setHomePhone("222");
         contact2.setWorkPhone("333");
         contact2.setMobilePhone("444");
-        attrs = new HashMap<>();
+        attrs = new HashMap<String, String>();
         attrs.put("C", "data 3");
         attrs.put("D", "data 4");
         contact2.setAttributes(attrs);
@@ -190,7 +190,7 @@ public class ContactsApiTest extends AbstractApiTest {
         contact1.setLastName("Moore");
         contact1.setHomePhone("111");
         contact1.setWorkPhone("112");
-        Map<String, String> attrs = new HashMap<>();
+        Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("A", "data1");
         attrs.put("B", "data2");
         contact1.setAttributes(attrs);
@@ -247,7 +247,7 @@ public class ContactsApiTest extends AbstractApiTest {
         contact1.setLastName("Moore");
         contact1.setHomePhone("111");
         contact1.setWorkPhone("112");
-        Map<String, String> attrs = new HashMap<>();
+        Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("A", "data1");
         attrs.put("B", "data2");
         contact1.setAttributes(attrs);
@@ -327,7 +327,7 @@ public class ContactsApiTest extends AbstractApiTest {
             .maxResults(100)
             .build();
         List<ContactList> contactLists = client.contactsApi().queryContactLists(request);
-        ResourceList<ContactList> response = new ResourceList<>(contactLists, ContactList.class);
+        ResourceList<ContactList> response = new ResourceList<ContactList>(contactLists, ContactList.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);
         JSONAssert.assertEquals(expectedJson, serialize, true);
@@ -347,7 +347,7 @@ public class ContactsApiTest extends AbstractApiTest {
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         ContactList contactList = client.contactsApi().getContactList(1234567L);
-        Resource<ContactList> response = new Resource<>(contactList, ContactList.class);
+        Resource<ContactList> response = new Resource<ContactList>(contactList, ContactList.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();

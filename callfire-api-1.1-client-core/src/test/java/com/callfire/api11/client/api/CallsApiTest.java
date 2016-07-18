@@ -201,7 +201,7 @@ public class CallsApiTest extends AbstractApiTest {
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         Call call = client.callsApi().get(1234567L);
-        Resource<Call> response = new Resource<>(call, Call.class);
+        Resource<Call> response = new Resource<Call>(call, Call.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();
@@ -238,7 +238,7 @@ public class CallsApiTest extends AbstractApiTest {
             .build();
 
         List<Call> calls = client.callsApi().query(request);
-        ResourceList<Call> response = new ResourceList<>(calls, Call.class);
+        ResourceList<Call> response = new ResourceList<Call>(calls, Call.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();

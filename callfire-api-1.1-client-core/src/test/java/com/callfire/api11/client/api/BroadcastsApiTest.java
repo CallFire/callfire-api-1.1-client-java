@@ -152,7 +152,7 @@ public class BroadcastsApiTest extends AbstractApiTest {
             .labelName("label")
             .build();
         List<Broadcast> broadcasts = client.broadcastsApi().query(request);
-        ResourceList<Broadcast> response = new ResourceList<>(broadcasts, Broadcast.class);
+        ResourceList<Broadcast> response = new ResourceList<Broadcast>(broadcasts, Broadcast.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);
         JSONAssert.assertEquals(expectedJson, serialize, true);
@@ -175,7 +175,7 @@ public class BroadcastsApiTest extends AbstractApiTest {
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         Broadcast broadcast = client.broadcastsApi().get(1234567L);
-        Resource<Broadcast> response = new Resource<>(broadcast, Broadcast.class);
+        Resource<Broadcast> response = new Resource<Broadcast>(broadcast, Broadcast.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();
@@ -234,7 +234,7 @@ public class BroadcastsApiTest extends AbstractApiTest {
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         BroadcastStats stats = client.broadcastsApi().getStats(1234567L, startDate.getTime(), endDate.getTime());
-        Resource<BroadcastStats> response = new Resource<>(stats, BroadcastStats.class);
+        Resource<BroadcastStats> response = new Resource<BroadcastStats>(stats, BroadcastStats.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();
@@ -312,7 +312,7 @@ public class BroadcastsApiTest extends AbstractApiTest {
             .id(1000L)
             .build();
         List<ContactBatch> batches = client.broadcastsApi().queryBatches(request);
-        ResourceList<ContactBatch> response = new ResourceList<>(batches, ContactBatch.class);
+        ResourceList<ContactBatch> response = new ResourceList<ContactBatch>(batches, ContactBatch.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);
         JSONAssert.assertEquals(expectedJson, serialize, true);
@@ -334,7 +334,7 @@ public class BroadcastsApiTest extends AbstractApiTest {
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         ContactBatch batch = client.broadcastsApi().getBatch(1234567L);
-        Resource<ContactBatch> response = new Resource<>(batch, ContactBatch.class);
+        Resource<ContactBatch> response = new Resource<ContactBatch>(batch, ContactBatch.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();
@@ -405,7 +405,7 @@ public class BroadcastsApiTest extends AbstractApiTest {
             .id(1000L)
             .build();
         List<BroadcastSchedule> schedules = client.broadcastsApi().querySchedules(request);
-        ResourceList<BroadcastSchedule> response = new ResourceList<>(schedules, BroadcastSchedule.class);
+        ResourceList<BroadcastSchedule> response = new ResourceList<BroadcastSchedule>(schedules, BroadcastSchedule.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);
         JSONAssert.assertEquals(expectedJson, serialize, true);
@@ -427,7 +427,7 @@ public class BroadcastsApiTest extends AbstractApiTest {
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         BroadcastSchedule schedule = client.broadcastsApi().getSchedule(1234567L);
-        Resource<BroadcastSchedule> response = new Resource<>(schedule, BroadcastSchedule.class);
+        Resource<BroadcastSchedule> response = new Resource<BroadcastSchedule>(schedule, BroadcastSchedule.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         HttpUriRequest arg = captor.getValue();

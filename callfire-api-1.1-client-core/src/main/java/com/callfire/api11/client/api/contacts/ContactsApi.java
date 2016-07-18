@@ -133,7 +133,7 @@ public class ContactsApi {
      * @throws CfApi11ClientException       in case error has occurred in client.
      */
     public void update(List<Contact> contacts) {
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         for (int i = 0; i < contacts.size(); i++) {
             Contact contact = contacts.get(i);
             Validate.notNull(contact.getId(), "contact.id cannot be null");

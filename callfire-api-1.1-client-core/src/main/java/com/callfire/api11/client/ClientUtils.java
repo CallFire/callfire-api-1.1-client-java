@@ -66,7 +66,7 @@ public final class ClientUtils {
      * @return list of name-value pairs
      */
     public static List<NameValuePair> asParams(String name, Object value) {
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         addQueryParamIfSet(name, value, params);
         return params;
     }
@@ -96,7 +96,7 @@ public final class ClientUtils {
      */
     public static <T extends CfApi11Model> List<NameValuePair> buildQueryParams(T request)
         throws CfApi11ClientException {
-        List<NameValuePair> params = new ArrayList<>();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         readObject(request, params);
         return params;
     }
@@ -184,7 +184,7 @@ public final class ClientUtils {
     }
 
     public static <T extends Enum> List<T> deserializeEnumString(String input, Class<T> type) {
-        List<T> result = new ArrayList<>();
+        List<T> result = new ArrayList<T>();
         for (String value : StringUtils.split(input, " ")) {
             result.add((T) Enum.valueOf(type, value));
         }

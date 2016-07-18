@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class ContactHistory extends CfApi11Model {
     @JsonProperty("Call")
-    private List<Call> calls = new ArrayList<>();
+    private List<Call> calls = new ArrayList<Call>();
     @JsonProperty("Text")
-    private List<Text> texts = new ArrayList<>();
+    private List<Text> texts = new ArrayList<Text>();
 
     public List<Call> getCalls() {
         return calls;

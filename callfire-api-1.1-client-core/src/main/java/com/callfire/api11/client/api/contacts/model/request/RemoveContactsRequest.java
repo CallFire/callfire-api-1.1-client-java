@@ -17,8 +17,8 @@ public class RemoveContactsRequest extends CfApi11Model {
     @QueryParamIgnore
     private Long contactListId;
     @QueryParamName("ContactId")
-    private List<Long> contactIds = new ArrayList<>();
-    private List<String> numbers = new ArrayList<>();
+    private List<Long> contactIds = new ArrayList<Long>();
+    private List<String> numbers = new ArrayList<String>();
 
     private RemoveContactsRequest() {
     }

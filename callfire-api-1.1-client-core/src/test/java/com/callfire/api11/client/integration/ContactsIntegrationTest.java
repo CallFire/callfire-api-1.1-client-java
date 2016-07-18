@@ -68,7 +68,7 @@ public class ContactsIntegrationTest extends AbstractIntegrationTest {
         List<Contact> contacts = client.contactsApi().query(queryContactsRequest);
         System.out.println(contacts);
         assertEquals(2, contacts.size());
-        List<Long> contactIds = new ArrayList<>(contacts.size());
+        List<Long> contactIds = new ArrayList<Long>(contacts.size());
         for (Contact contact : contacts) {
             contactIds.add(contact.getId());
         }
@@ -87,7 +87,7 @@ public class ContactsIntegrationTest extends AbstractIntegrationTest {
         contact1.setLastName("last_name1");
         contact1.setHomePhone("111");
         contact1.setWorkPhone("112");
-        Map<String, String> attrs = new HashMap<>();
+        Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("A", "data1");
         attrs.put("B", "data2");
         contact1.setAttributes(attrs);
@@ -95,7 +95,7 @@ public class ContactsIntegrationTest extends AbstractIntegrationTest {
         contact2.setFirstName("first_name2");
         contact2.setLastName("last_name2");
         contact2.setMobilePhone("444");
-        attrs = new HashMap<>();
+        attrs = new HashMap<String, String>();
         attrs.put("C", "data 3");
         attrs.put("D", "data 4");
         contact2.setAttributes(attrs);
@@ -158,7 +158,7 @@ public class ContactsIntegrationTest extends AbstractIntegrationTest {
         assertEquals(1, contacts.size());
         assertEquals("555000", contacts.get(0).getHomePhone());
         contacts.get(0).setFirstName("UpdatedName");
-        Map<String, String> attrs = new HashMap<>();
+        Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("A", "custom data");
         contacts.get(0).setAttributes(attrs);
 
@@ -169,7 +169,7 @@ public class ContactsIntegrationTest extends AbstractIntegrationTest {
         contact.setWorkPhone("12132212380");
         contact.setHomePhone("12132212381");
         contact.setMobilePhone("12132212382");
-        attrs = new HashMap<>();
+        attrs = new HashMap<String, String>();
         attrs.put("A", "data 1");
         attrs.put("B", "data 2");
         contact.setAttributes(attrs);

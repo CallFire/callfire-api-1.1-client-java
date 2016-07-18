@@ -175,7 +175,7 @@ public class BroadcastsApi {
      */
     public BroadcastStats getStats(long id, Date intervalBegin, Date intervalEnd) {
         String path = BROADCASTS_ITEM_STATS_PATH.replaceFirst(PLACEHOLDER, String.valueOf(id));
-        List<NameValuePair> params = new ArrayList<>(2);
+        List<NameValuePair> params = new ArrayList<NameValuePair>(2);
         if (intervalBegin != null && intervalEnd != null) {
             SimpleDateFormat formatter = new SimpleDateFormat(TIMESTAMP_FORMAT_PATTERN);
             addQueryParamIfSet("IntervalBegin", formatter.format(intervalBegin), params);

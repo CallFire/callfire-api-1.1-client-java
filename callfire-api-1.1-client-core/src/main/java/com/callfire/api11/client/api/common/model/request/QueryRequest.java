@@ -19,7 +19,7 @@ public class QueryRequest extends CfApi11Model {
      * @return request build
      */
     public static QueryRequestBuilder createSimpleQuery() {
-        return new QueryRequestBuilder<>();
+        return new QueryRequestBuilder();
     }
 
     @SuppressWarnings("unchecked")

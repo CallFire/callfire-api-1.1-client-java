@@ -30,7 +30,7 @@ public class MockSubscriptionsTest {
     public void customResponse() throws Exception {
         Map<String, Pair<Integer, String>> responses = CallfireTestUtils.getJsonResponseMapping(client);
         responses.put(ModelType.listOf(Subscription.class).getType().toString(),
-            new MutablePair<>(400, "/common/errorResponse.json"));
+            new MutablePair<Integer, String>(400, "/common/errorResponse.json"));
 
         ex.expect(BadRequestException.class);
         ex.expectMessage("TriggerEvent is required");

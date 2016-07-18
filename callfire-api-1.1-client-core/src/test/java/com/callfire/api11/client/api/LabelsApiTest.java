@@ -32,7 +32,7 @@ public class LabelsApiTest extends AbstractApiTest {
             .maxResults(100)
             .build();
         List<Label> labels = client.labelsApi().query(request);
-        ResourceList<Label> response = new ResourceList<>(labels, Label.class);
+        ResourceList<Label> response = new ResourceList<Label>(labels, Label.class);
         String serialize = jsonConverter.serialize(response);
         System.out.println(serialize);
         JSONAssert.assertEquals(expectedJson, serialize, true);
