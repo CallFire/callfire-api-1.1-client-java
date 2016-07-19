@@ -4,6 +4,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "co.riiid.gradle" version "0.4.2"
+}
+
 subprojects { p ->
     apply plugin: 'idea'
     apply plugin: 'java'
@@ -116,9 +120,44 @@ subprojects { p ->
             downloadSources = true
         }
     }
+
+}
+
+github {
+    owner = gitHubOwner()
+    repo = "callfire-api-1.1-client-java"
+    token = gitHubToken()
+    tagName = version
+    targetCommitish = "master"
+    name = version
+    body = releaseDescription()
+    assets = [
+        "callfire-api-1.1-client-core/build/libs/callfire-api-1.1-client-core-" + project.version + "-all.jar",
+        "callfire-api-1.1-client-core/build/libs/callfire-api-1.1-client-core-" + project.version + "-javadoc.jar",
+        "callfire-api-1.1-client-core/build/libs/callfire-api-1.1-client-core-" + project.version + "-sources.jar",
+        "callfire-api-1.1-client-core/build/libs/callfire-api-1.1-client-core-" + project.version + ".jar"
+    ]
 }
 
 def buildNumber() {
     String buildNumber = System.properties[ 'BUILD_NUMBER' ] ?: "SNAPSHOT"
     "$buildNumber"
+}
+
+def gitHubOwner() {
+    String gitHubOwner = System.getProperty("gitHubOwner") ?: "empty"
+    "$gitHubOwner"
+}
+
+def gitHubToken() {
+    String gitHubToken = System.getProperty("gitHubToken") ?: "empty"
+    "$gitHubToken"
+}
+
+def releaseDescription() {
+    String releaseNotes = file("Changelog.txt").text
+    Integer start = releaseNotes.indexOf("Version") + 28;
+    Integer end = releaseNotes.indexOf("Version", start);
+    String currentReleaseChanges = releaseNotes.substring(start, (end == -1 ? releaseNotes.size() - 1 : end)).trim()
+    "$currentReleaseChanges"
 }
