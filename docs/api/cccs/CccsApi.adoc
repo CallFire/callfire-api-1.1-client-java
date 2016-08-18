@@ -409,7 +409,7 @@ Example below shows how to create agent group using list of agent ids.
 [source,java]
 ----
 import com.callfire.api11.client.CfApi11Client;
-import com.callfire.api11.client.api.ccc.model.request.CreateAgentGroupRequest;
+import com.callfire.api11.client.api.ccc.model.AgentGroup;
 
 import java.util.Arrays;
 
@@ -418,12 +418,11 @@ public class CallfireIntegrationSample {
     public static void main(String[] args) {
         CfApi11Client client = new CfApi11Client("login", "password");
 
-        CreateAgentGroupRequest createRequest = CreateAgentGroupRequest.create()
-            .agentIds(Arrays.asList(289020003L, 386074003L))
-            .name("test agent group")
-            .build();
+        AgentGroup group = new AgentGroup();
+        group.setAgentIds(Arrays.asList(289020003L, 386074003L));
+        group.setName("test agent group");
 
-        Long createdAgentGroupId = client.cccsApi().createAgentGroup(createRequest);
+        Long createdAgentGroupId = client.cccsApi().createAgentGroup(group);
     }
 }
 ----
@@ -435,7 +434,7 @@ Example below shows how to update agent group name and campaign ids assigned.
 [source,java]
 ----
 import com.callfire.api11.client.CfApi11Client;
-import com.callfire.api11.client.api.ccc.model.request.UpdateAgentGroupRequest;
+import com.callfire.api11.client.api.ccc.model.AgentGroup;
 
 import java.util.Arrays;
 
@@ -447,13 +446,13 @@ public class CallfireIntegrationSample {
         Long agentGroupId = 112332273003L;
         Long broadcastId = 11755573003L;
 
-        UpdateAgentGroupRequest updateRequest = UpdateAgentGroupRequest.create()
-            .id(agentGroupId)
-            .campaignIds(Arrays.asList(broadcastId))
-            .name("updated name")
-            .build();
+        AgentGroup group = new AgentGroup();
+        group.setId(agentGroupId);
+        group.setCampaignIds(Arrays.asList(broadcastId));
+        group.setAgentIds(Arrays.asList(289020003L, 386074003L));
+        group.setName("updated name");
 
-        client.cccsApi().updateAgentGroup(updateRequest);
+        client.cccsApi().updateAgentGroup(group);
     }
 }
 ----

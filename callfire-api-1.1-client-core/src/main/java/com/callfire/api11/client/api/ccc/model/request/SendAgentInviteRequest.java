@@ -3,6 +3,7 @@ package com.callfire.api11.client.api.ccc.model.request;
 import com.callfire.api11.client.api.common.QueryParamIgnore;
 import com.callfire.api11.client.api.common.model.AbstractBuilder;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import java.util.List;
 public class SendAgentInviteRequest extends CfApi11Model {
     @QueryParamIgnore
     private Long campaignId;
-    private String requestId;
     private String agentGroupName;
     private List<String> agentEmails = new ArrayList<>();
 
@@ -25,7 +25,6 @@ public class SendAgentInviteRequest extends CfApi11Model {
     public String toString() {
         return new ToStringBuilder(this)
             .append("campaignId", campaignId)
-            .append("requestId", requestId)
             .append("agentGroupName", agentGroupName)
             .append("agentEmails", agentEmails)
             .toString();
@@ -42,10 +41,6 @@ public class SendAgentInviteRequest extends CfApi11Model {
 
     public Long getCampaignId() {
         return campaignId;
-    }
-
-    public String getRequestId() {
-        return requestId;
     }
 
     public String getAgentGroupName() {
@@ -65,23 +60,8 @@ public class SendAgentInviteRequest extends CfApi11Model {
 
         @Override
         protected void validate() {
-            if (request.campaignId == null) {
-                throw new IllegalStateException("campaign id should be specified");
-            }
-            if (request.agentEmails.isEmpty()) {
-                throw new IllegalStateException("agent emails should be specified");
-            }
-        }
-
-        /**
-         * Set Unique ID of web request to de-dup on
-         *
-         * @param requestId request id string
-         * @return builder self reference
-         */
-        public SendAgentInviteRequestBuilder requestId(String requestId) {
-            request.requestId = requestId;
-            return this;
+            Validate.notNull(request.campaignId, "campaign id should be specified");
+            Validate.notEmpty(request.agentEmails, "agent emails should be specified");
         }
 
         /**

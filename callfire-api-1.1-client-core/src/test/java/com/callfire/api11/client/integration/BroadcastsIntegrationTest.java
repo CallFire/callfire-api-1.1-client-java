@@ -153,13 +153,6 @@ public class BroadcastsIntegrationTest extends AbstractIntegrationTest {
     }*/
 
     @Test
-    public void loadBr() throws Exception {
-        Broadcast br = client.broadcastsApi().get(11197618003L);
-        System.out.println(br);
-    }
-
-
-    @Test
     public void batchCrudOperations() throws Exception {
         Long broadcastId = 11741873003L;
         Date started = new Date();

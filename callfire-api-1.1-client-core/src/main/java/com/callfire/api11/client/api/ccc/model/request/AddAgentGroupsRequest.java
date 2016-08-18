@@ -3,6 +3,7 @@ package com.callfire.api11.client.api.ccc.model.request;
 import com.callfire.api11.client.api.common.QueryParamIgnore;
 import com.callfire.api11.client.api.common.model.AbstractBuilder;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
@@ -53,12 +54,8 @@ public class AddAgentGroupsRequest extends CfApi11Model {
 
         @Override
         protected void validate() {
-            if (request.campaignId == null) {
-                throw new IllegalStateException("ccc campaign id should be specified");
-            }
-            if (request.agentGroupIds.isEmpty()) {
-                throw new IllegalStateException("agent group ids should be specified");
-            }
+            Validate.notNull(request.campaignId, "ccc campaign id should be specified");
+            Validate.notEmpty(request.agentGroupIds, "agent group ids should be specified");
         }
 
         /**

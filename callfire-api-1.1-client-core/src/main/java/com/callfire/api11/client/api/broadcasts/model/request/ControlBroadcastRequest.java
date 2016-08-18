@@ -4,6 +4,7 @@ import com.callfire.api11.client.api.broadcasts.model.BroadcastCommand;
 import com.callfire.api11.client.api.common.QueryParamIgnore;
 import com.callfire.api11.client.api.common.model.AbstractBuilder;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -14,7 +15,6 @@ public class ControlBroadcastRequest extends CfApi11Model {
     private Long id;
     private BroadcastCommand command;
     private Integer maxActive;
-    protected String requestId;
 
     protected ControlBroadcastRequest() {
     }
@@ -25,7 +25,6 @@ public class ControlBroadcastRequest extends CfApi11Model {
             .append("id", id)
             .append("command", command)
             .append("maxActive", maxActive)
-            .append("requestId", requestId)
             .toString();
     }
 
@@ -50,10 +49,6 @@ public class ControlBroadcastRequest extends CfApi11Model {
         return maxActive;
     }
 
-    public String getRequestId() {
-        return requestId;
-    }
-
     @SuppressWarnings("unchecked")
     public static class ControlBroadcastRequestBuilder extends AbstractBuilder<ControlBroadcastRequest> {
 
@@ -63,11 +58,8 @@ public class ControlBroadcastRequest extends CfApi11Model {
 
         @Override
         protected void validate() {
-            if (request.id == null) {
-                throw new IllegalStateException("id should be specified");
-            }
-            if (request.command == null)
-                throw new IllegalStateException("command should be specified");
+            Validate.notNull(request.id, "id should be specified");
+            Validate.notNull(request.command, "command should be specified");
         }
 
         /**
@@ -102,17 +94,5 @@ public class ControlBroadcastRequest extends CfApi11Model {
             request.maxActive = maxActive;
             return this;
         }
-
-        /**
-         * Set request id
-         *
-         * @param requestId request id
-         * @return builder self reference
-         */
-        public ControlBroadcastRequestBuilder requestId(String requestId) {
-            request.requestId = requestId;
-            return this;
-        }
-
     }
 }

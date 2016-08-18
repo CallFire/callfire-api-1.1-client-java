@@ -328,7 +328,7 @@ public class CccsApi {
     /**
      * Create CCC AgentGroup
      *
-     * @param request request with parameters to create agent group
+     * @param agentGroup agent group object
      * @return id of newly created agent group
      * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
      * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
@@ -338,14 +338,14 @@ public class CccsApi {
      * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
      * @throws CfApi11ClientException       in case error has occurred in client.
      */
-    public Long createAgentGroup(CreateAgentGroupRequest request) {
-        return client.post(CCC_AGENT_GROUP_PATH, of(ResourceReference.class), request).getId();
+    public Long createAgentGroup(AgentGroup agentGroup) {
+        return client.post(CCC_AGENT_GROUP_PATH, of(ResourceReference.class), agentGroup).getId();
     }
 
     /**
      * Update existing CCC Agent Group
      *
-     * @param request request with parameters to update agent group (name etc)
+     * @param agentGroup agent group object
      * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
      * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
      * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
@@ -354,10 +354,10 @@ public class CccsApi {
      * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
      * @throws CfApi11ClientException       in case error has occurred in client.
      */
-    public void updateAgentGroup(UpdateAgentGroupRequest request) {
-        Validate.notNull(request.getId(), "id cannot be null");
-        String path = CCC_AGENT_GROUP_ITEM_PATH.replaceFirst(PLACEHOLDER, request.getId().toString());
-        client.put(path, of(Object.class), request);
+    public void updateAgentGroup(AgentGroup agentGroup) {
+        Validate.notNull(agentGroup.getId(), "id cannot be null");
+        String path = CCC_AGENT_GROUP_ITEM_PATH.replaceFirst(PLACEHOLDER, agentGroup.getId().toString());
+        client.put(path, of(Object.class), agentGroup);
     }
 
     /**

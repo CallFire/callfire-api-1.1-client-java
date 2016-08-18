@@ -7,22 +7,20 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class SpacedStringAsListOfLongDeserializer extends JsonDeserializer<List<Long>> {
+public class SpacedStringAsObjectList extends JsonDeserializer<List<Object>> {
 
     @Override
-    public List<Long> deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException, JsonProcessingException {
+    public List<Object> deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException, JsonProcessingException {
         String stringToParse = jsonParser.getText();
-        List<Long> items = new ArrayList<>();
+        List<Object> items = new ArrayList<>();
 
         if (stringToParse == null || stringToParse == "")
             return items;
 
-        for (String obj : stringToParse.split(" ")) {
-            items.add(Long.parseLong(obj));
-        }
-        return items;
+        return Arrays.asList((Object[]) stringToParse.split(" "));
     }
 
 }

@@ -1,8 +1,7 @@
 
 package com.callfire.api11.client.api.ccc.model;
 
-import com.callfire.api11.client.api.common.SpacedStringAsListDeserializer;
-import com.callfire.api11.client.api.common.SpacedStringAsListOfLongDeserializer;
+import com.callfire.api11.client.api.common.SpacedStringAsObjectList;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -15,11 +14,11 @@ public class AgentGroup extends CfApi11Model {
     @JsonProperty("@id")
     private Long id;
     private String name;
-    @JsonDeserialize(using = SpacedStringAsListOfLongDeserializer.class)
+    @JsonDeserialize(using = SpacedStringAsObjectList.class)
     private List<Long> campaignIds;
-    @JsonDeserialize(using = SpacedStringAsListOfLongDeserializer.class)
+    @JsonDeserialize(using = SpacedStringAsObjectList.class)
     private List<Long> agentIds;
-    @JsonDeserialize(using = SpacedStringAsListDeserializer.class)
+    @JsonDeserialize(using = SpacedStringAsObjectList.class)
     private List<String> agentEmails;
 
     @Override

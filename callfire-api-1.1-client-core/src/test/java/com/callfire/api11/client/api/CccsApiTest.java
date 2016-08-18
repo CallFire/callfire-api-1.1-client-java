@@ -441,12 +441,11 @@ public class CccsApiTest extends AbstractApiTest {
         String expectedJson = getJsonPayload("/cccBroadcasts/createAgentGroup.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
-        CreateAgentGroupRequest createRequest = CreateAgentGroupRequest.create()
-            .agentIds(Arrays.asList(289020003L, 386074003L))
-            .name("test agent group")
-            .build();
+        AgentGroup group = new AgentGroup();
+        group.setAgentIds(Arrays.asList(289020003L, 386074003L));
+        group.setName("test agent group");
 
-        Long id = client.cccsApi().createAgentGroup(createRequest);
+        Long id = client.cccsApi().createAgentGroup(group);
         ResourceReference response = new ResourceReference(id, location);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
@@ -464,14 +463,13 @@ public class CccsApiTest extends AbstractApiTest {
     public void updateAgentGroup() throws Exception {
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse();
 
-        UpdateAgentGroupRequest request = UpdateAgentGroupRequest.create()
-            .id(289020003L)
-            .campaignIds(Arrays.asList(386074003L))
-            .name("test agent group updated")
-            .agentIds(Arrays.asList(289020003L, 386074003L))
-            .build();
+        AgentGroup group = new AgentGroup();
+        group.setAgentIds(Arrays.asList(289020003L, 386074003L));
+        group.setName("test agent group updated");
+        group.setId(289020003L);
+        group.setCampaignIds(Arrays.asList(386074003L));
 
-        client.cccsApi().updateAgentGroup(request);
+        client.cccsApi().updateAgentGroup(group);
 
         HttpUriRequest arg = captor.getValue();
         assertEquals(HttpPut.METHOD_NAME, arg.getMethod());

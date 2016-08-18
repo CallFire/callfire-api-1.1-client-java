@@ -223,24 +223,21 @@ public class CccsIntegrationTest extends AbstractIntegrationTest {
 
         Long createdBroadcastId = client.cccsApi().create(broadcast);*/
 
-        CreateAgentGroupRequest createRequest = CreateAgentGroupRequest.create()
-            .agentIds(Arrays.asList(289020003L, 386074003L))
-            .name("test agent group")
-            .build();
+        AgentGroup group = new AgentGroup();
+        group.setAgentIds(Arrays.asList(289020003L, 386074003L));
+        group.setName("test agent group");
 
-        Long createdAgentGroupId = client.cccsApi().createAgentGroup(createRequest);
+        Long createdAgentGroupId = client.cccsApi().createAgentGroup(group);
 
-        AgentGroup group = client.cccsApi().getAgentGroup(createdAgentGroupId);
-        assertNotNull(group);
-        assertEquals(group.getName(), "test agent group");
+        AgentGroup createdGroup = client.cccsApi().getAgentGroup(createdAgentGroupId);
+        assertNotNull(createdGroup);
+        assertEquals(createdGroup.getName(), "test agent group");
 
-        UpdateAgentGroupRequest updateRequest = UpdateAgentGroupRequest.create()
-            .id(group.getId())
-            //    .campaignIds(Arrays.asList(createdBroadcastId))
-            .name(group.getName() + " updated")
-            .build();
+        createdGroup.setName(group.getName() + " updated");
+        createdGroup.setAgentIds(null);
+        //createdGroup.setCampaignIds(Arrays.asList(createdBroadcastId));
 
-        client.cccsApi().updateAgentGroup(updateRequest);
+        client.cccsApi().updateAgentGroup(createdGroup);
 
         group = client.cccsApi().getAgentGroup(createdAgentGroupId);
         assertEquals(group.getName(), "test agent group updated");
@@ -266,12 +263,11 @@ public class CccsIntegrationTest extends AbstractIntegrationTest {
 
         Long createdBroadcastId = client.cccsApi().create(broadcast);
 
-        CreateAgentGroupRequest createRequest = CreateAgentGroupRequest.create()
-            .agentIds(Arrays.asList(289020003L))
-            .name("test agent group")
-            .build();
+        AgentGroup group = new AgentGroup();
+        group.setAgentIds(Arrays.asList(289020003L));
+        group.setName("test agent group");
 
-        Long createdAgentGroupId = client.cccsApi().createAgentGroup(createRequest);
+        Long createdAgentGroupId = client.cccsApi().createAgentGroup(group);
 
         AddAgentGroupsRequest addRequest = AddAgentGroupsRequest.create()
            .agentGroupIds(Arrays.asList(createdAgentGroupId))
@@ -315,12 +311,11 @@ public class CccsIntegrationTest extends AbstractIntegrationTest {
 
         Long createdBroadcastId = client.cccsApi().create(broadcast);
 
-        CreateAgentGroupRequest createGroupRequest = CreateAgentGroupRequest.create()
-            .agentIds(Arrays.asList(289020003L))
-            .name("test agent group for invite")
-            .build();
+        AgentGroup group = new AgentGroup();
+        group.setAgentIds(Arrays.asList(289020003L));
+        group.setName("test agent group for invite");
 
-        Long createdAgentGroupId = client.cccsApi().createAgentGroup(createGroupRequest);
+        Long createdAgentGroupId = client.cccsApi().createAgentGroup(group);
 
         SendAgentInviteRequest request = SendAgentInviteRequest.create()
            .campaignId(createdBroadcastId)
