@@ -1,0 +1,14 @@
+{
+  "ResourceList": {
+    "@totalResults": 1,
+    "AgentGroup": [
+      {
+        "CampaignIds": "13692574003 13692574004",
+        "Name": "Name",
+        "AgentIds": "289020003 289020004",
+        "AgentEmails": "agent1@callfire.com agent2@callfire.com",
+        "@id": 268008003
+      }
+    ]
+  }
+}

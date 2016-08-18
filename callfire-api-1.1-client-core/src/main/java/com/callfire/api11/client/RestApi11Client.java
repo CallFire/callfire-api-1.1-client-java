@@ -142,6 +142,25 @@ public class RestApi11Client {
      *
      * @param path    request path
      * @param type    return entity type
+     * @param <T>     return entity type
+     * @return pojo mapped from json
+     * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
+     * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
+     * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
+     * @throws ResourceNotFoundException    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.
+     * @throws InternalServerErrorException in case HTTP response code is 500 - Internal Server Error.
+     * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
+     * @throws CfApi11ClientException       in case error has occurred in client.
+     */
+    public <T> T query(String path, TypeReference<T> type) {
+        return get(path, type, Collections.<NameValuePair>emptyList());
+    }
+
+    /**
+     * Performs GET request to specified path
+     *
+     * @param path    request path
+     * @param type    return entity type
      * @param request finder request with query parameters
      * @param <T>     return entity type
      * @return pojo mapped from json

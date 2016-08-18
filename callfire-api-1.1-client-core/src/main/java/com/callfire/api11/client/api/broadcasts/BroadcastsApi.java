@@ -14,6 +14,7 @@ import com.callfire.api11.client.api.broadcasts.model.BroadcastSchedule;
 import com.callfire.api11.client.api.broadcasts.model.BroadcastStats;
 import com.callfire.api11.client.api.broadcasts.model.BroadcastType;
 import com.callfire.api11.client.api.broadcasts.model.ContactBatch;
+import com.callfire.api11.client.api.broadcasts.model.request.ControlBroadcastRequest;
 import com.callfire.api11.client.api.broadcasts.model.request.CreateBatchRequest;
 import com.callfire.api11.client.api.broadcasts.model.request.QueryBroadcastsRequest;
 import com.callfire.api11.client.api.common.model.ResourceReference;
@@ -182,6 +183,23 @@ public class BroadcastsApi {
             addQueryParamIfSet("IntervalEnd", formatter.format(intervalEnd), params);
         }
         return client.get(path, resourceOf(BroadcastStats.class), params).get();
+    }
+
+    /**
+     * Apply command START, STOP, or ARCHIVE to Broadcast. Also can change the max active count of Broadcast.
+     *
+     * @param request request with broadcast id, command etc
+     * @throws BadRequestException          in case HTTP response code is 400 - Bad request, the request was formatted improperly.
+     * @throws UnauthorizedException        in case HTTP response code is 401 - Unauthorized, API Key missing or invalid.
+     * @throws AccessForbiddenException     in case HTTP response code is 403 - Forbidden, insufficient permissions.
+     * @throws ResourceNotFoundException    in case HTTP response code is 404 - NOT FOUND, the resource requested does not exist.
+     * @throws InternalServerErrorException in case HTTP response code is 500 - Internal Server Error.
+     * @throws CfApi11ApiException          in case HTTP response code is something different from codes listed above.
+     * @throws CfApi11ClientException       in case error has occurred in client.
+     */
+    public void control(ControlBroadcastRequest request) {
+        String path = BROADCASTS_ITEM_CONTROL_PATH.replaceFirst(PLACEHOLDER, String.valueOf(request.getId()));
+        client.put(path, of(Object.class), request);
     }
 
     /**

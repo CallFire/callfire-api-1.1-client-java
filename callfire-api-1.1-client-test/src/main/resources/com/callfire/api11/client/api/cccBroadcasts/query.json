@@ -1,0 +1,27 @@
+{
+  "ResourceList": {
+    "@totalResults": 1,
+    "CccBroadcast": [
+      {
+        "Name": "TestCCCBroadcast",
+        "RetryConfig": {
+          "MaxAttempts": 1,
+          "MinutesBetweenAttempts": 60,
+          "RetryResults": "",
+          "RetryPhoneTypes": "FIRST_NUMBER"
+        },
+        "Status": "STOPPED",
+        "FromNumber": "18558214046",
+        "LastModified": "2015-06-23T14:19:59Z",
+        "LocalRestrictBegin": "08:00:00Z",
+        "LocalRestrictEnd": "21:00:00Z",
+        "AgentGroupId": 149740003,
+        "AllowAnyTransfer": true,
+        "Recorded": true,
+        "MultilineDialingRatio": 2,
+        "MultilineDialingEnabled": true,
+        "@id": 5759746003
+      }
+    ]
+  }
+}

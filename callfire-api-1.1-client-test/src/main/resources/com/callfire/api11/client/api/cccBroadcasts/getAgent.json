@@ -1,0 +1,14 @@
+{
+  "Resource": {
+    "Agent": {
+      "Enabled": true,
+      "Name": "Name",
+      "Email": "name@callfire.com",
+      "LastLogin": "2015-06-23T14:19:59Z",
+      "CampaignIds": "13658242003 13658242004",
+      "GroupIds": "21343421 21343422",
+      "@id": 386074003
+    }
+  }
+}
+

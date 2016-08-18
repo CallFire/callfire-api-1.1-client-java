@@ -2,6 +2,7 @@ package com.callfire.api11.client;
 
 import com.callfire.api11.client.api.broadcasts.BroadcastsApi;
 import com.callfire.api11.client.api.calls.CallsApi;
+import com.callfire.api11.client.api.ccc.CccsApi;
 import com.callfire.api11.client.api.contacts.ContactsApi;
 import com.callfire.api11.client.api.labels.LabelsApi;
 import com.callfire.api11.client.api.subscriptions.SubscriptionsApi;
@@ -59,6 +60,7 @@ public class CfApi11Client {
 
     // api
     private BroadcastsApi broadcastsApi;
+    private CccsApi cccsApi;
     private ContactsApi contactsApi;
     private CallsApi callsApi;
     private TextsApi textsApi;
@@ -111,6 +113,18 @@ public class CfApi11Client {
             broadcastsApi = new BroadcastsApi(restApiClient);
         }
         return broadcastsApi;
+    }
+
+    /**
+     * Get /ccc api endpoint
+     *
+     * @return endpoint object
+     */
+    public CccsApi cccsApi() {
+        if (cccsApi == null) {
+            cccsApi = new CccsApi(restApiClient);
+        }
+        return cccsApi;
     }
 
     /**

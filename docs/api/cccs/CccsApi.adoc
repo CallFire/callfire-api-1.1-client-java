@@ -1,0 +1,639 @@
+= Cccs API
+
+=== Create Ccc broadcast
+This operation creates ccc campaign. Returns id of newly created ccc campaign.
+
+Create ccc broadcast example.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.CccBroadcast;
+import com.callfire.api11.client.api.ccc.model.Question;
+import com.callfire.api11.client.api.ccc.model.QuestionResponseType;
+import com.callfire.api11.client.api.ccc.model.TransferNumber;
+import com.callfire.api11.client.api.common.model.Result;
+import com.callfire.api11.client.api.common.model.RetryConfig;
+import com.callfire.api11.client.api.common.model.RetryPhoneType;
+import org.apache.commons.lang3.time.DateUtils;
+
+import java.util.Arrays;
+
+import static com.callfire.api11.client.ClientConstants.TIME_FORMAT_PATTERN;
+import static java.util.Arrays.asList;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) throws Exception {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        CccBroadcast broadcast = new CccBroadcast();
+        broadcast.setName("Test CCC Broadcast");
+        broadcast.setFromNumber("12132212384");
+
+        Question q = new Question();
+        q.setLabel("testQuestion");
+        q.setResponseType(QuestionResponseType.STRING);
+        q.setChoices(Arrays.asList("TEST1", "TEST2"));
+        broadcast.setQuestions(Arrays.asList(q));
+
+        TransferNumber t = new TransferNumber();
+        t.setNumber("12132212384");
+        t.setName("Transfer name");
+        t.setAllowAssistedTransfer(true);
+        broadcast.setTransferNumbers(Arrays.asList(t));
+
+        broadcast.setScript("test script");
+        broadcast.setScrubLevel(2);
+
+        broadcast.setBeginTime(DateUtils.parseDate("10:10:10", TIME_FORMAT_PATTERN));
+        broadcast.setEndTime(DateUtils.parseDate("15:15:15", TIME_FORMAT_PATTERN));
+
+        broadcast.setSmartDropSoundId(1L);
+        broadcast.setAgentGroupId(149740003L);
+        broadcast.setAllowAnyTransfer(true);
+        broadcast.setRecorded(true);
+        broadcast.setMultilineDialingRatio(2);
+        broadcast.setMultilineDialingEnabled(true);
+        broadcast.setRetryConfig(new RetryConfig(2, 1, asList(Result.BUSY, Result.NO_ANS), asList(RetryPhoneType.MOBILE_PHONE, RetryPhoneType.HOME_PHONE)));
+
+        broadcast.setTransferCallerId("12132212384");
+
+        Long createdBroadcastId = client.cccsApi().create(broadcast);
+    }
+}
+----
+
+
+=== Update Ccc broadcast
+Update existing campaign's configuration such as time zone restrictions or retry logic.
+Examples below shows how to update broadcast name and configuration.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.CccBroadcast;
+import com.callfire.api11.client.api.common.model.Result;
+import com.callfire.api11.client.api.common.model.RetryConfig;
+import com.callfire.api11.client.api.common.model.RetryPhoneType;
+import org.apache.commons.lang3.time.DateUtils;
+
+import static com.callfire.api11.client.ClientConstants.TIME_FORMAT_PATTERN;
+import static java.util.Arrays.asList;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        CccBroadcast broadcast = new CccBroadcast();
+        broadcast.setId(123L);
+        broadcast.setName("Test CCC Broadcast Updated");
+        broadcast.setBeginTime(DateUtils.parseDate("10:10:10", TIME_FORMAT_PATTERN));
+        broadcast.setEndTime(DateUtils.parseDate("15:15:15", TIME_FORMAT_PATTERN));
+        broadcast.setRetryConfig(new RetryConfig(2, 1, asList(Result.BUSY, Result.NO_ANS), asList(RetryPhoneType.MOBILE_PHONE, RetryPhoneType.HOME_PHONE)));
+
+        client.cccsApi().update(broadcast);
+    }
+}
+----
+
+
+=== Query Ccc broadcasts
+Query for existing ccc campaigns using optional filters such as name, status, labels, etc... Returns a list of ccc campaigns and all associated info.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.CccBroadcast;
+import com.callfire.api11.client.api.ccc.model.request.QueryCccBroadcastsRequest;
+
+import java.util.List;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        QueryCccBroadcastsRequest request = QueryCccBroadcastsRequest.create()
+            .name("Test CCC Broadcast")
+            .running(false)
+            .labelName("Test")
+            .maxResults(1)
+            .firstResult(0)
+            .build();
+
+        List<CccBroadcast> broadcasts = client.cccsApi().query(request);
+    }
+}
+----
+
+
+=== Get Ccc broadcast
+Get particular ccc broadcast by id
+Use ID returned from CreateCccBroadcast or from QueryCccBroadcast to retrieve information on individual Broadcast.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.CccBroadcast;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        CccBroadcast savedBroadcast = client.cccsApi().get(broadcastId);
+    }
+}
+----
+
+
+=== Get Ccc broadcast stats
+Get broadcast stats by broadcastId or by interval range. Stats include information like billed amount,
+ billed duration, actions count, attempt count, etc.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastStats;
+
+import java.util.Date;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        // populate interval date objects to filter stats by interval
+        Date intervalBegin = new Date();
+        Date intervalEnd = new Date();
+        BroadcastStats stats = client.cccsApi().getStats(broadcastId, intervalBegin, intervalEnd);
+    }
+}
+----
+
+
+=== Control Ccc broadcast
+Apply command START, STOP, or ARCHIVE to Ccc Broadcast. Also can change the max active count of Broadcast.
+Example below shows how to start broadcast with 100 simultaneous actions.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.broadcasts.model.BroadcastCommand;
+import com.callfire.api11.client.api.broadcasts.model.request.ControlBroadcastRequest;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        ControlBroadcastRequest archiveRequest = ControlBroadcastRequest.create()
+            .command(BroadcastCommand.START)
+            .id(broadcastId)
+            .maxActive(100)
+            .build();
+        client.cccsApi().control(archiveRequest);
+    }
+}
+----
+
+
+=== Delete Ccc broadcast
+Delete ccc campaign identified by id.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        client.cccsApi().delete(broadcastId);
+    }
+}
+----
+
+
+=== Delete all transfer numbers from existing Ccc Campaign
+Delete all transfer numbers from an existing CCC Campaign.
+To add or update transfer numbers on ccc campaign use UpdateCccCampaign. This call is only needed when deletion of all transfer numbers is needed.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        client.cccsApi().deleteTransferNumbers(broadcastId);
+    }
+}
+----
+
+
+=== Delete all questions from existing Ccc Campaign
+Delete all questions from an existing CCC Campaign. To add or update questions on ccc campaign use UpdateCccCampaign.
+This call is only needed when deletion of all questions is needed.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        client.cccsApi().deleteQuestions(broadcastId);
+    }
+}
+----
+
+
+=== Get Ccc Agent by Id
+Return individual agent by id. See QueryAgents to return list of agents.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.Agent;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long agentId = 11755573003L;
+        Agent agent = client.cccsApi().getAgent(agentId);
+    }
+}
+----
+
+
+=== Query list of existing Ccc Agents
+Query for existing Agents using optional filters such as campaignId, name, etc... Returns a list of Agents and all associated info.
+See GetAgent to return just a single Agent by id.
+Example below shows how to query agents filtered by agent email, agent group id and campaign id.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.Agent;
+import com.callfire.api11.client.api.ccc.model.request.QueryAgentsRequest;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        QueryAgentsRequest request = QueryAgentsRequest.create()
+            .agentEmail("agent@callfire.com")
+            .agentGroupId(149688003L)
+            .campaignId(9901121003L)
+            .build();
+
+        List<Agent> agents = client.cccsApi().queryAgents(request);
+    }
+}
+----
+
+
+=== Add Agents to Ccc Campaign
+Add agents identified by id or email to existing ccc campaign.
+Example below shows how to add agents to campaign by list of agent ids.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.request.AddAgentsRequest;
+
+import java.util.Arrays;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        AddAgentsRequest request = AddAgentsRequest.create()
+            .broadcastId(broadcastId)
+            .agentIds(Arrays.asList(289020003L))
+            .build();
+        client.cccsApi().addCampaignAgents(request);
+    }
+}
+----
+
+
+=== Get Agents attached with Ccc Campaign
+Get list of agents attached to ccc campaign.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.Agent;
+
+import java.util.List;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        List<Agent> agents = client.cccsApi().queryCampaignAgents(broadcastId);
+    }
+}
+----
+
+
+=== Remove Agent from Ccc Campaign
+Remove individual agent identified by id from ccc campaign identified by campaign id.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        Long agentId = 11755573003L;
+        client.cccsApi().removeAgentFromCampaign(broadcastId, agentId);
+    }
+}
+----
+
+
+=== Get Ccc AgentGroup by Id
+Return individual agent group by id. See QueryAgentGroups to return list of agent groups.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.AgentGroup;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long agentGroupId = 11755573003L;
+        AgentGroup group = client.cccsApi().getAgentGroup(agentGroupId);
+    }
+}
+----
+
+
+=== Query list of existing AgentGroups
+Query for existing agent groups using optional filters such as campaignId, name, etc... Returns a list of AgentGroups and all associated info.
+See GetAgentGroup to return just a single AgentGroup by id.
+Example below shows how to query agent groups filtered by agent email, agent group name and campaign id.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.AgentGroup;
+import com.callfire.api11.client.api.ccc.model.request.QueryAgentGroupsRequest;
+
+import java.util.List;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        QueryAgentGroupsRequest queryRequest = QueryAgentGroupsRequest.create()
+            .agentEmail("agent@callfire.com")
+            .name("test")
+            .campaignId(1234354l)
+            .build();
+        List<AgentGroup> groups = client.cccsApi().queryAgentGroups(queryRequest);
+    }
+}
+----
+
+
+=== Create Ccc AgentGroup
+Create agent group using either list of agent ids or list of agent emails but not both.
+Example below shows how to create agent group using list of agent ids.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.request.CreateAgentGroupRequest;
+
+import java.util.Arrays;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        CreateAgentGroupRequest createRequest = CreateAgentGroupRequest.create()
+            .agentIds(Arrays.asList(289020003L, 386074003L))
+            .name("test agent group")
+            .build();
+
+        Long createdAgentGroupId = client.cccsApi().createAgentGroup(createRequest);
+    }
+}
+----
+
+
+=== Update an existing Ccc AgentGroup
+Update existing agent group identified by id. Change name, etc...
+Example below shows how to update agent group name and campaign ids assigned.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.request.UpdateAgentGroupRequest;
+
+import java.util.Arrays;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long agentGroupId = 112332273003L;
+        Long broadcastId = 11755573003L;
+
+        UpdateAgentGroupRequest updateRequest = UpdateAgentGroupRequest.create()
+            .id(agentGroupId)
+            .campaignIds(Arrays.asList(broadcastId))
+            .name("updated name")
+            .build();
+
+        client.cccsApi().updateAgentGroup(updateRequest);
+    }
+}
+----
+
+
+=== Add AgentGroups to Ccc Campaign
+Add agent groups identified by ids to campaign.
+Example below shows how to add agent groups by ids to some campaign.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.request.AddAgentGroupsRequest;
+
+import java.util.Arrays;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long agentGroupId = 12325573003L;
+        Long broadcastId = 11755573003L;
+
+        AddAgentGroupsRequest addRequest = AddAgentGroupsRequest.create()
+            .agentGroupIds(Arrays.asList(agentGroupId))
+            .campaignId(broadcastId)
+            .build();
+
+        client.cccsApi().addCampaignAgentGroups(addRequest);
+    }
+}
+----
+
+
+=== Get all AgentGroups attached to Campaign
+Returns a list of agent groups attached to campaign.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.AgentGroup;
+
+import java.util.List;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        List<AgentGroup> agentGroups = client.cccsApi().queryCampaignAgentGroups(broadcastId);
+    }
+}
+----
+
+
+=== Delete a Ccc AgentGroup by ID
+Delete agent group identified by id.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long agentGroupId = 11755573003L;
+        client.cccsApi().removeAgentGroup(agentGroupId);
+    }
+}
+----
+
+
+=== Remove AgentGroup from Campaign
+Remove agent group identified by id from campaign. If id points to non-existent agent group then ServiceFault or 404 error will be thrown.
+Example below shows how to remove agent group from campaign using campaign id and agent group id.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long agentGroupId = 11755573003L;
+        Long broadcastId = 1172343423003L;
+        client.cccsApi().removeAgentGroupFromCampaign(broadcastId, agentGroupId);
+    }
+}
+----
+
+
+=== Get Ccc AgentSession by Id
+Return ccc agent session by id. See QueryAgentSessions to return list of agent sessions and determine individual agent session id.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.AgentSession;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long agentSessionId = 11755573003L;
+        AgentSession session = client.cccsApi().getAgentSession(agentSessionId);
+    }
+}
+----
+
+
+=== Query list of existing AgentSessions
+Query for existing agent sessions using optional filters such as CampaignId, AgentEmail, etc... Returns a list of agent sessions and all associated info.
+See GetAgentSession to return just a single agent session by id.
+Example below shows how to query agent sessions filtered by agent email and campaign id.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.AgentSession;
+import com.callfire.api11.client.api.ccc.model.request.QueryAgentSessionsRequest;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        QueryAgentSessionsRequest request = QueryAgentSessionsRequest.create()
+            .agentEmail("agent@callfire.com")
+            .campaignId(9901983003L)
+            .build();
+
+        List<AgentSession> sessions = client.cccsApi().queryAgentSessions(request);
+    }
+}
+----
+
+
+=== Send Ccc AgentInvite
+Send ccc agent invite email which includes a link inside email for agent to register with campaign.
+Example below shows how to send agent invite specified campaign id, agent email and agent group.
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.request.SendAgentInviteRequest;
+
+import java.util.Arrays;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        SendAgentInviteRequest request = SendAgentInviteRequest.create()
+            .campaignId(broadcastId)
+            .agentGroupName("test agent group for invite")
+            .agentEmails(Arrays.asList("agent@callfire.com"))
+            .build();
+
+        client.cccsApi().sendCampaignAgentInvite(request);
+    }
+}
+----
+
+
+=== Get Ccc AgentInvite URI
+Return campaign registration link that agents can use to register for a campaign. (ex: https://www.callfire.com/ui/register/agent/c1ca1280-64c8-11e4-8fe5-00136e4efdeb)
+[source,java]
+----
+import com.callfire.api11.client.CfApi11Client;
+import com.callfire.api11.client.api.ccc.model.AgentInvite;
+
+
+public class CallfireIntegrationSample {
+    public static void main(String[] args) {
+        CfApi11Client client = new CfApi11Client("login", "password");
+
+        Long broadcastId = 11755573003L;
+        AgentInvite agentInvite = client.cccsApi().getCampaignAgentInviteUri(broadcastId, "agent@callfire.com");
+    }
+}
+----

@@ -1,0 +1,13 @@
+{
+  "Resource": {
+    "AgentSession": {
+      "AgentId": 289020003,
+      "CampaignId": 9901983003,
+      "AgentState": "DISCONNECTED",
+      "CallCount": 1,
+      "Start": "2015-06-23T14:19:59Z",
+      "LastUpdate": "2015-06-23T14:19:59Z",
+      "@id": 1159914003
+    }
+  }
+}
