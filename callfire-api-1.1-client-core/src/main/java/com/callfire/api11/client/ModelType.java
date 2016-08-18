@@ -5,6 +5,7 @@ import com.callfire.api11.client.api.broadcasts.model.BroadcastSchedule;
 import com.callfire.api11.client.api.broadcasts.model.BroadcastStats;
 import com.callfire.api11.client.api.broadcasts.model.ContactBatch;
 import com.callfire.api11.client.api.calls.model.Call;
+import com.callfire.api11.client.api.ccc.model.*;
 import com.callfire.api11.client.api.common.model.Label;
 import com.callfire.api11.client.api.common.model.Resource;
 import com.callfire.api11.client.api.common.model.ResourceException;
@@ -43,6 +44,7 @@ public final class ModelType {
         SIMPLE_TYPES.put(ResourceException.class, new TypeReference<ResourceException>() {});
 
         SIMPLE_TYPES.put(Broadcast.class, new TypeReference<Resource<Broadcast>>() {});
+        SIMPLE_TYPES.put(CccBroadcast.class, new TypeReference<Resource<CccBroadcast>>() {});
         SIMPLE_TYPES.put(ContactBatch.class, new TypeReference<Resource<ContactBatch>>() {});
         SIMPLE_TYPES.put(BroadcastStats.class, new TypeReference<Resource<BroadcastStats>>() {});
         SIMPLE_TYPES.put(BroadcastSchedule.class, new TypeReference<Resource<BroadcastSchedule>>() {});
@@ -53,12 +55,19 @@ public final class ModelType {
         SIMPLE_TYPES.put(Text.class, new TypeReference<Resource<Text>>() {});
         SIMPLE_TYPES.put(AutoReply.class, new TypeReference<Resource<AutoReply>>() {});
         SIMPLE_TYPES.put(Subscription.class, new TypeReference<Resource<Subscription>>() {});
+        SIMPLE_TYPES.put(Agent.class, new TypeReference<Resource<Agent>>() {});
+        SIMPLE_TYPES.put(AgentGroup.class, new TypeReference<Resource<AgentGroup>>() {});
+        SIMPLE_TYPES.put(AgentSession.class, new TypeReference<Resource<AgentSession>>() {});
+        SIMPLE_TYPES.put(Question.class, new TypeReference<Resource<Question>>() {});
+        SIMPLE_TYPES.put(TransferNumber.class, new TypeReference<Resource<TransferNumber>>() {});
+        SIMPLE_TYPES.put(AgentInvite.class, new TypeReference<Resource<AgentInvite>>() {});
         // @formatter:on
     }
 
     private static void initListTypes() {
         // @formatter:off
         LIST_TYPES.put(Broadcast.class, new TypeReference<ResourceList<Broadcast>>() {});
+        LIST_TYPES.put(CccBroadcast.class, new TypeReference<ResourceList<CccBroadcast>>() {});
         LIST_TYPES.put(ContactBatch.class, new TypeReference<ResourceList<ContactBatch>>() {});
         LIST_TYPES.put(BroadcastSchedule.class, new TypeReference<ResourceList<BroadcastSchedule>>() {});
         LIST_TYPES.put(Contact.class, new TypeReference<ResourceList<Contact>>() {});
@@ -68,6 +77,11 @@ public final class ModelType {
         LIST_TYPES.put(AutoReply.class, new TypeReference<ResourceList<AutoReply>>() {});
         LIST_TYPES.put(Subscription.class, new TypeReference<ResourceList<Subscription>>() {});
         LIST_TYPES.put(Label.class, new TypeReference<ResourceList<Label>>() {});
+        LIST_TYPES.put(Agent.class, new TypeReference<ResourceList<Agent>>() {});
+        LIST_TYPES.put(AgentGroup.class, new TypeReference<ResourceList<AgentGroup>>() {});
+        LIST_TYPES.put(AgentSession.class, new TypeReference<ResourceList<AgentSession>>() {});
+        LIST_TYPES.put(Question.class, new TypeReference<ResourceList<Question>>() {});
+        LIST_TYPES.put(TransferNumber.class, new TypeReference<ResourceList<TransferNumber>>() {});
         // @formatter:on
     }
 

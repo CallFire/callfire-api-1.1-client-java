@@ -1,0 +1,30 @@
+{
+  "Resource": {
+    "BroadcastStats": {
+      "UsageStats": {
+        "Duration": 1,
+        "BilledDuration": 1,
+        "BilledAmount": 20.0,
+        "Attempts": 24,
+        "Actions": 24
+      },
+      "ResultStat": [
+        {
+          "Result": "SENT",
+          "Attempts": 20,
+          "Actions": 20
+        },
+        {
+          "Result": "CARRIER_ERROR",
+          "Attempts": 4,
+          "Actions": 4
+        }
+      ],
+      "ActionStatistics": {
+        "Unattempted": 25,
+        "RetryWait": 1,
+        "Finished": 1
+      }
+    }
+  }
+}

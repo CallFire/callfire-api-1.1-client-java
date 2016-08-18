@@ -13,17 +13,12 @@ import java.util.List;
  * Generic send request
  */
 public abstract class SendRequest extends CfApi11Model {
-    protected String requestId;
     protected BroadcastType type;
     protected String broadcastName;
     protected Boolean scrubBroadcastDuplicates;
     @QueryParamName("To")
     protected List<ToNumber> toNumber;
     protected List<String> label;
-
-    public String getRequestId() {
-        return requestId;
-    }
 
     public BroadcastType getType() {
         return type;
@@ -49,7 +44,6 @@ public abstract class SendRequest extends CfApi11Model {
     public String toString() {
         return new ToStringBuilder(this)
             .appendSuper(super.toString())
-            .append("requestId", requestId)
             .append("type", type)
             .append("broadcastName", broadcastName)
             .append("scrubDuplicates", scrubBroadcastDuplicates)

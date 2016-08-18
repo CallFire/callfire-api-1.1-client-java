@@ -1,22 +1,12 @@
 package com.callfire.api11.client.integration;
 
 import com.callfire.api11.client.ResourceNotFoundException;
-import com.callfire.api11.client.api.broadcasts.model.Broadcast;
-import com.callfire.api11.client.api.broadcasts.model.BroadcastCommand;
-import com.callfire.api11.client.api.broadcasts.model.BroadcastSchedule;
-import com.callfire.api11.client.api.broadcasts.model.BroadcastStats;
-import com.callfire.api11.client.api.broadcasts.model.BroadcastStatus;
-import com.callfire.api11.client.api.broadcasts.model.BroadcastType;
-import com.callfire.api11.client.api.broadcasts.model.ContactBatch;
-import com.callfire.api11.client.api.broadcasts.model.DayOfWeek;
+import com.callfire.api11.client.api.broadcasts.model.*;
+import com.callfire.api11.client.api.broadcasts.model.request.ControlBroadcastRequest;
 import com.callfire.api11.client.api.broadcasts.model.request.CreateBatchRequest;
 import com.callfire.api11.client.api.broadcasts.model.request.QueryBroadcastsRequest;
 import com.callfire.api11.client.api.calls.model.IvrBroadcastConfig;
-import com.callfire.api11.client.api.common.model.LocalTimeZoneRestriction;
-import com.callfire.api11.client.api.common.model.Result;
-import com.callfire.api11.client.api.common.model.RetryConfig;
-import com.callfire.api11.client.api.common.model.RetryPhoneType;
-import com.callfire.api11.client.api.common.model.ToNumber;
+import com.callfire.api11.client.api.common.model.*;
 import com.callfire.api11.client.api.common.model.request.QueryByIdRequest;
 import com.callfire.api11.client.api.texts.model.BigMessageStrategy;
 import com.callfire.api11.client.api.texts.model.TextBroadcastConfig;
@@ -36,9 +26,7 @@ import static org.apache.commons.lang3.time.DateFormatUtils.format;
 import static org.apache.commons.lang3.time.DateFormatUtils.formatUTC;
 import static org.apache.commons.lang3.time.DateUtils.isSameDay;
 import static org.apache.commons.lang3.time.DateUtils.parseDate;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @Ignore
 public class BroadcastsIntegrationTest extends AbstractIntegrationTest {
@@ -101,6 +89,13 @@ public class BroadcastsIntegrationTest extends AbstractIntegrationTest {
 
         client.broadcastsApi().update(broadcast);
         client.broadcastsApi().control(id, BroadcastCommand.ARCHIVE, 200);
+
+        ControlBroadcastRequest archiveRequest = ControlBroadcastRequest.create()
+            .command(BroadcastCommand.ARCHIVE)
+            .id(id)
+            .build();
+        client.broadcastsApi().control(archiveRequest);
+
         Broadcast savedBroadcast = client.broadcastsApi().get(id);
         assertEquals(BroadcastStatus.ARCHIVED, savedBroadcast.getStatus());
         assertEquals(savedBroadcast.getName(), savedBroadcast.getName());
@@ -126,6 +121,36 @@ public class BroadcastsIntegrationTest extends AbstractIntegrationTest {
         //        assertFalse(broadcasts.isEmpty());
         //        assertThat(broadcasts.get(0).getLabels(), hasItem("broadcast_label"));
     }
+
+    // TODO uncomment once fixed - BroadcastMapper doesn't support CccBroadcast yet
+    /*@Test
+    public void createCccBroadcast() throws Exception {
+        Broadcast broadcast = new Broadcast();
+        broadcast.setName("Test CCC Broadcast");
+        broadcast.setType(BroadcastType.CCC);
+        broadcast.setLabels(asList("label1", "label2"));
+
+        broadcast.setCccBroadcastConfig(CccBroadcastConfig.create()
+            .fromNumber("12132212384")
+            .retryConfig(new RetryConfig(2, 1, asList(Result.BUSY, Result.NO_ANS),
+                    asList(RetryPhoneType.MOBILE_PHONE, RetryPhoneType.HOME_PHONE)))
+            .timeZoneRestriction(new LocalTimeZoneRestriction(
+                    DateUtils.parseDate("10:10:10", TIME_FORMAT_PATTERN),
+                    DateUtils.parseDate("15:15:15", TIME_FORMAT_PATTERN)))
+            .agentGroupId(149740003L)
+            .smartDropSoundId(1L)
+            .transferNumberIdList(Arrays.asList(12132212384L))
+            .allowAnyTransfer(true)
+            .transferCallerId("12132212384")
+            .recorded(true)
+            .build());
+
+        Long id = client.broadcastsApi().create(broadcast);
+
+        System.out.println(id);
+
+        assertNotNull(id);
+    }*/
 
     @Test
     public void batchCrudOperations() throws Exception {

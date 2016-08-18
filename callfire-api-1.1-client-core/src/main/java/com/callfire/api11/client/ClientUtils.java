@@ -1,5 +1,7 @@
 package com.callfire.api11.client;
 
+import com.callfire.api11.client.api.ccc.model.Question;
+import com.callfire.api11.client.api.ccc.model.TransferNumber;
 import com.callfire.api11.client.api.common.QueryParamFormat;
 import com.callfire.api11.client.api.common.QueryParamIgnore;
 import com.callfire.api11.client.api.common.QueryParamName;
@@ -46,7 +48,7 @@ public final class ClientUtils {
                 queryParams.add(new BasicNameValuePair(name, String.valueOf(date.getTime())));
             } else if (value instanceof Collection) {
                 for (Object item : (Collection) value) {
-                    if (item instanceof Contact) {
+                    if (item instanceof Contact || item instanceof TransferNumber || item instanceof Question) {
                         readObject(item, queryParams);
                     } else {
                         queryParams.add(new BasicNameValuePair(name, Objects.toString(item)));
@@ -133,7 +135,12 @@ public final class ClientUtils {
                         params.add(new BasicNameValuePair(name, ((ToNumber) o).toQueryString()));
                     } else if (o instanceof Contact) {
                         params.addAll(((Contact) o).serializeToMap(i));
-                    } else {
+                    } else if (o instanceof TransferNumber) {
+                        params.addAll(((TransferNumber) o).serializeToMap(i));
+                    } else if (o instanceof Question) {
+                        params.addAll(((Question) o).serializeToMap(i));
+                    }
+                    else {
                         params.add(new BasicNameValuePair(name, o.toString()));
                     }
                     i++;
