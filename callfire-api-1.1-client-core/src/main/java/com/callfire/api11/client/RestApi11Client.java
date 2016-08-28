@@ -18,6 +18,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -492,6 +493,8 @@ public class RestApi11Client {
 
             builder.setRoutePlanner(new DefaultProxyRoutePlanner(proxy));
         }
+
+
 
         return builder.build();
     }

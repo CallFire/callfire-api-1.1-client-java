@@ -14,6 +14,10 @@ import com.callfire.api11.client.api.common.model.ResourceReference;
 import com.callfire.api11.client.api.contacts.model.Contact;
 import com.callfire.api11.client.api.contacts.model.ContactHistory;
 import com.callfire.api11.client.api.contacts.model.ContactList;
+import com.callfire.api11.client.api.numbers.model.Keyword;
+import com.callfire.api11.client.api.numbers.model.Number;
+import com.callfire.api11.client.api.numbers.model.NumberOrder;
+import com.callfire.api11.client.api.numbers.model.Region;
 import com.callfire.api11.client.api.subscriptions.model.Subscription;
 import com.callfire.api11.client.api.texts.model.AutoReply;
 import com.callfire.api11.client.api.texts.model.Text;
@@ -61,6 +65,8 @@ public final class ModelType {
         SIMPLE_TYPES.put(Question.class, new TypeReference<Resource<Question>>() {});
         SIMPLE_TYPES.put(TransferNumber.class, new TypeReference<Resource<TransferNumber>>() {});
         SIMPLE_TYPES.put(AgentInvite.class, new TypeReference<Resource<AgentInvite>>() {});
+        SIMPLE_TYPES.put(Number.class, new TypeReference<Resource<Number>>() {});
+        SIMPLE_TYPES.put(NumberOrder.class, new TypeReference<Resource<NumberOrder>>() {});
         // @formatter:on
     }
 
@@ -82,6 +88,9 @@ public final class ModelType {
         LIST_TYPES.put(AgentSession.class, new TypeReference<ResourceList<AgentSession>>() {});
         LIST_TYPES.put(Question.class, new TypeReference<ResourceList<Question>>() {});
         LIST_TYPES.put(TransferNumber.class, new TypeReference<ResourceList<TransferNumber>>() {});
+        LIST_TYPES.put(Number.class, new TypeReference<ResourceList<Number>>() {});
+        LIST_TYPES.put(Region.class, new TypeReference<ResourceList<Region>>() {});
+        LIST_TYPES.put(Keyword.class, new TypeReference<ResourceList<Keyword>>() {});
         // @formatter:on
     }
 

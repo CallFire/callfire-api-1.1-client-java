@@ -1,0 +1,43 @@
+{
+  "ResourceList": {
+    "@totalResults": 3,
+    "Region": [
+      {
+        "Prefix": "1214200",
+        "City": "DALLAS",
+        "State": "TX",
+        "Zipcode": "75398",
+        "Country": "US",
+        "Lata": "552",
+        "RateCenter": "DALLAS",
+        "Latitude": 32.7782,
+        "Longitude": -96.8015,
+        "TimeZone": "America/Chicago"
+      },
+      {
+        "Prefix": "1214204",
+        "City": "DALLAS",
+        "State": "TX",
+        "Zipcode": "75342",
+        "Country": "US",
+        "Lata": "552",
+        "RateCenter": "GRANDPRARI",
+        "Latitude": 32.8015,
+        "Longitude": -96.8256,
+        "TimeZone": "America/Chicago"
+      },
+      {
+        "Prefix": "1214205",
+        "City": "DALLAS",
+        "State": "TX",
+        "Zipcode": "75242",
+        "Country": "US",
+        "Lata": "552",
+        "RateCenter": "DALLAS",
+        "Latitude": 32.7808,
+        "Longitude": -96.7944,
+        "TimeZone": "America/Chicago"
+      }
+    ]
+  }
+}

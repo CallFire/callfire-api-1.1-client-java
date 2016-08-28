@@ -3,10 +3,32 @@ package com.callfire.api11.client.api;
 import com.callfire.api11.client.api.broadcasts.model.BroadcastCommand;
 import com.callfire.api11.client.api.broadcasts.model.BroadcastStats;
 import com.callfire.api11.client.api.broadcasts.model.request.ControlBroadcastRequest;
-import com.callfire.api11.client.api.ccc.model.*;
-import com.callfire.api11.client.api.ccc.model.request.*;
-import com.callfire.api11.client.api.common.model.*;
-import org.apache.http.client.methods.*;
+import com.callfire.api11.client.api.ccc.model.Agent;
+import com.callfire.api11.client.api.ccc.model.AgentGroup;
+import com.callfire.api11.client.api.ccc.model.AgentInvite;
+import com.callfire.api11.client.api.ccc.model.AgentSession;
+import com.callfire.api11.client.api.ccc.model.CccBroadcast;
+import com.callfire.api11.client.api.ccc.model.Question;
+import com.callfire.api11.client.api.ccc.model.QuestionResponseType;
+import com.callfire.api11.client.api.ccc.model.TransferNumber;
+import com.callfire.api11.client.api.ccc.model.request.AddAgentGroupsRequest;
+import com.callfire.api11.client.api.ccc.model.request.AddAgentsRequest;
+import com.callfire.api11.client.api.ccc.model.request.QueryAgentGroupsRequest;
+import com.callfire.api11.client.api.ccc.model.request.QueryAgentSessionsRequest;
+import com.callfire.api11.client.api.ccc.model.request.QueryAgentsRequest;
+import com.callfire.api11.client.api.ccc.model.request.QueryCccBroadcastsRequest;
+import com.callfire.api11.client.api.ccc.model.request.SendAgentInviteRequest;
+import com.callfire.api11.client.api.common.model.Resource;
+import com.callfire.api11.client.api.common.model.ResourceList;
+import com.callfire.api11.client.api.common.model.ResourceReference;
+import com.callfire.api11.client.api.common.model.Result;
+import com.callfire.api11.client.api.common.model.RetryConfig;
+import com.callfire.api11.client.api.common.model.RetryPhoneType;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -18,9 +40,15 @@ import java.util.List;
 
 import static com.callfire.api11.client.test.CallfireTestUtils.extractHttpEntity;
 import static java.util.Arrays.asList;
-import static org.apache.commons.lang3.time.DateUtils.*;
+import static org.apache.commons.lang3.time.DateUtils.setHours;
+import static org.apache.commons.lang3.time.DateUtils.setMinutes;
+import static org.apache.commons.lang3.time.DateUtils.setSeconds;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class CccsApiTest extends AbstractApiTest {
     private static Calendar startDate = Calendar.getInstance();
@@ -338,6 +366,10 @@ public class CccsApiTest extends AbstractApiTest {
         List<Agent> agents = client.cccsApi().queryCampaignAgents(13658242003L);
         ResourceList<Agent> response = new ResourceList<>(agents, Agent.class);
 
+        String serialize = jsonConverter.serialize(response);
+        System.out.println(serialize);
+        JSONAssert.assertEquals(expectedJson, serialize, true);
+
         assertTrue(response.getTotalResults() == 1);
         assertTrue(response.get().size() == 1);
         assertEquals(response.get().get(0).getEmail(), "name@callfire.com");
@@ -370,6 +402,7 @@ public class CccsApiTest extends AbstractApiTest {
             .build();
         List<Agent> agents = client.cccsApi().queryAgents(request);
         ResourceList<Agent> response = new ResourceList<>(agents, Agent.class);
+        JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         assertTrue(response.getTotalResults() == 1);
         assertTrue(response.get().size() == 1);
@@ -402,6 +435,7 @@ public class CccsApiTest extends AbstractApiTest {
 
         Agent agent = client.cccsApi().getAgent(386074003L);
         Resource<Agent> response = new Resource<>(agent, Agent.class);
+        JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         assertEquals(response.get().getEmail(), "name@callfire.com");
         assertEquals(response.get().getName(), "Name");
@@ -515,6 +549,7 @@ public class CccsApiTest extends AbstractApiTest {
             .build();
         List<AgentGroup> groups = client.cccsApi().queryAgentGroups(queryRequest);
         ResourceList<AgentGroup> response = new ResourceList<>(groups, AgentGroup.class);
+        JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         assertTrue(response.getTotalResults() == 1);
         assertTrue(response.get().size() == 1);
@@ -543,6 +578,7 @@ public class CccsApiTest extends AbstractApiTest {
 
         AgentGroup agentGroup = client.cccsApi().getAgentGroup(268008003L);
         Resource<AgentGroup> response = new Resource<>(agentGroup, AgentGroup.class);
+        JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         assertEquals(response.get().getName(), "Name");
         assertEquals(response.get().getAgentEmails().get(0), "agent1@callfire.com");
@@ -588,6 +624,7 @@ public class CccsApiTest extends AbstractApiTest {
 
         List<AgentGroup> agentGroups = client.cccsApi().queryCampaignAgentGroups(123L);
         ResourceList<AgentGroup> response = new ResourceList<>(agentGroups, AgentGroup.class);
+        JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
         assertTrue(response.getTotalResults() == 1);
         assertTrue(response.get().size() == 1);

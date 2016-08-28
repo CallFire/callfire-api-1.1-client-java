@@ -1,0 +1,34 @@
+{
+  "ResourceList": {
+    "@totalResults": 1,
+    "Number": [
+      {
+        "Number": "14242700222",
+        "NationalFormat": "(424) 270-0222",
+        "TollFree": false,
+        "Region": {
+          "Prefix": "1424270",
+          "City": "LOS ANGELES",
+          "State": "CA",
+          "Zipcode": "90025",
+          "Country": "US",
+          "Lata": "730",
+          "RateCenter": "W ANGELES",
+          "Latitude": 34.0521,
+          "Longitude": -118.4507,
+          "TimeZone": "America/Los_Angeles"
+        },
+        "Status": "ACTIVE",
+        "LeaseInfo": {
+          "LeaseBegin": "2016-08-20Z",
+          "LeaseEnd": "2016-09-19Z",
+          "AutoRenew": true
+        },
+        "NumberConfiguration": {
+          "CallFeature": "DISABLED",
+          "TextFeature": "ENABLED"
+        }
+      }
+    ]
+  }
+}

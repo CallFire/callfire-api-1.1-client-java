@@ -1,0 +1,38 @@
+{
+  "Resource": {
+    "Number": {
+      "Number": "14246528111",
+      "NationalFormat": "(424) 652-8111",
+      "TollFree": false,
+      "Region": {
+        "Prefix": "1424652",
+        "City": "LOS ANGELES",
+        "State": "CA",
+        "Zipcode": "90025",
+        "Country": "US",
+        "Lata": "730",
+        "RateCenter": "W ANGELES",
+        "Latitude": 34.0521,
+        "Longitude": -118.4507,
+        "TimeZone": "America/Los_Angeles"
+      },
+      "Status": "ACTIVE",
+      "LeaseInfo": {
+        "LeaseBegin": "2016-04-20Z",
+        "LeaseEnd": "2016-05-19Z",
+        "AutoRenew": false
+      },
+      "NumberConfiguration": {
+        "CallFeature": "ENABLED",
+        "TextFeature": "ENABLED",
+        "InboundCallConfigurationType": "IVR",
+        "InboundCallConfiguration": {
+          "IvrInboundConfig": {
+            "@id": 15789712003,
+            "DialplanXml": "<dialplan name=\"Root\">\r\n\t<play type=\"tts\">Congratulations! You have successfully configured a CallFire I V R.</play>\r\n</dialplan>"
+          }
+        }
+      }
+    }
+  }
+}

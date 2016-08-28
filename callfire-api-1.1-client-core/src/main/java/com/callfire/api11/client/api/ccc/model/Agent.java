@@ -1,24 +1,27 @@
 
 package com.callfire.api11.client.api.ccc.model;
 
-import com.callfire.api11.client.api.common.SpacedStringAsObjectList;
+import com.callfire.api11.client.ListToStringSerializer;
+import com.callfire.api11.client.StringToLongListDeserializer;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 import java.util.List;
 
 public class Agent extends CfApi11Model {
-
     private Boolean enabled;
     private String name;
     private String email;
     private Date lastLogin;
-    @JsonDeserialize(using = SpacedStringAsObjectList.class)
+    @JsonSerialize(using = ListToStringSerializer.class)
+    @JsonDeserialize(using = StringToLongListDeserializer.class)
     private List<Long> campaignIds;
-    @JsonDeserialize(using = SpacedStringAsObjectList.class)
+    @JsonSerialize(using = ListToStringSerializer.class)
+    @JsonDeserialize(using = StringToLongListDeserializer.class)
     private List<Long> groupIds;
     @JsonProperty("@id")
     private Long id;

@@ -1,10 +1,13 @@
 
 package com.callfire.api11.client.api.ccc.model;
 
-import com.callfire.api11.client.api.common.SpacedStringAsObjectList;
+import com.callfire.api11.client.ListToStringSerializer;
+import com.callfire.api11.client.StringToLongListDeserializer;
+import com.callfire.api11.client.StringToStringListDeserializer;
 import com.callfire.api11.client.api.common.model.CfApi11Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
@@ -14,11 +17,14 @@ public class AgentGroup extends CfApi11Model {
     @JsonProperty("@id")
     private Long id;
     private String name;
-    @JsonDeserialize(using = SpacedStringAsObjectList.class)
+    @JsonSerialize(using = ListToStringSerializer.class)
+    @JsonDeserialize(using = StringToLongListDeserializer.class)
     private List<Long> campaignIds;
-    @JsonDeserialize(using = SpacedStringAsObjectList.class)
+    @JsonSerialize(using = ListToStringSerializer.class)
+    @JsonDeserialize(using = StringToLongListDeserializer.class)
     private List<Long> agentIds;
-    @JsonDeserialize(using = SpacedStringAsObjectList.class)
+    @JsonSerialize(using = ListToStringSerializer.class)
+    @JsonDeserialize(using = StringToStringListDeserializer.class)
     private List<String> agentEmails;
 
     @Override

@@ -1,0 +1,17 @@
+{
+  "ResourceList": {
+    "@totalResults": 1,
+    "Keyword": [
+      {
+        "ShortCode": "67076",
+        "Keyword": "ANTLR",
+        "Status": "PENDING",
+        "LeaseInfo": {
+          "LeaseBegin": "2016-06-23Z",
+          "LeaseEnd": "2016-07-22Z",
+          "AutoRenew": false
+        }
+      }
+    ]
+  }
+}

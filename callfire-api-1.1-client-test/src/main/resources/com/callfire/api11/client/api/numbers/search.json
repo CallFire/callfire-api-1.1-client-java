@@ -1,0 +1,58 @@
+{
+  "ResourceList": {
+    "@totalResults": 3,
+    "Number": [
+      {
+        "Number": "14695027791",
+        "NationalFormat": "(469) 502-7791",
+        "TollFree": false,
+        "Region": {
+          "Prefix": "1469502",
+          "City": "DALLAS",
+          "State": "TX",
+          "Zipcode": "75235",
+          "Country": "US",
+          "Lata": "552",
+          "RateCenter": "GRANDPRARI",
+          "Latitude": 32.8068,
+          "Longitude": -96.8699,
+          "TimeZone": "America/Chicago"
+        }
+      },
+      {
+        "Number": "14696658190",
+        "NationalFormat": "(469) 665-8190",
+        "TollFree": false,
+        "Region": {
+          "Prefix": "1469665",
+          "City": "DALLAS",
+          "State": "TX",
+          "Zipcode": "75201",
+          "Country": "US",
+          "Lata": "552",
+          "RateCenter": "DALLAS",
+          "Latitude": 32.7808,
+          "Longitude": -96.7944,
+          "TimeZone": "America/Chicago"
+        }
+      },
+      {
+        "Number": "14696658265",
+        "NationalFormat": "(469) 665-8265",
+        "TollFree": false,
+        "Region": {
+          "Prefix": "1469665",
+          "City": "DALLAS",
+          "State": "TX",
+          "Zipcode": "75201",
+          "Country": "US",
+          "Lata": "552",
+          "RateCenter": "DALLAS",
+          "Latitude": 32.7808,
+          "Longitude": -96.7944,
+          "TimeZone": "America/Chicago"
+        }
+      }
+    ]
+  }
+}
