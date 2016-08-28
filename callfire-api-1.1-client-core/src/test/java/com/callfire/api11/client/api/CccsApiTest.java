@@ -65,7 +65,7 @@ public class CccsApiTest extends AbstractApiTest {
     public void createCccBroadcast() throws Exception {
 
         String location = "https://www.callfire.com/api/1.1/rest/ccc/1528630003";
-        String expectedJson = getJsonPayload("/cccBroadcasts/create.json");
+        String expectedJson = getJsonPayload("/ccc/create.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         CccBroadcast broadcast = new CccBroadcast();
@@ -135,7 +135,7 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void queryCccBroadcasts() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/query.json");
+        String expectedJson = getJsonPayload("/ccc/query.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         QueryCccBroadcastsRequest request = QueryCccBroadcastsRequest.create()
@@ -165,7 +165,7 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void getCccBroadcast() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/get.json");
+        String expectedJson = getJsonPayload("/ccc/get.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         CccBroadcast broadcast = client.cccsApi().get(1234567L);
@@ -182,7 +182,7 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void getStats() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/getStats.json");
+        String expectedJson = getJsonPayload("/ccc/getStats.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         BroadcastStats stats = client.cccsApi().getStats(1234567L, startDate.getTime(), endDate.getTime());
@@ -360,7 +360,7 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void queryCampaignAgents() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/queryAgents.json");
+        String expectedJson = getJsonPayload("/ccc/queryAgents.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         List<Agent> agents = client.cccsApi().queryCampaignAgents(13658242003L);
@@ -372,11 +372,12 @@ public class CccsApiTest extends AbstractApiTest {
 
         assertTrue(response.getTotalResults() == 1);
         assertTrue(response.get().size() == 1);
-        assertEquals(response.get().get(0).getEmail(), "name@callfire.com");
-        assertEquals(response.get().get(0).getName(), "Name");
-        assertEquals(response.get().get(0).isEnabled(), true);
-        assertEquals(response.get().get(0).getEmail(), "name@callfire.com");
-        assertEquals(response.get().get(0).getLastLogin().toString(), "Tue Jun 23 17:19:59 EEST 2015");
+        assertEquals("name@callfire.com", response.get().get(0).getEmail());
+        assertEquals("Name", response.get().get(0).getName());
+        assertTrue(response.get().get(0).isEnabled());
+        assertEquals("name@callfire.com", response.get().get(0).getEmail());
+        // unix timestamp "Tue Jun 23 17:19:59 EEST 2015"
+        assertEquals(1435069199000L, response.get().get(0).getLastLogin().getTime());
         assertTrue(response.get().get(0).getCampaignIds().get(0).equals(13658242003L));
         assertTrue(response.get().get(0).getGroupIds().get(0).equals(21343421L));
         assertTrue(response.get().get(0).getId().equals(386074003L));
@@ -391,7 +392,7 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void queryAgents() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/queryAgents.json");
+        String expectedJson = getJsonPayload("/ccc/queryAgents.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         QueryAgentsRequest request = QueryAgentsRequest.create()
@@ -406,11 +407,12 @@ public class CccsApiTest extends AbstractApiTest {
 
         assertTrue(response.getTotalResults() == 1);
         assertTrue(response.get().size() == 1);
-        assertEquals(response.get().get(0).getEmail(), "name@callfire.com");
-        assertEquals(response.get().get(0).getName(), "Name");
-        assertEquals(response.get().get(0).isEnabled(), true);
-        assertEquals(response.get().get(0).getEmail(), "name@callfire.com");
-        assertEquals(response.get().get(0).getLastLogin().toString(), "Tue Jun 23 17:19:59 EEST 2015");
+        assertEquals("name@callfire.com", response.get().get(0).getEmail());
+        assertEquals("Name", response.get().get(0).getName());
+        assertTrue(response.get().get(0).isEnabled());
+        assertEquals("name@callfire.com", response.get().get(0).getEmail());
+        // unix timestamp "Tue Jun 23 17:19:59 EEST 2015"
+        assertEquals(1435069199000L, response.get().get(0).getLastLogin().getTime());
         assertTrue(response.get().get(0).getCampaignIds().get(0).equals(13658242003L));
         assertTrue(response.get().get(0).getGroupIds().get(0).equals(21343421L));
         assertTrue(response.get().get(0).getId().equals(386074003L));
@@ -430,18 +432,19 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void getAgent() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/getAgent.json");
+        String expectedJson = getJsonPayload("/ccc/getAgent.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         Agent agent = client.cccsApi().getAgent(386074003L);
         Resource<Agent> response = new Resource<>(agent, Agent.class);
         JSONAssert.assertEquals(expectedJson, jsonConverter.serialize(response), true);
 
-        assertEquals(response.get().getEmail(), "name@callfire.com");
-        assertEquals(response.get().getName(), "Name");
-        assertEquals(response.get().isEnabled(), true);
-        assertEquals(response.get().getEmail(), "name@callfire.com");
-        assertEquals(response.get().getLastLogin().toString(), "Tue Jun 23 17:19:59 EEST 2015");
+        assertEquals("name@callfire.com", response.get().getEmail());
+        assertEquals("Name", response.get().getName());
+        assertTrue(response.get().isEnabled());
+        assertEquals("name@callfire.com", response.get().getEmail());
+        // unix timestamp "Tue Jun 23 17:19:59 EEST 2015"
+        assertEquals(1435069199000L, response.get().getLastLogin().getTime());
         assertTrue(response.get().getCampaignIds().get(0).equals(13658242003L));
         assertTrue(response.get().getGroupIds().get(0).equals(21343421L));
         assertTrue(response.get().getId().equals(386074003L));
@@ -472,7 +475,7 @@ public class CccsApiTest extends AbstractApiTest {
     @Test
     public void createAgentGroup() throws Exception {
         String location = "https://www.callfire.com/api/1.1/rest/ccc/agent-group/1528630003";
-        String expectedJson = getJsonPayload("/cccBroadcasts/createAgentGroup.json");
+        String expectedJson = getJsonPayload("/ccc/createAgentGroup.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         AgentGroup group = new AgentGroup();
@@ -536,7 +539,7 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void queryAgentGroups() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/queryAgentGroups.json");
+        String expectedJson = getJsonPayload("/ccc/queryAgentGroups.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         QueryAgentGroupsRequest queryRequest = QueryAgentGroupsRequest.create()
@@ -573,7 +576,7 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void getAgentGroup() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/getAgentGroup.json");
+        String expectedJson = getJsonPayload("/ccc/getAgentGroup.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         AgentGroup agentGroup = client.cccsApi().getAgentGroup(268008003L);
@@ -619,7 +622,7 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void queryCampaignAgentGroups() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/queryAgentGroups.json");
+        String expectedJson = getJsonPayload("/ccc/queryAgentGroups.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         List<AgentGroup> agentGroups = client.cccsApi().queryCampaignAgentGroups(123L);
@@ -659,7 +662,7 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void queryAgentSessions() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/queryAgentSessions.json");
+        String expectedJson = getJsonPayload("/ccc/queryAgentSessions.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         QueryAgentSessionsRequest request = QueryAgentSessionsRequest.create()
@@ -693,7 +696,7 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void getAgentSession() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/getAgentSession.json");
+        String expectedJson = getJsonPayload("/ccc/getAgentSession.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         AgentSession agentSession = client.cccsApi().getAgentSession(268008003L);
@@ -736,7 +739,7 @@ public class CccsApiTest extends AbstractApiTest {
 
     @Test
     public void getCampaignAgentInviteUri() throws Exception {
-        String expectedJson = getJsonPayload("/cccBroadcasts/getAgentInvite.json");
+        String expectedJson = getJsonPayload("/ccc/getAgentInvite.json");
         ArgumentCaptor<HttpUriRequest> captor = mockHttpResponse(expectedJson);
 
         AgentInvite agentInvite = client.cccsApi().getCampaignAgentInviteUri(268008003L, "name@callfire.com");
