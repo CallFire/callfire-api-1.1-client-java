@@ -32,14 +32,15 @@ public class SpacedStringAsObjectList extends JsonDeserializer<List<?>> implemen
             return items;
 
         Class paramClass = valueType.getRawClass();
+        String[] elements = stringToParse.split(" ");
 
         if (paramClass.equals(Long.class)) {
-            for (String obj : stringToParse.split(" ")) {
+            for (String obj : elements) {
                 items.add(Long.parseLong(obj));
             }
             return items;
         } else {
-            return Arrays.asList((Object[]) stringToParse.split(" "));
+            return Arrays.asList((Object[]) elements);
         }
     }
 
